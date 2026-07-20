@@ -1,0 +1,31 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/fin-openapi-original.yml
+docs: https://developer.fin.com/api-reference/authentication/issue-a-token
+summary:
+  types:
+  - http
+  - oauth2
+  api_key_in: []
+  oauth2_flows:
+  - clientCredentials
+  notes: >-
+    The OpenAPI declares a single http bearer (JWT) security scheme applied to
+    all operations. Per the docs the bearer token is obtained via an OAuth 2.0
+    client-credentials flow with an enhanced refresh mechanism: exchange client
+    credentials at POST /v1/oauth/token to receive an access token + refresh
+    token, then renew via POST /v1/oauth/refresh-token without re-authenticating.
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Bearer token authentication. Obtain token from the Issue a Token endpoint.
+  sources:
+  - openapi/fin-openapi-original.yml
+flows:
+- flow: clientCredentials
+  token_endpoint: https://api.fin.com/v1/oauth/token
+  refresh_endpoint: https://api.fin.com/v1/oauth/refresh-token
+  sandbox_token_endpoint: https://sandbox.api.fin.com/v1/oauth/token
+  docs: https://developer.fin.com/api-reference/authentication/issue-a-token
