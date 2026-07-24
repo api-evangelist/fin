@@ -1,0 +1,1871 @@
+openapi: 3.1.0
+info:
+  title: Fin.com Authentication Beneficiaries API
+  version: 1.0.0
+  description: A simple API specificationFo
+servers:
+- url: https://sandbox.api.fin.com
+  description: Sandbox server
+- url: https://api.fin.com
+  description: Production server
+tags:
+- name: Beneficiaries
+  description: Manage beneficiary accounts for payments and transfers
+paths:
+  /v1/beneficiaries/countries:
+    get:
+      summary: List Available Countries
+      description: Retrieve a list of countries supported for beneficiary creation with available payment methods and phone validation rules
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Countries list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 4
+                        code:
+                          type: string
+                          example: AUS
+                        name:
+                          type: string
+                          example: Australia
+                        currency_code:
+                          type: string
+                          example: AUD
+                        phone:
+                          type: object
+                          properties:
+                            code:
+                              type: string
+                              example: '+61'
+                            max_length:
+                              type: integer
+                              example: 9
+                            min_length:
+                              type: integer
+                              example: 9
+                        available_methods:
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                            - BANK
+                            - E_WALLET
+                          example:
+                          - BANK
+                        flag:
+                          type: string
+                          format: uri
+                          example: https://flagcdn.com/au.svg
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+  /v1/beneficiaries/methods:
+    get:
+      summary: List Bank Identifiers
+      description: Retrieve a list of available banks or e-wallet providers for a specific country and method type
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: country_code
+        in: query
+        required: true
+        schema:
+          type: string
+        example: BGD
+      - name: method
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - BANK
+          - E_WALLET
+      responses:
+        '200':
+          description: Bank/method identifiers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1461
+                        name:
+                          type: string
+                          example: AB BANK LTD.
+                        method:
+                          type: string
+                          enum:
+                          - BANK
+                          - E_WALLET
+                          example: BANK
+                        has_branch:
+                          type: boolean
+                          example: true
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+  /v1/beneficiaries/methods/{method_id}/branches:
+    get:
+      summary: List Bank Branch Identifiers
+      description: Retrieve a list of available branches for a specific bank or payment method
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: method_id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '1472'
+      responses:
+        '200':
+          description: Branch identifiers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 21513
+                        name:
+                          type: string
+                          example: SITAKUNDA
+                        branch_code:
+                          type: string
+                          example: 020157391
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+  /v3/beneficiaries:
+    post:
+      summary: Create Beneficiary V3
+      description: Create a new beneficiary for payments and transfers. Supports bank accounts, e-wallets, and external crypto wallets as destination types.
+      x-mint:
+        content: "<Note>\n  The beneficiary will be ready for transactions only when its `status` is `APPROVED` and `active` is true.\n</Note>\n\n## De-Duplication Logic\n\n| Destination Type        | Fields Checked                                                                                          |\n| ----------------------- | ------------------------------------------------------------------------------------------------------- |\n| Bank Account            | `bank_account.scheme`, `bank_account.number`, `bank_routing.scheme`, `bank_routing.number`             |\n| E-Wallet                | `e_wallet.scheme`, `e_wallet.number`                                                                    |\n| External Crypto Wallet  | `destination_wallet.address`, `destination_wallet.rail`                                                 |\n"
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - customer_id
+                - country
+                - currency
+                - counter_party
+                - account_holder
+                - account_holder_address
+                - receiver_meta_data
+                - developer_fee
+                properties:
+                  customer_id:
+                    type: string
+                    format: uuid
+                    example: 6fa1ccd4-ffbd-4b20-a113-ccc286b35443
+                  country:
+                    type: string
+                    pattern: ^[A-Z]{3}$
+                    example: BGD
+                  currency:
+                    type: string
+                    example: BDT
+                  counter_party:
+                    type: string
+                    enum:
+                    - FIRST_PARTY
+                    - THIRD_PARTY
+                    example: FIRST_PARTY
+                  account_holder:
+                    oneOf:
+                    - title: Individual
+                      type: object
+                      required:
+                      - type
+                      - first_name
+                      - last_name
+                      - email
+                      - phone
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - INDIVIDUAL
+                        first_name:
+                          type: string
+                          example: John
+                        last_name:
+                          type: string
+                          example: Doe
+                        email:
+                          type: string
+                          format: email
+                          example: john.doe@example.com
+                        phone:
+                          type: string
+                          example: '+8801912244626'
+                    - title: Business
+                      type: object
+                      required:
+                      - type
+                      - business_name
+                      - email
+                      - phone
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - BUSINESS
+                        business_name:
+                          type: string
+                          example: Acme Corp
+                        email:
+                          type: string
+                          format: email
+                          example: contact@acmecorp.com
+                        phone:
+                          type: string
+                          example: '+8801912244626'
+                  account_holder_address:
+                    type: object
+                    required:
+                    - street_line_1
+                    - city
+                    - state
+                    - postcode
+                    - country
+                    properties:
+                      street_line_1:
+                        type: string
+                        example: 42 Wallaby Way
+                      city:
+                        type: string
+                        example: Dhaka
+                      state:
+                        type: string
+                        description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
+                        example: BD-13
+                      postcode:
+                        type: string
+                        example: '1212'
+                      country:
+                        type: string
+                        pattern: ^[A-Z]{3}$
+                        example: BGD
+                  receiver_meta_data:
+                    type: object
+                    required:
+                    - transaction_purpose_id
+                    - relationship
+                    - nationality
+                    properties:
+                      nationality:
+                        type: string
+                        pattern: ^[A-Z]{3}$
+                        example: AUS
+                      transaction_purpose_id:
+                        type: integer
+                        example: 1
+                      transaction_purpose_remarks:
+                        type: string
+                        nullable: true
+                        example: null
+                      occupation_id:
+                        type: integer
+                        example: 5
+                      occupation_remarks:
+                        type: string
+                        example: Software Engineer
+                      relationship:
+                        type: string
+                        enum:
+                        - EMPLOYEE
+                        - FREELANCER
+                        - GIG_WORKER
+                        - AFFILIATE
+                        - CUSTOMER
+                        - FAMILY_MEMBER
+                        - FRIEND
+                        - SELF
+                        - OTHER
+                        - SUPPLIER
+                        - VENDOR
+                        - SERVICE_PROVIDER
+                        - MERCHANT
+                        - CONTRACTOR
+                        - SUBSIDIARY
+                        - PARENT_COMPANY
+                        - AFFILIATE_BUSINESS
+                        - BANK_ACCOUNT
+                        - BROKER
+                        - EXCHANGE
+                        - WALLET
+                        example: FAMILY_MEMBER
+                      relationship_remarks:
+                        type: string
+                        example: Family & Friends
+                      govt_id_number:
+                        type: string
+                        example: JG1121316A
+                      govt_id_issue_date:
+                        type: string
+                        format: date
+                        example: '2024-12-30'
+                      govt_id_expire_date:
+                        type: string
+                        format: date
+                        example: '2027-12-30'
+                  developer_fee:
+                    type: object
+                    required:
+                    - fixed
+                    - percentage
+                    properties:
+                      fixed:
+                        type: number
+                        example: 0.02
+                      percentage:
+                        type: number
+                        example: 0.01
+              - oneOf:
+                - title: Bank Account
+                  type: object
+                  required:
+                  - bank_account
+                  - bank_address
+                  - bank_routing
+                  - deposit_instruction
+                  - refund_instruction
+                  properties:
+                    bank_account:
+                      type: object
+                      required:
+                      - bank_name
+                      - number
+                      - scheme
+                      - type
+                      properties:
+                        bank_name:
+                          type: string
+                          example: Commonwealth Bank of Australia
+                        number:
+                          type: string
+                          example: '1234572211'
+                        scheme:
+                          type: string
+                          enum:
+                          - LOCAL
+                          - SWIFT
+                          example: LOCAL
+                        type:
+                          type: string
+                          enum:
+                          - CHECKING
+                          - SAVINGS
+                          - CURRENT
+                          example: SAVINGS
+                    bank_address:
+                      type: object
+                      required:
+                      - street_line_1
+                      - city
+                      - state
+                      - postcode
+                      - country
+                      properties:
+                        street_line_1:
+                          type: string
+                          example: Ground Floor Tower 1, 201 Sussex Street
+                        city:
+                          type: string
+                          example: Dhaka
+                        state:
+                          type: string
+                          description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
+                          example: BD-13
+                        postcode:
+                          type: string
+                          example: '1212'
+                        country:
+                          type: string
+                          pattern: ^[A-Z]{3}$
+                          example: BGD
+                    bank_routing:
+                      type: array
+                      description: For country-specific routing validation rules, see [Bank Account and Routing Validation Rules](https://developer.fin.com/bank-account-and-routing-validation-rules).
+                      items:
+                        type: object
+                        required:
+                        - scheme
+                        - number
+                        properties:
+                          scheme:
+                            type: string
+                            enum:
+                            - ACH
+                            - BANK_CODE
+                            - BANK_IDENTIFIER
+                            - BRANCH_CODE
+                            - BRANCH_IDENTIFIER
+                            - BSB
+                            - IBAN
+                            - IFSC
+                            - SWIFT
+                            - TRANSIT_NUMBER
+                            - WIRE
+                            example: SWIFT
+                          number:
+                            oneOf:
+                            - type: string
+                            - type: integer
+                            example: CLNOUS66BRX
+                    deposit_instruction:
+                      type: object
+                      required:
+                      - currency
+                      - rail
+                      properties:
+                        currency:
+                          type: string
+                          enum:
+                          - USDC
+                          example: USDC
+                        rail:
+                          type: string
+                          enum:
+                          - POLYGON
+                          example: POLYGON
+                    refund_instruction:
+                      type: object
+                      required:
+                      - wallet_address
+                      - currency
+                      - rail
+                      properties:
+                        wallet_address:
+                          type: string
+                          example: '0x1b577931C1cC2765024bFbafad97bCe14FF2e87F'
+                        currency:
+                          type: string
+                          enum:
+                          - USDC
+                          example: USDC
+                        rail:
+                          type: string
+                          enum:
+                          - POLYGON
+                          example: POLYGON
+                    settlement_config:
+                      type: object
+                      properties:
+                        auto_settlement:
+                          type: boolean
+                          example: true
+                - title: E Wallet
+                  type: object
+                  required:
+                  - e_wallet
+                  - deposit_instruction
+                  - refund_instruction
+                  properties:
+                    e_wallet:
+                      type: object
+                      required:
+                      - scheme
+                      - number
+                      properties:
+                        scheme:
+                          type: string
+                          example: BKASH
+                        number:
+                          type: string
+                          example: '+8801688502814'
+                    deposit_instruction:
+                      type: object
+                      required:
+                      - currency
+                      - rail
+                      properties:
+                        currency:
+                          type: string
+                          enum:
+                          - USDC
+                          example: USDC
+                        rail:
+                          type: string
+                          enum:
+                          - POLYGON
+                          example: POLYGON
+                    refund_instruction:
+                      type: object
+                      required:
+                      - wallet_address
+                      - currency
+                      - rail
+                      properties:
+                        wallet_address:
+                          type: string
+                          example: '0x1b577931C1cC2765024bFbafad97bCe14FF2e87F'
+                        currency:
+                          type: string
+                          enum:
+                          - USDC
+                          example: USDC
+                        rail:
+                          type: string
+                          enum:
+                          - POLYGON
+                          example: POLYGON
+                    settlement_config:
+                      type: object
+                      properties:
+                        auto_settlement:
+                          type: boolean
+                          example: true
+                - title: External Crypto Wallet
+                  type: object
+                  required:
+                  - destination_wallet
+                  properties:
+                    destination_wallet:
+                      type: object
+                      required:
+                      - address
+                      - rail
+                      - currency
+                      properties:
+                        address:
+                          type: string
+                          description: On-chain wallet address of the recipient.
+                          example: '0xD2Ba7d0DaBd36498df5906fC7B054Fa9EfA9843E'
+                        rail:
+                          type: string
+                          enum:
+                          - POLYGON
+                          - ETHEREUM
+                          - SOLANA
+                          description: Blockchain network for the destination wallet. Supported values are POLYGON, ETHEREUM, and SOLANA.
+                          example: POLYGON
+                        currency:
+                          type: string
+                          enum:
+                          - USDC
+                          description: Token to be sent to the destination wallet. Currently only USDC is supported.
+                          example: USDC
+            examples:
+              Bank / Ewallet:
+                summary: Bank or e-wallet beneficiary
+                value:
+                  customer_id: 6fa1ccd4-ffbd-4b20-a113-ccc286b35443
+                  country: BGD
+                  currency: BDT
+                  counter_party: FIRST_PARTY
+                  account_holder:
+                    type: INDIVIDUAL
+                    first_name: John
+                    last_name: Doe
+                    email: john.doe@example.com
+                    phone: '+8801912244626'
+                  bank_account:
+                    bank_name: Commonwealth Bank of Australia
+                    number: '1234572211'
+                    scheme: LOCAL
+                    type: SAVINGS
+                  bank_address:
+                    street_line_1: Ground Floor Tower 1, 201 Sussex Street
+                    city: Dhaka
+                    state: BD-13
+                    postcode: '1212'
+                    country: BGD
+                  account_holder_address:
+                    street_line_1: 42 Wallaby Way
+                    city: Dhaka
+                    state: BD-13
+                    postcode: '1212'
+                    country: BGD
+                  receiver_meta_data:
+                    nationality: AUS
+                    transaction_purpose_id: 1
+                    occupation_id: 5
+                    relationship: FAMILY_MEMBER
+                    relationship_remarks: Family & Friends
+                  bank_routing:
+                  - scheme: SWIFT
+                    number: CLNOUS66BRX
+                  - scheme: BANK_IDENTIFIER
+                    number: 160
+                  - scheme: BRANCH_IDENTIFIER
+                    number: 8
+                  developer_fee:
+                    fixed: 0.02
+                    percentage: 0.01
+                  deposit_instruction:
+                    currency: USDC
+                    rail: POLYGON
+                  refund_instruction:
+                    wallet_address: '0x1b577931C1cC2765024bFbafad97bCe14FF2e87F'
+                    currency: USDC
+                    rail: POLYGON
+                  settlement_config:
+                    auto_settlement: true
+              External Crypto Wallet:
+                summary: External crypto wallet beneficiary
+                value:
+                  customer_id: '{{customer_id}}'
+                  counter_party: THIRD_PARTY
+                  currency: USDC
+                  country: BGD
+                  account_holder:
+                    type: INDIVIDUAL
+                    first_name: Daphne
+                    last_name: Elliot
+                    email: daphneelliot@email.com
+                    phone: '+8801646767354'
+                  account_holder_address:
+                    street_line_1: 42 Chamelibag Shantinagar
+                    city: Dhaka
+                    state: BD-13
+                    postcode: '1217'
+                    country: BGD
+                  destination_wallet:
+                    address: '0xD2Ba7d0DaBd36498df5906fC7B054Fa9EfA9843E'
+                    rail: POLYGON
+                    currency: USDC
+                  developer_fee:
+                    fixed: 0
+                    percentage: 0
+                  receiver_meta_data:
+                    nationality: BGD
+                    transaction_purpose_id: 7
+                    transaction_purpose_remarks: POLYGON USDC test
+                    occupation_id: 8
+                    relationship: FAMILY_MEMBER
+                    relationship_remarks: Family and Friends
+      responses:
+        '200':
+          description: Beneficiary created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      beneficiary_id:
+                        type: string
+                        format: uuid
+                        example: 0254b433-e47d-412e-844b-b735c4bbba74
+              examples:
+                OK:
+                  summary: OK
+                  value:
+                    data:
+                      beneficiary_id: 0254b433-e47d-412e-844b-b735c4bbba74
+        '400':
+          description: Bad Request - Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                  message:
+                    type: string
+                    example: Validation failed!
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '409':
+          description: Conflict - A beneficiary with the same account details already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: A beneficiary with the same account details already exists.
+                  error:
+                    type: object
+                    properties:
+                      beneficiary_id:
+                        type: string
+                        format: uuid
+                        example: 0254b433-e47d-412e-844b-b735c4bbba74
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v2/beneficiaries:
+    post:
+      summary: Create Beneficiary
+      description: Create a new beneficiary account for payments and transfers
+      x-mint:
+        content: "<Warning>\n  This endpoint was deprecated on May 20, 2026. Use [Create Beneficiary V3](https://developer.fin.com/api-reference/beneficiaries/create-beneficiary-v3) instead.\n</Warning>\n\n## Rules\n\n- Beneficiary creation requires the customer to be in the `APPROVED` status.\n- Two beneficiaries with the same destination are not allowed.\n\n## De-Duplication Logic\n\nFor _bank accounts_, the system checks: `bank_account.scheme`, `bank_account.number`, `bank_routing.scheme`, `bank_routing.number`.\nFor _e-wallets_: `e_wallet.scheme`, `e_wallet.number`.\n\n## Country-Specific Validation\n\n### GBR (United Kingdom)\n- **Bank account number**: Must match `^[0-9]{4,9}$` for both `LOCAL` and `SWIFT` schemes.\n"
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - type: object
+                required:
+                - customer_id
+                - country
+                - currency
+                - account_holder
+                - account_holder_address
+                - receiver_meta_data
+                - developer_fee
+                - deposit_instruction
+                - refund_instruction
+                properties:
+                  customer_id:
+                    type: string
+                    example: cust_123456
+                  country:
+                    type: string
+                    example: USA
+                    pattern: ^[A-Z]{3}$
+                  currency:
+                    type: string
+                    example: USD
+                  counter_party:
+                    type: string
+                    enum:
+                    - FIRST_PARTY
+                    - THIRD_PARTY
+                    description: Indicates whether the beneficiary is a first-party or third-party account. Optional.
+                    example: FIRST_PARTY
+                  account_holder:
+                    oneOf:
+                    - title: Individual
+                      type: object
+                      required:
+                      - type
+                      - first_name
+                      - last_name
+                      - email
+                      - phone
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - INDIVIDUAL
+                        first_name:
+                          type: string
+                          example: John
+                        last_name:
+                          type: string
+                          example: Doe
+                        email:
+                          type: string
+                          format: email
+                          example: john.doe@example.com
+                        phone:
+                          type: string
+                          example: '+1234567890'
+                    - title: Business
+                      type: object
+                      required:
+                      - type
+                      - business_name
+                      - email
+                      - phone
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - BUSINESS
+                        business_name:
+                          type: string
+                          example: Acme Corp
+                        email:
+                          type: string
+                          format: email
+                          example: contact@acmecorp.com
+                        phone:
+                          type: string
+                          example: '+1234567890'
+                  account_holder_address:
+                    type: object
+                    required:
+                    - street_line_1
+                    - city
+                    - state
+                    - postcode
+                    - country
+                    properties:
+                      street_line_1:
+                        type: string
+                        example: 456 Main Street
+                      street_line_2:
+                        type: string
+                        example: Apt 5B
+                      city:
+                        type: string
+                        example: Brooklyn
+                      state:
+                        type: string
+                        description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
+                        example: US-NY
+                      postcode:
+                        type: string
+                        example: '11201'
+                      country:
+                        type: string
+                        example: USA
+                        pattern: ^[A-Z]{3}$
+                  receiver_meta_data:
+                    type: object
+                    required:
+                    - transaction_purpose_id
+                    - occupation_remarks
+                    - relationship
+                    - nationality
+                    properties:
+                      transaction_purpose_id:
+                        type: integer
+                        example: 1
+                      transaction_purpose_remarks:
+                        type: string
+                        example: Monthly salary payment
+                      occupation_id:
+                        type: integer
+                        example: 5
+                      occupation_remarks:
+                        type: string
+                        example: Software Engineer
+                      relationship:
+                        type: string
+                        enum:
+                        - EMPLOYEE
+                        - FREELANCER
+                        - GIG_WORKER
+                        - AFFILIATE
+                        - CUSTOMER
+                        - FAMILY_MEMBER
+                        - FRIEND
+                        - SELF
+                        - OTHER
+                        - SUPPLIER
+                        - VENDOR
+                        - SERVICE_PROVIDER
+                        - MERCHANT
+                        - CONTRACTOR
+                        - SUBSIDIARY
+                        - PARENT_COMPANY
+                        - AFFILIATE_BUSINESS
+                        - BANK_ACCOUNT
+                        - BROKER
+                        - EXCHANGE
+                        - WALLET
+                      relationship_remarks:
+                        type: string
+                        example: Long-term contractor
+                      nationality:
+                        type: string
+                        example: USA
+                        pattern: ^[A-Z]{3}$
+                      govt_id_number:
+                        type: string
+                        example: JG1121316A
+                      govt_id_issue_date:
+                        type: string
+                        format: date
+                        example: '2024-12-30'
+                      govt_id_expire_date:
+                        type: string
+                        format: date
+                        example: '2027-12-30'
+                  developer_fee:
+                    type: object
+                    required:
+                    - fixed
+                    - percentage
+                    properties:
+                      fixed:
+                        type: number
+                        example: 5
+                      percentage:
+                        type: number
+                        example: 2.5
+                  deposit_instruction:
+                    type: object
+                    required:
+                    - currency
+                    - rail
+                    properties:
+                      currency:
+                        type: string
+                        enum:
+                        - USDC
+                      rail:
+                        type: string
+                        enum:
+                        - POLYGON
+                  refund_instruction:
+                    type: object
+                    required:
+                    - wallet_address
+                    - currency
+                    - rail
+                    properties:
+                      wallet_address:
+                        type: string
+                        example: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb'
+                      currency:
+                        type: string
+                        enum:
+                        - USDC
+                      rail:
+                        type: string
+                        enum:
+                        - POLYGON
+                  settlement_config:
+                    type: object
+                    required:
+                    - auto_settlement
+                    properties:
+                      auto_settlement:
+                        type: boolean
+                        example: true
+              - oneOf:
+                - title: Bank Account
+                  type: object
+                  required:
+                  - bank_account
+                  - bank_routing
+                  - bank_address
+                  properties:
+                    bank_account:
+                      type: object
+                      required:
+                      - bank_name
+                      - number
+                      - scheme
+                      - type
+                      properties:
+                        bank_name:
+                          type: string
+                          example: Chase Bank
+                        number:
+                          type: string
+                          example: '1234567890'
+                        scheme:
+                          type: string
+                          enum:
+                          - LOCAL
+                          - SWIFT
+                        type:
+                          type: string
+                          enum:
+                          - CHECKING
+                          - SAVINGS
+                          - CURRENT
+                    bank_routing:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - scheme
+                        - number
+                        properties:
+                          scheme:
+                            type: string
+                            enum:
+                            - ACH
+                            - BANK_CODE
+                            - BANK_IDENTIFIER
+                            - BRANCH_CODE
+                            - BRANCH_IDENTIFIER
+                            - BSB
+                            - IBAN
+                            - IFSC
+                            - SWIFT
+                            - TRANSIT_NUMBER
+                            - WIRE
+                          number:
+                            oneOf:
+                            - type: string
+                            - type: integer
+                            example: '021000021'
+                    bank_address:
+                      type: object
+                      required:
+                      - street_line_1
+                      - city
+                      - state
+                      - postcode
+                      - country
+                      properties:
+                        street_line_1:
+                          type: string
+                          example: 123 Bank Street
+                        street_line_2:
+                          type: string
+                          example: Suite 100
+                        city:
+                          type: string
+                          example: New York
+                        state:
+                          type: string
+                          description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
+                          example: US-NY
+                        postcode:
+                          type: string
+                          example: '10001'
+                        country:
+                          type: string
+                          example: USA
+                          pattern: ^[A-Z]{3}$
+                - title: E Wallet
+                  type: object
+                  required:
+                  - e_wallet
+                  properties:
+                    e_wallet:
+                      type: object
+                      required:
+                      - scheme
+                      - number
+                      properties:
+                        scheme:
+                          type: string
+                          example: BKASH
+                        number:
+                          type: string
+                          example: '+8801688502814'
+      responses:
+        '200':
+          description: Beneficiary created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: ben_123456
+                      status:
+                        type: string
+                        example: active
+        '400':
+          description: Bad Request - Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                  message:
+                    type: string
+                    example: Validation failed!
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '409':
+          description: Conflict - A beneficiary with the same account details already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: A beneficiary with the same account details already exists.
+                  error:
+                    type: object
+                    properties:
+                      beneficiary_id:
+                        type: string
+                        format: uuid
+                        example: d9868585-78ba-4723-b0af-8f5b1cc5f9e2
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/customers/{customer_id}/beneficiaries:
+    get:
+      summary: List Beneficiaries For a Customer
+      description: Retrieve all beneficiaries associated with a specific customer
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: customer_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: ad41fac1-e406-445b-aea4-69381c39ca5d
+      responses:
+        '200':
+          description: Beneficiaries list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          example: f653e109-6c62-4aa4-869c-418c874e0a6c
+                        customer_id:
+                          type: string
+                          format: uuid
+                          example: ad41fac1-e406-445b-aea4-69381c39ca5d
+                        active:
+                          type: boolean
+                          example: true
+                        country_code:
+                          type: string
+                          example: AUS
+                        business_name:
+                          type: string
+                          example: Investment bank
+                        type:
+                          type: string
+                          enum:
+                          - INDIVIDUAL
+                          - BUSINESS
+                          example: BUSINESS
+                        nationality:
+                          type: string
+                          example: AUS
+                        email:
+                          type: string
+                          format: email
+                          example: michael.oconnor@example.com
+                        phone:
+                          type: string
+                          example: '+61412345678'
+                        method:
+                          type: string
+                          enum:
+                          - BANK
+                          - E_WALLET
+                          example: BANK
+                        currency:
+                          type: string
+                          example: AUD
+                        account_number:
+                          type: string
+                          example: '*****6789'
+                        refund_wallet_address:
+                          type: string
+                          example: '0x1b577931C1cC2765024bFbafad97bCe14FF2e87F'
+                        developer_fee_fixed:
+                          type: number
+                          example: 1.25
+                        developer_fee_percentage:
+                          type: number
+                          example: 0.45
+                        liquidation_address:
+                          type: string
+                          example: '0x185571d849dcfefff449bd1e9f847b1322f22834'
+                        auto_settlement:
+                          type: boolean
+                          example: false
+                        source_currency:
+                          type: string
+                          example: USDC
+                        source_chain:
+                          type: string
+                          example: POLYGON
+                        created_at:
+                          type: string
+                          format: date-time
+                          example: '2025-12-09T14:56:47.916263Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          example: '2025-12-09T14:56:49.1308Z'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+  /v2/beneficiaries/details:
+    get:
+      summary: Fetch Beneficiary Details v2
+      description: Retrieve detailed information for a specific beneficiary. Returns structured data for bank accounts, e-wallets, and external crypto wallet destinations.
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: customer_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 31526861-ebe0-4f84-a7b2-2c3ec1cc47f9
+      - name: beneficiary_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 4c0c63db-580f-4e16-af24-e84ea8937dd8
+      responses:
+        '200':
+          description: Beneficiary details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        example: 4c0c63db-580f-4e16-af24-e84ea8937dd8
+                      customer_id:
+                        type: string
+                        format: uuid
+                        example: 31526861-ebe0-4f84-a7b2-2c3ec1cc47f9
+                      active:
+                        type: boolean
+                        example: true
+                      status:
+                        type: string
+                        enum:
+                        - INITIATED
+                        - PROCESSING
+                        - ACTIVE
+                        - INACTIVE
+                        - REJECTED
+                        example: ACTIVE
+                      counter_party:
+                        type: string
+                        enum:
+                        - FIRST_PARTY
+                        - THIRD_PARTY
+                        example: FIRST_PARTY
+                      currency:
+                        type: string
+                        example: AUD
+                      country:
+                        type: string
+                        example: AUS
+                      account_holder:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - INDIVIDUAL
+                            - BUSINESS
+                            example: INDIVIDUAL
+                          first_name:
+                            type: string
+                            example: John
+                          last_name:
+                            type: string
+                            example: Doe
+                          business_name:
+                            type: string
+                          email:
+                            type: string
+                            format: email
+                            example: john.doe@example.com
+                          phone:
+                            type: string
+                            example: '+61412345678'
+                      bank_account:
+                        type: object
+                        properties:
+                          bank_name:
+                            type: string
+                            example: Commonwealth Bank of Australia
+                          number:
+                            type: string
+                            example: '123456782'
+                          scheme:
+                            type: string
+                            example: LOCAL
+                          type:
+                            type: string
+                            enum:
+                            - BANK
+                            - E_WALLET
+                            example: BANK
+                      bank_routing:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            scheme:
+                              type: string
+                              example: BANK_IDENTIFIER
+                            name:
+                              type: string
+                              example: AUS BANK
+                      receiver_meta_data:
+                        type: object
+                        properties:
+                          transaction_purpose_id:
+                            type: integer
+                            example: 1
+                          transaction_purpose_remarks:
+                            type: string
+                            example: Send to Family & Friends
+                          occupation_id:
+                            type: integer
+                            example: 504
+                          occupation_remarks:
+                            type: string
+                            example: Software quality assurance analyst and tester
+                          relationship:
+                            type: string
+                            example: FAMILY_MEMBER
+                          relationship_remarks:
+                            type: string
+                            example: Family & Friends
+                          nationality:
+                            type: string
+                            example: AUS
+                      bank_address:
+                        type: object
+                        properties:
+                          street_line_1:
+                            type: string
+                            example: Ground Floor Tower 1, 201 Sussex Street
+                          city:
+                            type: string
+                            example: Sydney
+                          state:
+                            type: string
+                            description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
+                            example: AU-SA
+                          postcode:
+                            type: string
+                            example: '2000'
+                          country:
+                            type: string
+                            example: AUS
+                      account_holder_address:
+                        type: object
+                        properties:
+                          street_line_1:
+                            type: string
+                            example: 42 Wallaby Way
+                          city:
+                            type: string
+                            example: Queensland
+                          state:
+                            type: string
+                            description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
+                            example: AU-SA
+                          postcode:
+                            type: string
+                            example: '2000'
+                          country:
+                            type: string
+                            example: AUS
+                      developer_fee:
+                        type: object
+                        properties:
+                          fixed:
+                            type: number
+                            example: 1.25
+                          percentage:
+                            type: number
+                            example: 0.45
+                      deposit_instruction:
+                        type: object
+                        properties:
+                          currency:
+                            type: string
+                            example: USDC
+                          rail:
+                            type: string
+                            example: POLYGON
+                          liquidation_address:
+                            type: string
+                            example: '0xc0470baa27e383a570226298f598fac0612f1143'
+                      refund_instruction:
+                        type: object
+                        properties:
+                          wallet_address:
+                            type: string
+                            example: '0x1b577931C1cC2765024bFbafad97bCe14FF2e87F'
+                          currency:
+                            type: string
+                            example: USDC
+                          rail:
+                            type: string
+                            example: POLYGON
+                      e_wallet:
+                        type: object
+                        nullable: true
+                        properties:
+                          scheme:
+                            type: string
+                            example: BKASH
+                          number:
+                            type: string
+                            example: '+8801688502814'
+                      settlement_config:
+                        type: object
+                        properties:
+                          auto_settlement:
+                            type: boolean
+                            example: false
+                      destination_wallet:
+                        type: object
+                        nullable: true
+                        properties:
+                          address:
+                            type: string
+                            example: '0xD2Ba7d0DaBd36498df5906fC7B054Fa9EfA9843E'
+                          currency:
+                            type: string
+                            example: USDC
+                          rail:
+                            type: string
+                            example: POLYGON
+                      created_at:
+                        type: string
+                        format: date-time
+                        example: '2025-12-31T14:29:07.100041Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        example: '2025-12-31T14:29:08.675022Z'
+              examples:
+                Bank / Ewallet:
+                  summary: Bank or e-wallet beneficiary
+                  value:
+                    data:
+                      id: 4c0c63db-580f-4e16-af24-e84ea8937dd8
+                      customer_id: 31526861-ebe0-4f84-a7b2-2c3ec1cc47f9
+                      active: true
+                      status: ACTIVE
+                      counter_party: FIRST_PARTY
+                      currency: AUD
+                      country: AUS
+                      account_holder:
+                        type: INDIVIDUAL
+                        first_name: John
+                        last_name: Doe
+                        email: john.doe@example.com
+                        phone: '+61412345678'
+                      bank_account:
+                        bank_name: Commonwealth Bank of Australia
+                        number: '123456782'
+                        scheme: LOCAL
+                        type: BANK
+                      bank_routing:
+                      - scheme: BANK_IDENTIFIER
+                        name: AUS BANK
+                      receiver_meta_data:
+                        transaction_purpose_id: 1
+                        transaction_purpose_remarks: Send to Family & Friends
+                        occupation_id: 504
+                        occupation_remarks: Software quality assurance analyst and tester
+                        relationship: FAMILY_MEMBER
+                        relationship_remarks: Family & Friends
+                        nationality: AUS
+                      bank_address:
+                        street_line_1: Ground Floor Tower 1, 201 Sussex Street
+                        city: Sydney
+                        state: AU-SA
+                        postcode: '2000'
+                        country: AUS
+                      account_holder_address:
+                        street_line_1: 42 Wallaby Way
+                        city: Queensland
+                        state: AU-SA
+                        postcode: '2000'
+                        country: AUS
+                      developer_fee:
+                        fixed: 1.25
+                        percentage: 0.45
+                      deposit_instruction:
+                        currency: USDC
+                        rail: POLYGON
+                        liquidation_address: '0xc0470baa27e383a570226298f598fac0612f1143'
+                      refund_instruction:
+                        wallet_address: '0x1b577931C1cC2765024bFbafad97bCe14FF2e87F'
+                        currency: USDC
+                        rail: POLYGON
+                      e_wallet: null
+                      settlement_config:
+                        auto_settlement: false
+                      destination_wallet: null
+                      created_at: '2025-12-31T14:29:07.100041Z'
+                      updated_at: '2025-12-31T14:29:08.675022Z'
+                External Crypto Wallet:
+                  summary: External crypto wallet beneficiary
+                  value:
+                    data:
+                      id: 6af8d598-36a5-477d-9320-d7c5ba309107
+                      customer_id: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                      active: true
+                      status: ACTIVE
+                      counter_party: THIRD_PARTY
+                      currency: USDC
+                      country: BGD
+                      account_holder:
+                        type: INDIVIDUAL
+                        first_name: Daphne
+                        last_name: Elliot
+                        email: abc.cdc@gmail.com
+                        phone: '+8801912244626'
+                      bank_account:
+                        bank_name: ''
+                        number: ''
+                        scheme: ''
+                        type: ''
+                      bank_routing: null
+                      receiver_meta_data:
+                        transaction_purpose_id: 7
+                        transaction_purpose_remarks: Send to Family and Friends
+                        occupation_id: 8
+                        relationship: FAMILY_MEMBER
+                        relationship_remarks: Family and Friends
+                        nationality: BGD
+                      bank_address: null
+                      account_holder_address:
+                        street_line_1: 42 Dhanmondi Road
+                        city: Dhaka
+                        state: BD-13
+                        postcode: '1212'
+                        country: BGD
+                      developer_fee:
+                        fixed: 0.01
+                        percentage: 0.01
+                      deposit_instruction:
+                        currency: ''
+                        rail: ''
+                        liquidation_address: ''
+                      refund_instruction:
+                        wallet_address: ''
+                        currency: ''
+                        rail: ''
+                      e_wallet: null
+                      settlement_config:
+                        auto_settlement: false
+                      destination_wallet:
+                        address: '0xD2Ba7d0DaBd36498df5906fC7B054Fa9EfA9843E'
+                        currency: USDC
+                        rail: POLYGON
+                      created_at: '2026-04-25T15:49:24.56855Z'
+                      updated_at: '2026-04-25T15:49:24.56855Z'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /v1/beneficiaries/details:
+    get:
+      summary: Fetch Beneficiary Details v1
+      description: Retrieve detailed information for a specific beneficiary
+      x-mint:
+        content: "<Warning>\n  This endpoint was deprecated on May 20, 2026. Use [Fetch Beneficiary Details V2](https://developer.fin.com/api-reference/beneficiaries/fetch-beneficiary-details-v2) instead.\n</Warning>\n"
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: customer_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: ad41fac1-e406-445b-aea4-69381c39ca5d
+      - name: beneficiary_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: f653e109-6c62-4aa4-869c-418c874e0a6c
+      responses:
+        '200':
+          description: Beneficiary details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        example: f653e109-6c62-4aa4-869c-418c874e0a6c
+                      customer_id:
+                        type: string
+                        format: uuid
+                        example: ad41fac1-e406-445b-aea4-69381c39ca5d
+                      active:
+                        type: boolean
+                        example: true
+                      country_code:
+                        type: string
+                        example: AUS
+                      first_name:
+                        type: string
+                        example: John
+                      last_name:
+                        type: string
+                        example: Doe
+                      business_name:
+                        type: string
+                        example: Investment bank
+                      type:
+                        type: string
+                        enum:
+                        - INDIVIDUAL
+                        - BUSINESS
+                        example: INDIVIDUAL
+                      nationality:
+                        type: string
+                        example: AUS
+                      email:
+                        type: string
+                        format: email
+                        example: john.doe@example.com
+                      phone:
+                        type: string
+                        example: '+61412345678'
+                      method:
+                        type: string
+                        enum:
+                        - BANK
+                        - E_WALLET
+                        example: BANK
+                      currency:
+                        type: string
+                        example: AUD
+                      account_number:
+                        type: string
+                        example: '*****6789'
+                      refund_wallet_address:
+                        type: string
+                        example: '0x1b577931C1cC2765024bFbafad97bCe14FF2e87F'
+                      developer_fee_fixed:
+                        type: number
+                        example: 1.25
+                      developer_fee_percentage:
+                        type: number
+                        example: 0.45
+                      liquidation_address:
+                        type: string
+                        example: '0x185571d849dcfefff449bd1e9f847b1322f22834'
+                      auto_settlement:
+                        type: boolean
+                        example: false
+                      source_currency:
+                        type: string
+                        example: USDC
+                      source_chain:
+                        type: string
+                        example: POLYGON
+                      created_at:
+                        type: string
+                        format: date-time
+                        example: '2025-12-09T14:56:47.916263Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        example: '2025-12-09T14:56:49.1308Z'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /v1/beneficiaries:
+    patch:
+      summary: Update Beneficiary Active Status
+      description: Update the active status of a beneficiary to enable or disable it
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - beneficiary_id
+              - active
+              properties:
+                beneficiary_id:
+                  type: string
+                  format: uuid
+                  example: f653e109-6c62-4aa4-869c-418c874e0a6c
+                active:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: Beneficiary updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Beneficiary updated successfully
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/beneficiaries/{beneficiary_id}/documents:
+    post:
+      summary: Upload Beneficiary Documents
+      description: Upload one or more documents for a specific beneficiary using multipart/form-data
+      x-mint:
+        content: '## Allowed File Types
+
+
+          - `PDF`
+
+          - `JPG` / `JPEG`
+
+          - `PNG`
+
+          '
+      tags:
+      - Beneficiaries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: beneficiary_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                doc1:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Documents uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      files:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties:
+                            type: string
+                        example:
+                        - invoice1: /wKbvfH5E_Invoice.pdf
+                        - invoice2: /XUOdWacK_Invoice.jpg
+components:
+  responses:
+    ValidationError:
+      description: Failed due to a formatting error.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  additionalProperties:
+                    type: string
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource not found
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint

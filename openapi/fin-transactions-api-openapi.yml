@@ -1,0 +1,1817 @@
+openapi: 3.1.0
+info:
+  title: Fin.com Authentication Transactions API
+  version: 1.0.0
+  description: A simple API specificationFo
+servers:
+- url: https://sandbox.api.fin.com
+  description: Sandbox server
+- url: https://api.fin.com
+  description: Production server
+tags:
+- name: Transactions
+  description: Transaction history and management for beneficiaries
+paths:
+  /v2/transactions:
+    get:
+      summary: List Customer Transactions
+      description: Returns a paginated list of transactions for a customer, optionally filtered by transaction type.
+      x-mint:
+        content: '```
+
+          GET /v2/transactions?customer_id=765d498e-a267-4154-9d2f-9e411a0b50dd&type=CRYPTO_WITHDRAWAL&current_page=1&per_page=10
+
+          ```
+
+          '
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: customer_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: The customer ID to fetch transactions for.
+        example: 765d498e-a267-4154-9d2f-9e411a0b50dd
+      - name: type
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - ONRAMP
+          - OFFRAMP
+          - CRYPTO_WITHDRAWAL
+          - CRYPTO_DEPOSIT
+        description: Filter transactions by type.
+        example: CRYPTO_WITHDRAWAL
+      - $ref: '#/components/parameters/CurrentPageParam'
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        description: Number of results per page. Must be between 1 and 100.
+        example: 10
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      pagination:
+                        type: object
+                        properties:
+                          current_page:
+                            type: integer
+                            example: 1
+                          per_page:
+                            type: integer
+                            example: 10
+                          total_page:
+                            type: integer
+                            example: 1
+                          total:
+                            type: integer
+                            example: 2
+                      transactions:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              example: 8c92e9dd-6456-4aee-a441-1861144f1d8b
+                            transaction_type:
+                              type: string
+                              enum:
+                              - ONRAMP
+                              - OFFRAMP
+                              - CRYPTO_WITHDRAWAL
+                              - CRYPTO_DEPOSIT
+                              example: CRYPTO_WITHDRAWAL
+                            customer_id:
+                              type: string
+                              format: uuid
+                              example: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                            beneficiary_id:
+                              type: string
+                              format: uuid
+                              example: 6af8d598-36a5-477d-9320-d7c5ba309107
+                            hash:
+                              type: string
+                              description: On-chain transaction hash.
+                              example: '0xd2a3d65ce04c24c7af2b4ab86ac8c3ca525d010c600733bb062be74ee3899ec9'
+                            status:
+                              type: string
+                              example: COMPLETED
+                            source_currency:
+                              type: string
+                              example: USDC
+                            destination_currency:
+                              type: string
+                              example: USDC
+                            source_amount:
+                              type: number
+                              example: 5
+                            destination_amount:
+                              type: number
+                              example: 4.98535
+                            total_fee:
+                              type: number
+                              example: 0.014649
+                            created_at:
+                              type: string
+                              format: date-time
+                              example: '2026-04-29T09:56:14.906031Z'
+                            updated_at:
+                              type: string
+                              format: date-time
+                              example: '2026-04-29T09:56:58.631047Z'
+              example:
+                data:
+                  pagination:
+                    current_page: 1
+                    per_page: 10
+                    total_page: 1
+                    total: 2
+                  transactions:
+                  - id: 8c92e9dd-6456-4aee-a441-1861144f1d8b
+                    transaction_type: CRYPTO_WITHDRAWAL
+                    customer_id: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                    beneficiary_id: 6af8d598-36a5-477d-9320-d7c5ba309107
+                    hash: '0xd2a3d65ce04c24c7af2b4ab86ac8c3ca525d010c600733bb062be74ee3899ec9'
+                    status: COMPLETED
+                    source_currency: USDC
+                    destination_currency: USDC
+                    source_amount: 5
+                    destination_amount: 4.98535
+                    total_fee: 0.014649
+                    created_at: '2026-04-29T09:56:14.906031Z'
+                    updated_at: '2026-04-29T09:56:58.631047Z'
+                  - id: 2b7b52cd-20df-4a03-83a0-bc6d989fd6ad
+                    transaction_type: CRYPTO_WITHDRAWAL
+                    customer_id: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                    beneficiary_id: b6a1d0c1-c202-43a8-a8c9-4d09ac5eb8f2
+                    hash: '0x03eebd78faba32e5e04b03fa0e163de557d77de7e4e25b935d992964fa0b05db'
+                    status: COMPLETED
+                    source_currency: USDC
+                    destination_currency: USDC
+                    source_amount: 5.1
+                    destination_amount: 4.996173
+                    total_fee: 0.103826
+                    created_at: '2026-04-25T20:50:34.759464Z'
+                    updated_at: '2026-04-25T20:51:22.070885Z'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    post:
+      summary: Execute Quote
+      description: Executes a quote returned from the Create Quote endpoint, initiating a crypto withdrawal to the beneficiary's external wallet.
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - quote_id
+              properties:
+                quote_id:
+                  type: string
+                  format: uuid
+                  description: The quote ID returned from the Create Quote endpoint.
+                  example: 9ba7d6db-ac78-4a41-acae-f787ee6b1f24
+            example:
+              quote_id: 9ba7d6db-ac78-4a41-acae-f787ee6b1f24
+      responses:
+        '200':
+          description: Quote executed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      transaction_id:
+                        type: string
+                        format: uuid
+                        example: 8c92e9dd-6456-4aee-a441-1861144f1d8b
+                      beneficiary_id:
+                        type: string
+                        format: uuid
+                        example: 6af8d598-36a5-477d-9320-d7c5ba309107
+                      created_at:
+                        type: string
+                        format: date-time
+                        example: '2026-04-29T09:56:14.906031567Z'
+              example:
+                data:
+                  transaction_id: 8c92e9dd-6456-4aee-a441-1861144f1d8b
+                  beneficiary_id: 6af8d598-36a5-477d-9320-d7c5ba309107
+                  created_at: '2026-04-29T09:56:14.906031567Z'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/beneficiaries/{beneficiary_id}/transactions:
+    get:
+      summary: List Beneficiary Transactions
+      description: Retrieve a paginated list of all transactions for a specific beneficiary
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: beneficiary_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      pagination:
+                        type: object
+                        properties:
+                          current_page:
+                            type: integer
+                            example: 1
+                          per_page:
+                            type: integer
+                            example: 10
+                          total_page:
+                            type: integer
+                            example: 1
+                          total:
+                            type: integer
+                            example: 1
+                      transactions:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                              example: f656afd1-7735-43b0-b630-04f0ff7158b3
+                            transaction_type:
+                              type: string
+                              example: OFFRAMP
+                            beneficiary_id:
+                              type: string
+                              format: uuid
+                            hash:
+                              type: string
+                              nullable: true
+                            transaction_ref_id:
+                              type: string
+                            from_amount:
+                              type: number
+                              example: 3
+                            payout_amount:
+                              type: number
+                              example: 4.35
+                            processing_amount:
+                              type: number
+                              example: 3
+                            status:
+                              type: string
+                              enum:
+                              - CREATED
+                              - PENDING
+                              - COMPLETED
+                              - FAILED
+                              example: COMPLETED
+                            fx_rate:
+                              type: number
+                              example: 1.45
+                            developer_fee:
+                              type: number
+                              example: 0
+                            developer_fee_percentage:
+                              type: number
+                              example: 0.45
+                            developer_fee_fixed:
+                              type: number
+                              example: 1.25
+                            from_currency:
+                              type: string
+                              example: USDC
+                            payout_currency:
+                              type: string
+                              example: AUD
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+  /v1/transactions/transfer-payout:
+    post:
+      summary: Create a Transfer
+      description: 'Initiate a transfer payout to a beneficiary.
+
+
+        **Validation Rules:**
+
+        - Minimum amount: 500 cents (5.00 in major currency units)
+
+        - Attachments array is optional, but if provided must contain at least one item
+
+        '
+      x-mint:
+        content: "<Note>\n  This endpoint can only be used with beneficiaries created with `auto_settlement` set to `true`.\n</Note>\n"
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - beneficiary_id
+              - reference_id
+              - amount
+              - remarks
+              properties:
+                beneficiary_id:
+                  type: string
+                  format: uuid
+                  example: d6ae4ea6-0482-47ab-a895-02e50ea6358b
+                reference_id:
+                  type: string
+                  example: REF-12345-ABC
+                amount:
+                  type: integer
+                  description: Amount in cents (multiply by 100). Minimum 500 cents required.
+                  example: 10000
+                  minimum: 500
+                remarks:
+                  type: string
+                  example: Monthly payment for services
+                attachments:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    required:
+                    - remark
+                    - uri
+                    properties:
+                      remark:
+                        type: string
+                        example: Invoice PDF DOC
+                      uri:
+                        type: string
+                        example: /XUOdWacK_Invoice.pdf
+      responses:
+        '200':
+          description: Transfer created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      transfer_id:
+                        type: string
+                        format: uuid
+                        example: c78dee10-7c46-4ad5-8ac8-070e39d87ff1
+                      reference_id:
+                        type: string
+                        example: REF-12345-ABC
+                      deposit_instruction:
+                        type: object
+                        properties:
+                          liquidation_address:
+                            type: string
+                            example: '0x203061afd3f3dd5f5756cec992d1d247f7668384'
+                          currency:
+                            type: string
+                            example: USDC
+                          rail:
+                            type: string
+                            example: POLYGON
+                      quotation:
+                        type: object
+                        properties:
+                          currency:
+                            type: string
+                            example: EUR
+                          to_amount:
+                            type: integer
+                            example: 108
+                          developer_fee:
+                            type: integer
+                            example: 67
+                      created_at:
+                        type: string
+                        format: date-time
+                        example: '2026-01-01T07:35:53Z'
+                      expire_at:
+                        type: string
+                        format: date-time
+                        example: '2026-01-01T07:45:53Z'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/transactions/transfer-payout/settle:
+    post:
+      summary: Settle a Transfer
+      description: Settle a previously created transfer payout
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - transfer_id
+              properties:
+                transfer_id:
+                  type: string
+                  example: 9ac6872b-8904-4ea5-beb7-d5a936ffee10
+      responses:
+        '200':
+          description: Transfer settled successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    required:
+                    - transaction_id
+                    properties:
+                      transaction_id:
+                        type: string
+                        example: 9ac6872b-8904-4ea5-beb7-d5a936ffee10
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/batch/transactions/commit:
+    post:
+      summary: Execute Batch Transfer
+      description: Execute multiple transfer payouts in a single batch operation.
+      x-mint:
+        content: "<Note>\n  This endpoint can only be used with beneficiaries created with `auto_settlement` set to `true`.\n</Note>\n\n**Amount Specification:**\n- Each transaction must include exactly one of `source_amount` or `destination_amount` (not both)\n- `source_amount`: Minimum 500 cents (e.g. 500 = $5.00)\n- Only `PREFUNDED_BALANCE` transactions are eligible for refunds if they fail\n"
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required:
+                - beneficiary_id
+                - source_currency
+                - deduct_from
+                properties:
+                  beneficiary_id:
+                    type: string
+                    format: uuid
+                    example: d6ae4ea6-0482-47ab-a895-02e50ea6358b
+                  source_amount:
+                    type: number
+                    minimum: 500
+                    description: Amount in cents (e.g. 530 = $5.30). Minimum 500 cents.
+                    example: 530
+                  destination_amount:
+                    type: number
+                    example: 62000
+                  source_currency:
+                    type: string
+                    example: USD
+                  deduct_from:
+                    type: string
+                    enum:
+                    - PREFUNDED_BALANCE
+                    - LIQUIDATION_ADDRESS
+                  remarks:
+                    type: string
+                    example: Monthly salary payment
+            examples:
+              With source amount:
+                value:
+                - beneficiary_id: d6ae4ea6-0482-47ab-a895-02e50ea6358b
+                  source_amount: 530
+                  source_currency: USD
+                  deduct_from: PREFUNDED_BALANCE
+                  remarks: Monthly salary payment
+              With destination amount:
+                value:
+                - beneficiary_id: d6ae4ea6-0482-47ab-a895-02e50ea6358b
+                  destination_amount: 62000
+                  source_currency: USD
+                  deduct_from: PREFUNDED_BALANCE
+                  remarks: Monthly salary payment
+      responses:
+        '201':
+          description: Batch created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        example: 3b1d73c0-0000-0000-0000-51aa2461f1
+              examples:
+                With source amount:
+                  value:
+                    data:
+                      id: 3b1d73c0-0000-0000-0000-51aa2461f1
+                With destination amount:
+                  value:
+                    data:
+                      id: 3b1d73c0-0000-0000-0000-51aa2461f1
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/batch/transactions/commit/{batch_id}:
+    get:
+      summary: Fetch Batch Details
+      description: Retrieve detailed information about a batch transaction including all items and their statuses
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: batch_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: ad1a0a29-5a7f-4982-98cc-3f4416724660
+      responses:
+        '200':
+          description: Batch details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    required:
+                    - batch_id
+                    - items
+                    properties:
+                      batch_id:
+                        type: string
+                        format: uuid
+                        example: ad1a0a29-5a7f-4982-98cc-3f4416724660
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                            beneficiary_id:
+                              type: string
+                              format: uuid
+                            source_amount:
+                              type: number
+                              example: 456
+                            source_currency:
+                              type: string
+                              enum:
+                              - USD
+                            deduct_from:
+                              type: string
+                              enum:
+                              - PREFUNDED_BALANCE
+                              - LIQUIDATION_ADDRESS
+                            remarks:
+                              type: string
+                            reason:
+                              type: string
+                              nullable: true
+                            status:
+                              type: string
+                              enum:
+                              - PENDING
+                              - PROCESSING
+                              - COMPLETED
+                              - FAILED
+                              - REFUNDED
+                              example: PROCESSING
+                            transaction_id:
+                              type: string
+                              format: uuid
+                            exchange_rate:
+                              type: number
+                              example: 135
+                            destination_currency:
+                              type: string
+                              example: BDT
+                            destination_amount:
+                              type: number
+                              example: 261
+                            developer_fee:
+                              type: object
+                              properties:
+                                fixed:
+                                  type: number
+                                percentage:
+                                  type: number
+                                total:
+                                  type: number
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+  /v2/transactions/quote:
+    post:
+      summary: Create Quote
+      description: Returns fee and receivable amount estimations for a crypto withdrawal from a Fin.com internal wallet to a customer's external crypto wallet.
+      x-mint:
+        content: "<Note>\n  The source wallet and destination wallet must share the same blockchain rail and currency. For example, if the source wallet is on POLYGON with USDC, the beneficiary's destination wallet must also be on POLYGON with USDC.\n</Note>\n"
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - type
+              - beneficiary_id
+              - amount
+              - source
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - CRYPTO_WITHDRAWAL
+                  description: Transaction type for the quote.
+                  example: CRYPTO_WITHDRAWAL
+                beneficiary_id:
+                  type: string
+                  format: uuid
+                  description: ID of the destination beneficiary.
+                  example: 6af8d598-36a5-477d-9320-d7c5ba309107
+                amount:
+                  type: number
+                  description: Amount to send in the source currency.
+                  example: 5
+                source:
+                  type: object
+                  required:
+                  - crypto_wallet_id
+                  properties:
+                    crypto_wallet_id:
+                      type: string
+                      format: uuid
+                      description: ID of the Fin.com internal crypto wallet to send from.
+                      example: c92dfe1d-220e-4446-a5e4-cd7d46031ba5
+            example:
+              type: CRYPTO_WITHDRAWAL
+              beneficiary_id: 6af8d598-36a5-477d-9320-d7c5ba309107
+              amount: 5
+              source:
+                crypto_wallet_id: c92dfe1d-220e-4446-a5e4-cd7d46031ba5
+      responses:
+        '200':
+          description: Quote generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      quote_id:
+                        type: string
+                        format: uuid
+                        description: Unique identifier for this quote. Use this to create a transaction.
+                        example: 9ba7d6db-ac78-4a41-acae-f787ee6b1f24
+                      expire_at:
+                        type: string
+                        format: date-time
+                        description: Timestamp at which the quote expires.
+                        example: '2026-04-29T10:09:33.524075766Z'
+                      amount:
+                        type: number
+                        description: Source amount quoted.
+                        example: 5
+                      destination_details:
+                        type: object
+                        properties:
+                          address:
+                            type: string
+                            example: '0xD2Ba7d0DaBd36498df5906fC7B054Fa9EfA9843E'
+                          currency:
+                            type: string
+                            example: USDC
+                          rail:
+                            type: string
+                            example: POLYGON
+                      quote_estimation:
+                        type: object
+                        properties:
+                          developer_fee_fixed:
+                            type: number
+                            example: 0.01
+                          developer_fee_percentage:
+                            type: number
+                            example: 0.0005
+                          network_fee:
+                            type: number
+                            example: 0.004149
+                          total_fee:
+                            type: number
+                            example: 0.014649
+                          receivable_amount:
+                            type: number
+                            example: 4.98535
+                          ata_fee_applied:
+                            type: boolean
+                            example: false
+              example:
+                data:
+                  quote_id: 9ba7d6db-ac78-4a41-acae-f787ee6b1f24
+                  expire_at: '2026-04-29T10:09:33.524075766Z'
+                  amount: 5
+                  destination_details:
+                    address: '0xD2Ba7d0DaBd36498df5906fC7B054Fa9EfA9843E'
+                    currency: USDC
+                    rail: POLYGON
+                  quote_estimation:
+                    developer_fee_fixed: 0.01
+                    developer_fee_percentage: 0.0005
+                    network_fee: 0.004149
+                    total_fee: 0.014649
+                    receivable_amount: 4.98535
+                    ata_fee_applied: false
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v2/transactions/{transaction_id}:
+    get:
+      operationId: getTransactionByIdV2
+      summary: Fetch Transaction Details V2
+      description: Returns full details for a transaction by ID, including status, amounts, fees, and settlement data. The populated fields vary based on the transaction type.
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: transaction_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 8c92e9dd-6456-4aee-a441-1861144f1d8b
+      responses:
+        '200':
+          description: Transaction details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    oneOf:
+                    - title: Onramp
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          example: 8fe1ca7c-4e6e-44c6-8706-87ac74c22554
+                        transaction_type:
+                          type: string
+                          example: ONRAMP
+                        customer_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                          example: 80fd79d6-ad3d-4797-ad61-fc2dd1b7639d
+                        beneficiary_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                          example: null
+                        hash:
+                          type: string
+                          nullable: true
+                          example: '0x3eef859d9c1745ba24209331d67e04f26e38ce45e48c85ed50f5e66a42cd57e9'
+                        status:
+                          type: string
+                          enum:
+                          - PENDING
+                          - PROCESSING
+                          - COMPLETED
+                          - FAILED
+                          - REFUNDED
+                          example: COMPLETED
+                        batch_info:
+                          type: object
+                          nullable: true
+                          properties:
+                            batch_id:
+                              type: string
+                              format: uuid
+                            batch_item_id:
+                              type: string
+                              format: uuid
+                          example: null
+                        fiat_details:
+                          type: object
+                          nullable: true
+                          properties:
+                            source_amount:
+                              type: number
+                              nullable: true
+                              example: 17
+                            source_currency:
+                              type: string
+                              nullable: true
+                              example: USD
+                            destination_amount:
+                              type: number
+                              nullable: true
+                              example: 17
+                            destination_currency:
+                              type: string
+                              nullable: true
+                              example: USDC
+                            fx_rate:
+                              type: number
+                              nullable: true
+                              example: 0
+                        crypto_details:
+                          type: object
+                          nullable: true
+                          properties:
+                            source_amount:
+                              type: number
+                              nullable: true
+                              example: null
+                            source_currency:
+                              type: string
+                              nullable: true
+                              example: null
+                            source_rail:
+                              type: string
+                              nullable: true
+                              example: null
+                            source_address:
+                              type: string
+                              nullable: true
+                              example: null
+                            destination_amount:
+                              type: number
+                              nullable: true
+                              example: null
+                            destination_currency:
+                              type: string
+                              nullable: true
+                              example: null
+                            destination_rail:
+                              type: string
+                              nullable: true
+                              example: null
+                            destination_address:
+                              type: string
+                              nullable: true
+                              example: null
+                            tx_hash:
+                              type: string
+                              nullable: true
+                              example: null
+                        fees:
+                          type: object
+                          nullable: true
+                          properties:
+                            developer_fee:
+                              type: object
+                              properties:
+                                fixed:
+                                  type: number
+                                  example: 0
+                                percentage:
+                                  type: number
+                                  example: 0
+                            total_developer_fee:
+                              type: number
+                              example: 0
+                            network_fee:
+                              type: number
+                              example: 0
+                            conversion_fee:
+                              type: number
+                              example: 0
+                            total_fee:
+                              type: number
+                              example: 0
+                        created_at:
+                          type: string
+                          format: date-time
+                          example: '2026-03-02T15:36:39.167822Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          example: '2026-03-02T15:36:39.167822Z'
+                    - title: Offramp
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          example: 4835aa27-3c8d-4a68-b4c8-331ade5bb496
+                        transaction_type:
+                          type: string
+                          example: OFFRAMP
+                        customer_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                          example: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                        beneficiary_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                          example: 8d7f5ac6-0188-47c9-83f2-36a4aca7b472
+                        hash:
+                          type: string
+                          nullable: true
+                          example: null
+                        status:
+                          type: string
+                          enum:
+                          - PENDING
+                          - PROCESSING
+                          - COMPLETED
+                          - FAILED
+                          - REFUNDED
+                          example: COMPLETED
+                        batch_info:
+                          type: object
+                          nullable: true
+                          properties:
+                            batch_id:
+                              type: string
+                              format: uuid
+                              example: c54b8cd6-efb4-4e36-92f0-2d289eefea52
+                            batch_item_id:
+                              type: string
+                              format: uuid
+                              example: 32cf1b58-d026-494b-b6c6-d1e0af78060c
+                        fiat_details:
+                          type: object
+                          nullable: true
+                          properties:
+                            source_amount:
+                              type: number
+                              nullable: true
+                              example: 5
+                            source_currency:
+                              type: string
+                              nullable: true
+                              example: USD
+                            destination_amount:
+                              type: number
+                              nullable: true
+                              example: 526.48
+                            destination_currency:
+                              type: string
+                              nullable: true
+                              example: BDT
+                            fx_rate:
+                              type: number
+                              nullable: true
+                              example: 117.19
+                        crypto_details:
+                          type: object
+                          nullable: true
+                          properties:
+                            source_amount:
+                              type: number
+                              nullable: true
+                              example: null
+                            source_currency:
+                              type: string
+                              nullable: true
+                              example: null
+                            source_rail:
+                              type: string
+                              nullable: true
+                              example: null
+                            source_address:
+                              type: string
+                              nullable: true
+                              example: null
+                            destination_amount:
+                              type: number
+                              nullable: true
+                              example: null
+                            destination_currency:
+                              type: string
+                              nullable: true
+                              example: null
+                            destination_rail:
+                              type: string
+                              nullable: true
+                              example: null
+                            destination_address:
+                              type: string
+                              nullable: true
+                              example: null
+                            tx_hash:
+                              type: string
+                              nullable: true
+                              example: null
+                        fees:
+                          type: object
+                          nullable: true
+                          properties:
+                            developer_fee:
+                              type: object
+                              properties:
+                                fixed:
+                                  type: number
+                                  example: 0.5
+                                percentage:
+                                  type: number
+                                  example: 0
+                            total_developer_fee:
+                              type: number
+                              example: 0.51
+                            network_fee:
+                              type: number
+                              example: 0
+                            conversion_fee:
+                              type: number
+                              example: 0
+                            total_fee:
+                              type: number
+                              example: 0.51
+                        created_at:
+                          type: string
+                          format: date-time
+                          example: '2026-04-25T20:40:08.235667Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          example: '2026-04-25T20:42:52.072478Z'
+                    - title: Crypto deposit
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          example: 11e9dea6-7891-43dd-a582-281394edd288
+                        transaction_type:
+                          type: string
+                          example: CRYPTO_DEPOSIT
+                        customer_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                          example: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                        beneficiary_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                          example: null
+                        hash:
+                          type: string
+                          nullable: true
+                          example: 31NgS1hCLaH6sitUSFRbXDF9tPhMrA5nqSNSSvvLPFRrScwDdDRUnE8FV8mLgxdx7TDhxdk7chKNhc1gbeFRNkAf
+                        status:
+                          type: string
+                          enum:
+                          - PENDING
+                          - PROCESSING
+                          - COMPLETED
+                          - FAILED
+                          - REFUNDED
+                          example: COMPLETED
+                        batch_info:
+                          type: object
+                          nullable: true
+                          properties:
+                            batch_id:
+                              type: string
+                              format: uuid
+                            batch_item_id:
+                              type: string
+                              format: uuid
+                          example: null
+                        fiat_details:
+                          type: object
+                          nullable: true
+                          properties:
+                            source_amount:
+                              type: number
+                              nullable: true
+                              example: null
+                            source_currency:
+                              type: string
+                              nullable: true
+                              example: null
+                            destination_amount:
+                              type: number
+                              nullable: true
+                              example: null
+                            destination_currency:
+                              type: string
+                              nullable: true
+                              example: null
+                            fx_rate:
+                              type: number
+                              nullable: true
+                              example: null
+                        crypto_details:
+                          type: object
+                          nullable: true
+                          properties:
+                            source_amount:
+                              type: number
+                              nullable: true
+                              example: 15
+                            source_currency:
+                              type: string
+                              nullable: true
+                              example: USDC
+                            source_rail:
+                              type: string
+                              nullable: true
+                              example: SOLANA
+                            source_address:
+                              type: string
+                              nullable: true
+                              example: FEAp246mLPgWGVa12KG99GcRuptuCF3uTADp95pcy2cr
+                            destination_amount:
+                              type: number
+                              nullable: true
+                              example: 15
+                            destination_currency:
+                              type: string
+                              nullable: true
+                              example: USDC
+                            destination_rail:
+                              type: string
+                              nullable: true
+                              example: SOLANA
+                            destination_address:
+                              type: string
+                              nullable: true
+                              example: BCSZEokfpVsSpUuuZJMScLiUpYjvvUmrrAJkNbrTTnng
+                            tx_hash:
+                              type: string
+                              nullable: true
+                              example: 31NgS1hCLaH6sitUSFRbXDF9tPhMrA5nqSNSSvvLPFRrScwDdDRUnE8FV8mLgxdx7TDhxdk7chKNhc1gbeFRNkAf
+                        fees:
+                          type: object
+                          nullable: true
+                          properties:
+                            developer_fee:
+                              type: object
+                              properties:
+                                fixed:
+                                  type: number
+                                  example: 0
+                                percentage:
+                                  type: number
+                                  example: 0
+                            total_developer_fee:
+                              type: number
+                              example: 0
+                            network_fee:
+                              type: number
+                              example: 0
+                            conversion_fee:
+                              type: number
+                              example: 0
+                            total_fee:
+                              type: number
+                              example: 0
+                        created_at:
+                          type: string
+                          format: date-time
+                          example: '2026-04-25T19:12:07.804074Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          example: '2026-04-25T19:12:07.804074Z'
+                    - title: Crypto withdrawal
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          example: 8c92e9dd-6456-4aee-a441-1861144f1d8b
+                        transaction_type:
+                          type: string
+                          example: CRYPTO_WITHDRAWAL
+                        customer_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                          example: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                        beneficiary_id:
+                          type: string
+                          format: uuid
+                          nullable: true
+                          example: 6af8d598-36a5-477d-9320-d7c5ba309107
+                        hash:
+                          type: string
+                          nullable: true
+                          example: '0xd2a3d65ce04c24c7af2b4ab86ac8c3ca525d010c600733bb062be74ee3899ec9'
+                        status:
+                          type: string
+                          enum:
+                          - PENDING
+                          - PROCESSING
+                          - COMPLETED
+                          - FAILED
+                          - REFUNDED
+                          example: COMPLETED
+                        batch_info:
+                          type: object
+                          nullable: true
+                          properties:
+                            batch_id:
+                              type: string
+                              format: uuid
+                            batch_item_id:
+                              type: string
+                              format: uuid
+                          example: null
+                        fiat_details:
+                          type: object
+                          nullable: true
+                          properties:
+                            source_amount:
+                              type: number
+                              nullable: true
+                              example: null
+                            source_currency:
+                              type: string
+                              nullable: true
+                              example: null
+                            destination_amount:
+                              type: number
+                              nullable: true
+                              example: null
+                            destination_currency:
+                              type: string
+                              nullable: true
+                              example: null
+                            fx_rate:
+                              type: number
+                              nullable: true
+                              example: null
+                        crypto_details:
+                          type: object
+                          nullable: true
+                          properties:
+                            source_amount:
+                              type: number
+                              nullable: true
+                              example: 5
+                            source_currency:
+                              type: string
+                              nullable: true
+                              example: USDC
+                            source_rail:
+                              type: string
+                              nullable: true
+                              example: POLYGON
+                            source_address:
+                              type: string
+                              nullable: true
+                              example: '0xc42a5f7083c7e8f1d9820c7660867277289cd998'
+                            destination_amount:
+                              type: number
+                              nullable: true
+                              example: 4.98535
+                            destination_currency:
+                              type: string
+                              nullable: true
+                              example: USDC
+                            destination_rail:
+                              type: string
+                              nullable: true
+                              example: POLYGON
+                            destination_address:
+                              type: string
+                              nullable: true
+                              example: '0xD2Ba7d0DaBd36498df5906fC7B054Fa9EfA9843E'
+                            tx_hash:
+                              type: string
+                              nullable: true
+                              example: '0xd2a3d65ce04c24c7af2b4ab86ac8c3ca525d010c600733bb062be74ee3899ec9'
+                        fees:
+                          type: object
+                          nullable: true
+                          properties:
+                            developer_fee:
+                              type: object
+                              properties:
+                                fixed:
+                                  type: number
+                                  example: 0.01
+                                percentage:
+                                  type: number
+                                  example: 0.0005
+                            total_developer_fee:
+                              type: number
+                              example: 0.0105
+                            network_fee:
+                              type: number
+                              example: 0.004149
+                            conversion_fee:
+                              type: number
+                              example: 0
+                            total_fee:
+                              type: number
+                              example: 0.014649
+                        created_at:
+                          type: string
+                          format: date-time
+                          example: '2026-04-29T09:56:14.906031Z'
+                        updated_at:
+                          type: string
+                          format: date-time
+                          example: '2026-04-29T09:56:58.631047Z'
+              examples:
+                Onramp:
+                  summary: Onramp transaction
+                  value:
+                    data:
+                      id: 8fe1ca7c-4e6e-44c6-8706-87ac74c22554
+                      transaction_type: ONRAMP
+                      customer_id: 80fd79d6-ad3d-4797-ad61-fc2dd1b7639d
+                      beneficiary_id: null
+                      hash: '0x3eef859d9c1745ba24209331d67e04f26e38ce45e48c85ed50f5e66a42cd57e9'
+                      status: COMPLETED
+                      created_at: '2026-03-02T15:36:39.167822Z'
+                      updated_at: '2026-03-02T15:36:39.167822Z'
+                      batch_info: null
+                      fiat_details:
+                        source_amount: 17
+                        source_currency: USD
+                        destination_amount: 17
+                        destination_currency: USDC
+                        fx_rate: 0
+                      crypto_details:
+                        source_amount: null
+                        source_currency: null
+                        source_rail: null
+                        source_address: null
+                        destination_amount: null
+                        destination_currency: null
+                        destination_rail: null
+                        destination_address: null
+                        tx_hash: null
+                      fees:
+                        developer_fee:
+                          fixed: 0
+                          percentage: 0
+                        total_developer_fee: 0
+                        network_fee: 0
+                        conversion_fee: 0
+                        total_fee: 0
+                Offramp:
+                  summary: Offramp transaction
+                  value:
+                    data:
+                      id: 4835aa27-3c8d-4a68-b4c8-331ade5bb496
+                      transaction_type: OFFRAMP
+                      customer_id: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                      beneficiary_id: 8d7f5ac6-0188-47c9-83f2-36a4aca7b472
+                      hash: null
+                      status: COMPLETED
+                      created_at: '2026-04-25T20:40:08.235667Z'
+                      updated_at: '2026-04-25T20:42:52.072478Z'
+                      batch_info:
+                        batch_id: c54b8cd6-efb4-4e36-92f0-2d289eefea52
+                        batch_item_id: 32cf1b58-d026-494b-b6c6-d1e0af78060c
+                      fiat_details:
+                        source_amount: 5
+                        source_currency: USD
+                        destination_amount: 526.48
+                        destination_currency: BDT
+                        fx_rate: 117.19
+                      crypto_details:
+                        source_amount: null
+                        source_currency: null
+                        source_rail: null
+                        source_address: null
+                        destination_amount: null
+                        destination_currency: null
+                        destination_rail: null
+                        destination_address: null
+                        tx_hash: null
+                      fees:
+                        developer_fee:
+                          fixed: 0.5
+                          percentage: 0
+                        total_developer_fee: 0.51
+                        network_fee: 0
+                        conversion_fee: 0
+                        total_fee: 0.51
+                Crypto deposit:
+                  summary: Crypto deposit transaction
+                  value:
+                    data:
+                      id: 11e9dea6-7891-43dd-a582-281394edd288
+                      transaction_type: CRYPTO_DEPOSIT
+                      customer_id: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                      beneficiary_id: null
+                      hash: 31NgS1hCLaH6sitUSFRbXDF9tPhMrA5nqSNSSvvLPFRrScwDdDRUnE8FV8mLgxdx7TDhxdk7chKNhc1gbeFRNkAf
+                      status: COMPLETED
+                      created_at: '2026-04-25T19:12:07.804074Z'
+                      updated_at: '2026-04-25T19:12:07.804074Z'
+                      batch_info: null
+                      fiat_details:
+                        source_amount: null
+                        source_currency: null
+                        destination_amount: null
+                        destination_currency: null
+                        fx_rate: null
+                      crypto_details:
+                        source_amount: 15
+                        source_currency: USDC
+                        source_rail: SOLANA
+                        source_address: FEAp246mLPgWGVa12KG99GcRuptuCF3uTADp95pcy2cr
+                        destination_amount: 15
+                        destination_currency: USDC
+                        destination_rail: SOLANA
+                        destination_address: BCSZEokfpVsSpUuuZJMScLiUpYjvvUmrrAJkNbrTTnng
+                        tx_hash: 31NgS1hCLaH6sitUSFRbXDF9tPhMrA5nqSNSSvvLPFRrScwDdDRUnE8FV8mLgxdx7TDhxdk7chKNhc1gbeFRNkAf
+                      fees:
+                        developer_fee:
+                          fixed: 0
+                          percentage: 0
+                        total_developer_fee: 0
+                        network_fee: 0
+                        conversion_fee: 0
+                        total_fee: 0
+                Crypto withdrawal:
+                  summary: Crypto withdrawal transaction
+                  value:
+                    data:
+                      id: 8c92e9dd-6456-4aee-a441-1861144f1d8b
+                      transaction_type: CRYPTO_WITHDRAWAL
+                      customer_id: 1a8e3bdc-05c9-4486-bdef-93464d24c9af
+                      beneficiary_id: 6af8d598-36a5-477d-9320-d7c5ba309107
+                      hash: '0xd2a3d65ce04c24c7af2b4ab86ac8c3ca525d010c600733bb062be74ee3899ec9'
+                      status: COMPLETED
+                      created_at: '2026-04-29T09:56:14.906031Z'
+                      updated_at: '2026-04-29T09:56:58.631047Z'
+                      batch_info: null
+                      fiat_details:
+                        source_amount: null
+                        source_currency: null
+                        destination_amount: null
+                        destination_currency: null
+                        fx_rate: null
+                      crypto_details:
+                        source_amount: 5
+                        source_currency: USDC
+                        source_rail: POLYGON
+                        source_address: '0xc42a5f7083c7e8f1d9820c7660867277289cd998'
+                        destination_amount: 4.98535
+                        destination_currency: USDC
+                        destination_rail: POLYGON
+                        destination_address: '0xD2Ba7d0DaBd36498df5906fC7B054Fa9EfA9843E'
+                        tx_hash: '0xd2a3d65ce04c24c7af2b4ab86ac8c3ca525d010c600733bb062be74ee3899ec9'
+                      fees:
+                        developer_fee:
+                          fixed: 0.01
+                          percentage: 0.0005
+                        total_developer_fee: 0.0105
+                        network_fee: 0.004149
+                        conversion_fee: 0
+                        total_fee: 0.014649
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /v1/transactions/{transaction_id}:
+    get:
+      operationId: getTransactionById
+      summary: Fetch Transaction Details V1
+      description: Returns full details for a transaction by ID, including status, amounts, fees, and settlement data. The populated fields vary based on the transaction type.
+      x-mint:
+        content: "<Warning>\n  For **CRYPTO_DEPOSIT** and **CRYPTO_WITHDRAWAL** transaction types, you must use [Fetch Transaction Details V2](/api-reference/transactions/fetch-transaction-details-v2). We also recommend migrating all transaction detail lookups to V2, as V1 will be deprecated soon.\n</Warning>\n"
+      tags:
+      - Transactions
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: transaction_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 7f0124cd-6845-47d3-8b39-43f80cd50274
+      responses:
+        '200':
+          description: Transaction details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        example: 7f0124cd-6845-47d3-8b39-43f80cd50274
+                      transaction_type:
+                        type: string
+                        enum:
+                        - ONRAMP
+                        - OFFRAMP
+                        - CRYPTO_WITHDRAWAL
+                        - CRYPTO_DEPOSIT
+                        example: OFFRAMP
+                      customer_id:
+                        type: string
+                        format: uuid
+                        nullable: true
+                        example: null
+                      beneficiary_id:
+                        type: string
+                        format: uuid
+                        example: e6200609-1ebb-41bb-a4d3-fd9e3bae8419
+                      hash:
+                        type: string
+                        example: 796b21c4412f1208918cf744e38b62c95aa55674baf62a0a3b8b189c212d0b7e
+                      transaction_ref_id:
+                        type: string
+                        nullable: true
+                        example: 7f0124cd-6845-47d3-8b39-43f80cd50274
+                      status:
+                        type: string
+                        enum:
+                        - PENDING
+                        - PROCESSING
+                        - COMPLETED
+                        - FAILED
+                        - REFUNDED
+                        example: COMPLETED
+                      batch_info:
+                        type: object
+                        nullable: true
+                        example: null
+                      from_amount:
+                        type: number
+                        example: 1.1
+                      payout_amount:
+                        type: number
+                        example: 94.919
+                      processing_amount:
+                        type: number
+                        example: 1.1
+                      from_currency:
+                        type: string
+                        example: USD
+                      payout_currency:
+                        type: string
+                        example: INR
+                      fx_rate:
+                        type: number
+                        example: 86.29
+                      developer_fee:
+                        type: number
+                        example: 1.25495
+                      developer_fee_percentage:
+                        type: number
+                        example: 0.45
+                      developer_fee_fixed:
+                        type: number
+                        example: 1.25
+                      virtual_account_id:
+                        type: string
+                        nullable: true
+                        example: null
+                      fiat_details:
+                        type: object
+                        nullable: true
+                        example: null
+                      crypto_details:
+                        type: object
+                        nullable: true
+                        example: null
+                      fees:
+                        type: object
+                        nullable: true
+                        example: null
+                      created_at:
+                        type: string
+                        format: date-time
+                        example: '2026-01-08T08:27:22.345304Z'
+                      updated_at:
+                        type: string
+                        format: date-time
+                        example: '2026-01-08T08:27:33.76357Z'
+              examples:
+                OFFRAMP:
+                  summary: OFFRAMP transaction
+                  value:
+                    data:
+                      id: 7f0124cd-6845-47d3-8b39-43f80cd50274
+                      transaction_type: OFFRAMP
+                      customer_id: null
+                      beneficiary_id: e6200609-1ebb-41bb-a4d3-fd9e3bae8419
+                      hash: 796b21c4412f1208918cf744e38b62c95aa55674baf62a0a3b8b189c212d0b7e
+                      transaction_ref_id: 7f0124cd-6845-47d3-8b39-43f80cd50274
+                      from_amount: 1.1
+                      payout_amount: 94.919
+                      processing_amount: 1.1
+                      status: COMPLETED
+                      fx_rate: 86.29
+                      developer_fee: 1.25495
+                      developer_fee_percentage: 0.45
+                      developer_fee_fixed: 1.25
+                      from_currency: USD
+                      payout_currency: INR
+                      virtual_account_id: null
+                      batch_info: null
+                      fiat_details: null
+                      crypto_details: null
+                      fees: null
+                      created_at: '2026-01-08T08:27:22.345304Z'
+                      updated_at: '2026-01-08T08:27:33.76357Z'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: TRANSACTION_NOT_FOUND
+                      message:
+                        type: string
+                        example: The requested transaction could not be found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        example: INTERNAL_SERVER_ERROR
+                      message:
+                        type: string
+                        example: An unexpected error occurred while processing your request
+components:
+  responses:
+    ValidationError:
+      description: Failed due to a formatting error.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  additionalProperties:
+                    type: string
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource not found
+  parameters:
+    CurrentPageParam:
+      name: current_page
+      in: query
+      description: The page number to retrieve
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint

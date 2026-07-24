@@ -1,0 +1,138 @@
+openapi: 3.1.0
+info:
+  title: Fin.com Authentication API
+  version: 1.0.0
+  description: A simple API specificationFo
+servers:
+- url: https://sandbox.api.fin.com
+  description: Sandbox server
+- url: https://api.fin.com
+  description: Production server
+tags:
+- name: Authentication
+  description: A modified OAuth 2.0 Client Credential Flow
+paths:
+  /v1/oauth/token:
+    post:
+      summary: Issue a Token
+      description: Generate an access token using client credentials
+      x-mint:
+        content: "Grab your `client_id` and `client_secret` from the\n[API Keys](https://orchestration.fin.com/api-keys) section\nof the [Orchestration Dashboard](https://orchestration.fin.com/)\n\n<Note>\n  The TTLs returned from this API are actually the time\n  that the the token will expire; i.e. not validity in number of seconds\n  since creation.\n</Note>\n\n<Note>\n  The timestamps, i.e. TTLs returned from this endpoint are NOT\n  in ISO 8601 format. Rather it is in the format \n  `YYYY-MM-DD HH:MM:SS+00`\n</Note>\n"
+      tags:
+      - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - client_id
+              - client_secret
+              properties:
+                client_id:
+                  type: string
+                  description: Client ID
+                client_secret:
+                  type: string
+                  description: Client Secret
+                  format: password
+      responses:
+        '200':
+          description: Token issued successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /v1/oauth/refresh-token:
+    post:
+      summary: Refresh a Token
+      description: Generate a new token pair based on a refresh token.
+      x-mint:
+        content: "Exchanges a `refresh_token` received from the [Issue Token](/api-reference/authentication/issue-a-token) endpoint for a new\npair of `access_token` and `refresh_token`\n\n<Note>\n  The TTLs returned from this API are actually the time\n  that the the token will expire; i.e. not validity in number of seconds\n  since creation.\n</Note>\n\n<Note>\n  The timestamps, i.e. TTLs returned from this endpoint are NOT\n  in ISO 8601 format. Rather it is in the format \n  `YYYY-MM-DD HH:MM:SS+00`\n</Note>\n"
+      tags:
+      - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - refresh_token
+              properties:
+                refresh_token:
+                  type: string
+                  description: The refresh_token received from the [Issue a token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint.
+      responses:
+        '200':
+          description: Token issued successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+components:
+  responses:
+    ValidationError:
+      description: Failed due to a formatting error.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  additionalProperties:
+                    type: string
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        access_token_ttl:
+          type: string
+          format: date-time
+          example: '2025-12-28 10:34:45+00'
+        refresh_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        refresh_token_ttl:
+          type: string
+          format: date-time
+          example: '2025-12-28 10:34:45+00'
+        current_time:
+          type: string
+          format: date-time
+          example: '2025-12-21 10:34:45+00'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint

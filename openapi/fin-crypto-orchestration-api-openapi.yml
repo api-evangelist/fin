@@ -1,0 +1,1487 @@
+openapi: 3.1.0
+info:
+  title: Fin.com Authentication Crypto Orchestration API
+  version: 1.0.0
+  description: A simple API specificationFo
+servers:
+- url: https://sandbox.api.fin.com
+  description: Sandbox server
+- url: https://api.fin.com
+  description: Production server
+tags:
+- name: Crypto Orchestration
+paths:
+  /v1/transit/payment:
+    post:
+      summary: Create a Payment
+      description: Create a new payment order for a supported integration type (ByBit, Kraken, OKX, Pass Through)
+      x-mint:
+        content: 'Creates a payment order for the specified integration type with automatic settlement to a destination wallet address.
+
+
+          **Conditional Field Rules:**
+
+          - Either `order_info.order_amount` or `order_info.quote_id` must be provided, but **not both**.
+
+          - When `order_info.quote_id` is not provided, `order_info.order_amount` and the `fin` object are required.
+
+          - When `order_info.quote_id` is provided, `order_info.order_amount` and the `fin` object must **not** be included.
+
+          - Providing both results in a `422` error.
+
+
+          **Provider Error Codes:**
+
+          The `428` response code is a placeholder. When errors occur from the payment provider, the original status code will be forwarded.
+
+          '
+      tags:
+      - Crypto Orchestration
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - integration_type
+              - order_info
+              properties:
+                integration_type:
+                  type: string
+                  enum:
+                  - BYBIT
+                  - PASS_THROUGH
+                  - KRAKEN
+                  - OKX
+                  description: Integration provider type.
+                  example: BYBIT
+                order_info:
+                  type: object
+                  required:
+                  - merchant_trade_no
+                  - currency
+                  - currency_type
+                  - success_url
+                  - failed_url
+                  - payment_type
+                  - goods
+                  - env
+                  properties:
+                    merchant_name:
+                      type: string
+                      example: PayPal
+                    client_id:
+                      type: string
+                      example: client_001
+                    payment_type:
+                      type: string
+                      enum:
+                      - E_COMMERCE
+                      example: E_COMMERCE
+                    merchant_trade_no:
+                      type: string
+                      format: uuid
+                      example: 841e4ba2-1234-5678-9abc-a2a45de7bd00
+                    order_amount:
+                      type: string
+                      description: Conditionally required when quote_id is not provided.
+                      example: '100.00'
+                    quote_id:
+                      type: string
+                      description: Conditionally required when order_amount is not provided.
+                      example: FIN_PROVIDED_QUOTE_ID
+                    currency:
+                      type: string
+                      enum:
+                      - USDC
+                      - USDT
+                      - BTC
+                      - ETH
+                      example: USDT
+                    rail:
+                      type: string
+                      description: Blockchain rail for the destination. Required for OKX and Kraken.
+                      enum:
+                      - SOLANA
+                      - BITCOIN
+                      - ETHEREUM
+                      - TRON
+                      - BASE
+                      example: SOLANA
+                    currency_type:
+                      type: string
+                      enum:
+                      - crypto
+                      example: crypto
+                    redirection_url:
+                      type: string
+                      format: uri
+                      description: Optional redirect URL after payment completion. Used for OKX.
+                      example: https://example.com/redirect
+                    remarks:
+                      type: string
+                      description: Optional order remarks.
+                      example: ''
+                    success_url:
+                      type: string
+                      format: uri
+                      maxLength: 256
+                      example: https://example.com/success
+                    failed_url:
+                      type: string
+                      format: uri
+                      maxLength: 256
+                      example: https://example.com/failed
+                    order_expire_time:
+                      type: integer
+                      minimum: 600
+                      maximum: 3600
+                      default: 3600
+                      example: 3600
+                    customer:
+                      type: object
+                      required:
+                      - uid
+                      - external_user_id
+                      - user_name
+                      - register_time
+                      - kyc_country
+                      properties:
+                        uid:
+                          type: string
+                          example: user_123
+                        external_user_id:
+                          type: string
+                          example: ext_user_001
+                        user_name:
+                          type: string
+                          example: John Li
+                        register_time:
+                          type: integer
+                          example: 1739178959
+                        kyc_country:
+                          type: string
+                          example: AUS
+                    goods:
+                      type: array
+                      minItems: 1
+                      items:
+                        type: object
+                        required:
+                        - shopping_name
+                        - mcc_code
+                        - goods_name
+                        properties:
+                          shopping_name:
+                            type: string
+                            example: test good1
+                          mcc_code:
+                            type: string
+                            example: '1520'
+                          goods_name:
+                            type: string
+                            example: test1
+                          goods_detail:
+                            type: string
+                            example: First product
+                    env:
+                      type: object
+                      required:
+                      - terminal_type
+                      - device
+                      - browser_version
+                      - ip
+                      properties:
+                        terminal_type:
+                          type: string
+                          enum:
+                          - APP
+                          - WEB
+                          - WAP
+                          - MINIAPP
+                          - OTHERS
+                          example: APP
+                        device:
+                          type: string
+                          example: iPhone 15
+                        browser_version:
+                          type: string
+                          example: iOS 17.0 Safari
+                        ip:
+                          type: string
+                          format: ipv4
+                          example: 192.168.0.1
+                    risk_info:
+                      type: object
+                      required:
+                      - terminal_type
+                      properties:
+                        terminal_type:
+                          type: string
+                          enum:
+                          - APP
+                          - WEB
+                          - WAP
+                          - MINIAPP
+                          - OTHERS
+                          example: APP
+                fin:
+                  type: object
+                  description: Required when quote_id is not provided.
+                  required:
+                  - settlement_config
+                  properties:
+                    settlement_config:
+                      type: object
+                      required:
+                      - settlement_via
+                      - destination_details
+                      properties:
+                        settlement_via:
+                          type: string
+                          enum:
+                          - ONE_TO_ONE
+                          - MARKET_ORDER
+                          - FEE_RETENTION
+                          example: MARKET_ORDER
+                        destination_details:
+                          type: object
+                          required:
+                          - wallet_address
+                          - currency
+                          - rail
+                          properties:
+                            wallet_address:
+                              type: string
+                            currency:
+                              type: string
+                              enum:
+                              - USDC
+                              - USDT
+                              - BTC
+                              - ETH
+                              - PYUSD
+                              example: USDC
+                            rail:
+                              type: string
+                              enum:
+                              - SOLANA
+                              - BITCOIN
+                              - ETHEREUM
+                              - BASE
+                              - TRON
+                              example: SOLANA
+                    developer_fee:
+                      type: object
+                      nullable: true
+                      description: Developer fee configuration. Nullable. Both fields default to 0. Used as a sibling of settlement_config for OKX.
+                      properties:
+                        fixed:
+                          type: string
+                          description: Fixed fee in USD per transaction. Defaults to 0.
+                          example: '0.15'
+                        percentage:
+                          type: string
+                          description: Percentage fee applied to order_amount. Defaults to 0.
+                          example: '2.5'
+            examples:
+              createPaymentWithAmount:
+                summary: Create payment with order_amount (no quote_id)
+                value:
+                  integration_type: BYBIT
+                  order_info:
+                    merchant_name: PayPal
+                    client_id: client_001
+                    payment_type: E_COMMERCE
+                    merchant_trade_no: 841e4ba2-1234-5678-9abc-a2a45de7bd00
+                    order_amount: '100.00'
+                    currency: USDT
+                    currency_type: crypto
+                    success_url: https://example.com/success
+                    failed_url: https://example.com/failed
+                    order_expire_time: 3600
+                    goods:
+                    - shopping_name: test good1
+                      mcc_code: '1520'
+                      goods_name: test1
+                      goods_detail: First product
+                    env:
+                      terminal_type: APP
+                      device: iPhone 15
+                      browser_version: iOS 17.0 Safari
+                      ip: 192.168.0.1
+                  fin:
+                    settlement_config:
+                      settlement_via: MARKET_ORDER
+                      destination_details:
+                        wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                        currency: USDC
+                        rail: SOLANA
+              createPaymentWithQuoteId:
+                summary: Create payment with quote_id (no order_amount or fin)
+                value:
+                  integration_type: BYBIT
+                  order_info:
+                    payment_type: E_COMMERCE
+                    merchant_trade_no: 941e4ba2-5678-1234-9abc-b3b56ef8ce11
+                    quote_id: FIN_PROVIDED_QUOTE_ID
+                    currency: USDT
+                    currency_type: crypto
+                    success_url: https://example.com/success
+                    failed_url: https://example.com/failed
+                    goods:
+                    - shopping_name: test good1
+                      mcc_code: '1520'
+                      goods_name: test1
+                    env:
+                      terminal_type: WEB
+                      device: Chrome Desktop
+                      browser_version: Chrome 121.0
+                      ip: 10.0.0.1
+              createOKXPaymentWithAmount:
+                summary: 'OKX: Create payment with order_amount (no quote_id)'
+                value:
+                  integration_type: OKX
+                  order_info:
+                    merchant_name: MESH Shop
+                    merchant_trade_no: 841e4ba2-1234-5678-9abc-a2a45de7bd00
+                    order_amount: '100.00'
+                    currency: USDC
+                    rail: SOLANA
+                    currency_type: crypto
+                    redirection_url: ''
+                  fin:
+                    settlement_config:
+                      settlement_via: ONE_TO_ONE
+                      destination_details:
+                        wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                        currency: USDC
+                        rail: SOLANA
+                    developer_fee:
+                      fixed: '0.15'
+                      percentage: '2.5'
+              createOKXPaymentWithQuoteId:
+                summary: 'OKX: Create payment with quote_id (no order_amount or fin)'
+                value:
+                  integration_type: OKX
+                  order_info:
+                    merchant_trade_no: 841e4ba2-1234-5678-9abc-a2a45de7bd00
+                    quote_id: FIN_PROVIDED_QUOTE_ID
+                    currency: USDC
+                    rail: SOLANA
+                    currency_type: crypto
+      responses:
+        '200':
+          description: Payment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      payment_id:
+                        type: string
+                        format: uuid
+                        example: FIN_PROVIDED_UUID
+                      integration_type:
+                        type: string
+                        example: BYBIT
+                      provider_response:
+                        type: object
+                        description: Provider-specific response fields. Shape varies by integration_type.
+                        properties:
+                          pay_id:
+                            type: string
+                            description: Provider-generated payment ID.
+                            example: 01JN6AZVEMAC8H9SED6JES3QH8
+                          terminal_type:
+                            type: string
+                            description: Terminal type used for the payment. Present for ByBit orders.
+                            nullable: true
+                            example: APP
+                          expire_time:
+                            type: integer
+                            description: Unix timestamp when the payment link expires.
+                            example: 1740751953
+                          create_time:
+                            type: integer
+                            description: Unix timestamp when the order was created.
+                            example: 1740748353
+                          checkout_link:
+                            type: string
+                            description: Payment checkout link. For OKX orders this is the QR-code deeplink.
+                            example: ''
+                          qr_content:
+                            type: string
+                            description: Base64-encoded QR code image. Present for ByBit orders.
+                            nullable: true
+                            example: data:image/png;base64,/9j/2...f/Z
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '422':
+          description: Validation error detected by Fin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 422
+                      type:
+                        type: string
+                        enum:
+                        - FIN_ERROR
+                        example: FIN_ERROR
+                      message:
+                        type: string
+                        example: One or more fields are invalid
+                      details:
+                        type: array
+                        nullable: true
+                        items:
+                          type: object
+                          properties:
+                            field:
+                              type: string
+                            message:
+                              type: string
+        '428':
+          description: Error thrown from provider (forwards partner's HTTP status code)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 500104
+                      type:
+                        type: string
+                        enum:
+                        - PROVIDER_ERROR
+                        example: PROVIDER_ERROR
+                      message:
+                        type: string
+                        example: Balance not Available
+                      details:
+                        type: array
+                        nullable: true
+                        items:
+                          type: object
+  /v1/transit/payment/{payment_id}:
+    get:
+      summary: Fetch a Payment
+      description: Retrieve payment details by payment ID
+      x-mint:
+        content: "## Payment Status Values\n\n- **PAY_INIT**: Payment initialized\n- **PAY_PROCESS**: Payment is being processed\n- **PAY_SUCCESS**: Payment completed successfully\n- **PAY_FAILED**: Payment failed\n- **PAY_TIMEOUT**: Payment timed out\n- **PAY_CANCEL**: Payment was cancelled\n- **SETTLEMENT_INIT**: Settlement process started\n- **SETTLEMENT_SUCCESS**: Settlement completed successfully\n- **SETTLEMENT_HOLD**: Transaction on hold due to insufficient rebalancing funds\n- **SETTLEMENT_FAILED**: Settlement failed after 3 retry attempts\n\n<Note>\n  The `settlement_info` field will be `null` until `PAY_SUCCESS`. The `payment_time` will be `0` until `PAY_SUCCESS`.\n</Note>\n"
+      tags:
+      - Crypto Orchestration
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: payment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: The unique payment identifier returned from Create Payment
+        example: FIN_PROVIDED_UUID
+      responses:
+        '200':
+          description: Payment details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      payment_id:
+                        type: string
+                        format: uuid
+                        example: FIN_PROVIDED_UUID
+                      integration_type:
+                        type: string
+                        example: BYBIT
+                      quote_id:
+                        type: string
+                        format: uuid
+                        example: FIN_PROVIDED_UUID
+                      status:
+                        type: string
+                        enum:
+                        - PAY_INIT
+                        - PAY_PROCESS
+                        - PAY_SUCCESS
+                        - PAY_FAILED
+                        - PAY_TIMEOUT
+                        - PAY_CANCEL
+                        - SETTLEMENT_INIT
+                        - SETTLEMENT_HOLD
+                        - SETTLEMENT_SUCCESS
+                        - SETTLEMENT_FAILED
+                        example: PAY_INIT
+                      create_time:
+                        type: integer
+                        example: 1740748353
+                      payment_info:
+                        type: object
+                        properties:
+                          pay_id:
+                            type: string
+                            example: 01JN6AZVEMAC8H9SED6JES3QH8
+                          merchant_trade_no:
+                            type: string
+                            example: 841e4ba2-...-a2a45de7bd00
+                          amount:
+                            type: string
+                            example: '100'
+                          status:
+                            type: string
+                            enum:
+                            - PAY_INIT
+                            - PAY_PROCESS
+                            - PAY_SUCCESS
+                            - PAY_FAILED
+                            - PAY_TIMEOUT
+                            - PAY_CANCEL
+                            example: PAY_INIT
+                          currency:
+                            type: string
+                            example: USDT
+                          currency_type:
+                            type: string
+                            example: crypto
+                          expire_time:
+                            type: integer
+                            example: 1740751953
+                          payment_time:
+                            type: integer
+                            description: 0 until PAY_SUCCESS
+                            example: 0
+                      settlement_info:
+                        type: object
+                        nullable: true
+                        description: null until PAY_SUCCESS
+                        properties:
+                          settlement_via:
+                            type: string
+                            enum:
+                            - ONE_TO_ONE
+                            - MARKET_ORDER
+                            - FEE_RETENTION
+                            example: MARKET_ORDER
+                          wallet_address:
+                            type: string
+                          currency:
+                            type: string
+                            enum:
+                            - USDC
+                            - USDT
+                            - BTC
+                            - ETH
+                            example: USDC
+                          rail:
+                            type: string
+                            enum:
+                            - SOLANA
+                            - BITCOIN
+                            - ETHEREUM
+                            - BASE
+                            example: SOLANA
+                          amount:
+                            type: string
+                            example: '100'
+                          trx_hash:
+                            type: string
+                            example: 0x580...
+                          settle_time:
+                            type: integer
+                            example: 1740748353
+                          status:
+                            type: string
+                            enum:
+                            - SETTLEMENT_INIT
+                            - SETTLEMENT_HOLD
+                            - SETTLEMENT_SUCCESS
+                            - SETTLEMENT_FAILED
+                            example: SETTLEMENT_SUCCESS
+                          retry_attempts:
+                            type: integer
+                            minimum: 0
+                            maximum: 3
+                            example: 0
+              examples:
+                paymentInitiated:
+                  summary: Payment in initial state
+                  value:
+                    data:
+                      payment_id: FIN_PROVIDED_UUID
+                      integration_type: BYBIT
+                      status: PAY_INIT
+                      create_time: 1740748353
+                      payment_info:
+                        pay_id: 01JN6AZVEMAC8H9SED6JES3QH8
+                        merchant_trade_no: 841e4ba2-...-a2a45de7bd00
+                        amount: '100'
+                        status: PAY_INIT
+                        currency: USDT
+                        currency_type: crypto
+                        expire_time: 1740751953
+                        payment_time: 0
+                      settlement_info: null
+                paymentSettled:
+                  summary: Payment successfully settled
+                  value:
+                    data:
+                      payment_id: FIN_PROVIDED_UUID
+                      integration_type: BYBIT
+                      status: SETTLEMENT_SUCCESS
+                      create_time: 1740748353
+                      payment_info:
+                        pay_id: 01JN6AZVEMAC8H9SED6JES3QH8
+                        merchant_trade_no: 841e4ba2-...-a2a45de7bd00
+                        amount: '100'
+                        status: PAY_SUCCESS
+                        currency: USDT
+                        currency_type: crypto
+                        expire_time: 1740751953
+                        payment_time: 1740748353
+                      settlement_info:
+                        settlement_via: MARKET_ORDER
+                        wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                        currency: USDC
+                        rail: SOLANA
+                        amount: '100'
+                        trx_hash: 0x580...
+                        settle_time: 1740748353
+                        status: SETTLEMENT_SUCCESS
+                        retry_attempts: 0
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+        '403':
+          description: Payment ID doesn't belong to you
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 403
+                      type:
+                        type: string
+                        enum:
+                        - FIN_ERROR
+                        example: FIN_ERROR
+                      message:
+                        type: string
+                        example: Payment ID doesn't belong to you
+        '404':
+          description: Payment ID not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 404
+                      type:
+                        type: string
+                        enum:
+                        - FIN_ERROR
+                        example: FIN_ERROR
+                      message:
+                        type: string
+                        example: Payment ID not found
+  /v1/transit/quote:
+    post:
+      summary: Create a crypto payment quote
+      description: Generate a fee estimation quote for a transit payment
+      x-mint:
+        content: "<Note>\n  The quote has a limited validity period indicated by `expire_at`. Request a new quote if it has expired.\n</Note>\n\nSee the **Quote Request by Integration** tabs on this page for per-integration request examples (Bybit, Kraken, Pass Through).\n"
+      tags:
+      - Crypto Orchestration
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - title: Bybit
+                type: object
+                required:
+                - order_amount
+                - integration_type
+                - settlement_config
+                properties:
+                  order_amount:
+                    type: string
+                    description: Order amount in USD.
+                    example: '100.00'
+                  integration_type:
+                    type: string
+                    enum:
+                    - BYBIT
+                    example: BYBIT
+                  settlement_config:
+                    type: object
+                    required:
+                    - settlement_via
+                    - rebalance_fee
+                    - destination_details
+                    properties:
+                      settlement_via:
+                        type: string
+                        enum:
+                        - MARKET_ORDER
+                        - ONE_TO_ONE
+                        example: MARKET_ORDER
+                      rebalance_fee:
+                        type: boolean
+                        description: When true, fees are absorbed and total_order_amount equals order_amount. When false, settlement_amount equals order_amount minus total_fee.
+                        example: true
+                      destination_details:
+                        type: object
+                        required:
+                        - wallet_address
+                        - currency
+                        - rail
+                        properties:
+                          wallet_address:
+                            type: string
+                            description: Destination wallet address.
+                            example: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                          currency:
+                            type: string
+                            enum:
+                            - USDC
+                            - PYUSD
+                            description: Destination currency. See [supported chains and currencies](https://developer.fin.com/crypto-orchestration/integration-types/bybit#chains-rails-and-constraints) for valid currency and rail combinations.
+                            example: USDC
+                          rail:
+                            type: string
+                            enum:
+                            - SOLANA
+                            - ETHEREUM
+                            - BASE
+                            example: SOLANA
+              - title: Kraken
+                type: object
+                required:
+                - order_amount
+                - integration_type
+                - settlement_config
+                properties:
+                  order_amount:
+                    type: string
+                    description: Order amount in USD.
+                    example: '100.00'
+                  integration_type:
+                    type: string
+                    enum:
+                    - KRAKEN
+                    example: KRAKEN
+                  settlement_config:
+                    type: object
+                    required:
+                    - settlement_via
+                    - rebalance_fee
+                    - destination_details
+                    properties:
+                      settlement_via:
+                        type: string
+                        enum:
+                        - ONE_TO_ONE
+                        example: ONE_TO_ONE
+                      rebalance_fee:
+                        type: boolean
+                        description: When true, fees are absorbed and total_order_amount equals order_amount. When false, settlement_amount equals order_amount minus total_fee.
+                        example: false
+                      destination_details:
+                        type: object
+                        required:
+                        - wallet_address
+                        - currency
+                        - rail
+                        properties:
+                          wallet_address:
+                            type: string
+                            description: Destination wallet address.
+                            example: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                          currency:
+                            type: string
+                            enum:
+                            - USDC
+                            - PYUSD
+                            example: PYUSD
+                          rail:
+                            type: string
+                            enum:
+                            - SOLANA
+                            example: SOLANA
+                  developer_fee:
+                    type: object
+                    nullable: true
+                    description: Developer fee configuration. Nullable. Both fields default to 0.
+                    properties:
+                      fixed:
+                        type: string
+                        description: Fixed fee in USD per transaction. Defaults to 0.
+                        example: '0.15'
+                      percentage:
+                        type: string
+                        description: Percentage fee applied to order_amount. Defaults to 0.
+                        example: '2.5'
+              - title: Pass Through
+                type: object
+                required:
+                - order_amount
+                - integration_type
+                - settlement_config
+                properties:
+                  order_amount:
+                    type: string
+                    description: Order amount in USD.
+                    example: '100.00'
+                  integration_type:
+                    type: string
+                    enum:
+                    - PASS_THROUGH
+                    example: PASS_THROUGH
+                  settlement_config:
+                    type: object
+                    required:
+                    - settlement_via
+                    - rebalance_fee
+                    - destination_details
+                    properties:
+                      settlement_via:
+                        type: string
+                        enum:
+                        - FEE_RETENTION
+                        example: FEE_RETENTION
+                      rebalance_fee:
+                        type: boolean
+                        description: Only false is supported for PASS_THROUGH. Passing true returns an error.
+                        example: false
+                      destination_details:
+                        type: object
+                        required:
+                        - wallet_address
+                        - currency
+                        - rail
+                        properties:
+                          wallet_address:
+                            type: string
+                            description: Destination wallet address.
+                            example: bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+                          currency:
+                            type: string
+                            enum:
+                            - BTC
+                            - ETH
+                            - USDT
+                            - USDC
+                            example: BTC
+                          rail:
+                            type: string
+                            enum:
+                            - BITCOIN
+                            - ETHEREUM
+                            - TRON
+                            - SOLANA
+                            example: BITCOIN
+                  developer_fee:
+                    type: object
+                    nullable: true
+                    description: Developer fee configuration. Nullable. Both fields default to 0.
+                    properties:
+                      fixed:
+                        type: string
+                        description: Fixed fee in USD per transaction. Defaults to 0.
+                        example: '0.15'
+                      percentage:
+                        type: string
+                        description: Percentage fee applied to order_amount. Defaults to 0.
+                        example: '2.5'
+              - title: OKX
+                type: object
+                required:
+                - order_amount
+                - integration_type
+                - settlement_config
+                properties:
+                  order_amount:
+                    type: string
+                    description: Order amount in USD.
+                    example: '100.00'
+                  integration_type:
+                    type: string
+                    enum:
+                    - OKX
+                    example: OKX
+                  settlement_config:
+                    type: object
+                    required:
+                    - settlement_via
+                    - rebalance_fee
+                    - destination_details
+                    properties:
+                      settlement_via:
+                        type: string
+                        enum:
+                        - ONE_TO_ONE
+                        example: ONE_TO_ONE
+                      rebalance_fee:
+                        type: boolean
+                        description: When true, fees are absorbed and total_order_amount equals order_amount. When false, settlement_amount equals order_amount minus total_fee.
+                        example: false
+                      destination_details:
+                        type: object
+                        required:
+                        - wallet_address
+                        - currency
+                        - rail
+                        properties:
+                          wallet_address:
+                            type: string
+                            description: Destination wallet address.
+                            example: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                          currency:
+                            type: string
+                            enum:
+                            - USDC
+                            description: USDC only for OKX (milestone-1).
+                            example: USDC
+                          rail:
+                            type: string
+                            enum:
+                            - SOLANA
+                            description: SOLANA only for OKX (milestone-1).
+                            example: SOLANA
+                  developer_fee:
+                    type: object
+                    nullable: true
+                    description: Developer fee configuration. Nullable. Both fields default to 0.
+                    properties:
+                      fixed:
+                        type: string
+                        description: Fixed fee in USD per transaction. Defaults to 0.
+                        example: '0.15'
+                      percentage:
+                        type: string
+                        description: Percentage fee applied to order_amount. Defaults to 0.
+                        example: '2.5'
+            examples:
+              Bybit:
+                summary: Bybit
+                value:
+                  order_amount: '100.00'
+                  integration_type: BYBIT
+                  settlement_config:
+                    settlement_via: MARKET_ORDER
+                    rebalance_fee: true
+                    destination_details:
+                      wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                      currency: USDC
+                      rail: SOLANA
+              Kraken:
+                summary: Kraken
+                value:
+                  order_amount: '100.00'
+                  integration_type: KRAKEN
+                  settlement_config:
+                    settlement_via: ONE_TO_ONE
+                    rebalance_fee: false
+                    destination_details:
+                      wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                      currency: PYUSD
+                      rail: SOLANA
+                  developer_fee:
+                    fixed: '0.15'
+                    percentage: '2.5'
+              Pass Through:
+                summary: Pass Through
+                value:
+                  order_amount: '100.00'
+                  integration_type: PASS_THROUGH
+                  settlement_config:
+                    settlement_via: FEE_RETENTION
+                    rebalance_fee: false
+                    destination_details:
+                      wallet_address: bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+                      currency: BTC
+                      rail: BITCOIN
+                  developer_fee:
+                    fixed: '0.15'
+                    percentage: '2.5'
+              OKX:
+                summary: OKX
+                value:
+                  order_amount: '100.00'
+                  integration_type: OKX
+                  settlement_config:
+                    settlement_via: ONE_TO_ONE
+                    rebalance_fee: false
+                    destination_details:
+                      wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                      currency: USDC
+                      rail: SOLANA
+                  developer_fee:
+                    fixed: '0.15'
+                    percentage: '2.5'
+      responses:
+        '200':
+          description: Quote created successfully
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - title: Bybit
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        quote_id:
+                          type: string
+                          format: uuid
+                          description: Unique quote identifier. Pass as quote_id when creating a payment to lock in the quoted fees.
+                          example: 4081fa09-7761-42b6-8f66-24beae1a2ca5
+                        expire_at:
+                          type: integer
+                          description: Unix timestamp when this quote expires. Request a new quote after expiry.
+                          example: 1770916749
+                        order_amount:
+                          type: string
+                          description: Order amount provided in the request, in USD.
+                          example: '100.00'
+                        integration_type:
+                          type: string
+                          example: BYBIT
+                        settlement_config:
+                          type: object
+                          properties:
+                            settlement_via:
+                              type: string
+                              example: MARKET_ORDER
+                            rebalance_fee:
+                              type: boolean
+                              example: true
+                            destination_details:
+                              type: object
+                              properties:
+                                wallet_address:
+                                  type: string
+                                  example: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                                currency:
+                                  type: string
+                                  example: USDC
+                                rail:
+                                  type: string
+                                  example: SOLANA
+                        quote_estimation:
+                          type: object
+                          properties:
+                            payment_fee:
+                              type: string
+                              description: Fee charged by the exchange for processing the payment.
+                              example: '0.00'
+                            conversion_fee:
+                              type: string
+                              description: Fee charged for currency conversion where applicable.
+                              example: '0.00'
+                            withdrawal_fee:
+                              type: string
+                              description: Fee charged for withdrawing funds from the exchange.
+                              example: '0.00'
+                            gas_fee:
+                              type: string
+                              description: Blockchain network gas fee for the on-chain settlement transaction.
+                              example: '0.50'
+                            total_fee:
+                              type: string
+                              description: 'Total of all fees: gas_fee + payment_fee + conversion_fee + withdrawal_fee.'
+                              example: '0.50'
+                            total_order_amount:
+                              type: string
+                              description: Gross amount charged to the payer. When rebalance_fee is true, equals order_amount (fees absorbed into the order).
+                              example: '100.00'
+                            ata_fee_applied:
+                              type: boolean
+                              description: Whether a Solana Associated Token Account creation fee was applied to gas_fee.
+                              example: false
+                - title: Kraken
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        quote_id:
+                          type: string
+                          format: uuid
+                          description: Unique quote identifier. Pass as quote_id when creating a payment to lock in the quoted fees.
+                          example: 76e8bcc0-a6b4-41f7-b3d2-76cfbe910fe3
+                        expire_at:
+                          type: integer
+                          description: Unix timestamp when this quote expires. Request a new quote after expiry.
+                          example: 1770916749
+                        order_amount:
+                          type: string
+                          description: Order amount provided in the request, in USD.
+                          example: '100.00'
+                        integration_type:
+                          type: string
+                          example: KRAKEN
+                        settlement_config:
+                          type: object
+                          properties:
+                            settlement_via:
+                              type: string
+                              example: ONE_TO_ONE
+                            rebalance_fee:
+                              type: boolean
+                              example: false
+                            destination_details:
+                              type: object
+                              properties:
+                                wallet_address:
+                                  type: string
+                                  example: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                                currency:
+                                  type: string
+                                  example: PYUSD
+                                rail:
+                                  type: string
+                                  example: SOLANA
+                        quote_estimation:
+                          type: object
+                          properties:
+                            payment_fee:
+                              type: string
+                              description: Fee charged by the exchange for processing the payment.
+                              example: '0.00'
+                            conversion_fee:
+                              type: string
+                              description: Fee charged for currency conversion where applicable.
+                              example: '0.00'
+                            withdrawal_fee:
+                              type: string
+                              description: Fee charged for withdrawing funds from the exchange.
+                              example: '0.00'
+                            gas_fee:
+                              type: string
+                              description: Blockchain network gas fee for the on-chain settlement transaction.
+                              example: '0.50'
+                            total_developer_fee:
+                              type: string
+                              description: 'Sum of developer-configured fees: fixed fee plus percentage of order_amount.'
+                              example: '2.65'
+                            total_fee:
+                              type: string
+                              description: 'Total of all fees: gas_fee + payment_fee + conversion_fee + withdrawal_fee + total_developer_fee.'
+                              example: '3.15'
+                            total_order_amount:
+                              type: string
+                              description: Gross amount charged to the payer. When rebalance_fee is false, settlement_amount equals order_amount minus total_fee.
+                              example: '100.00'
+                            ata_fee_applied:
+                              type: boolean
+                              description: Whether a Solana Associated Token Account creation fee was applied to gas_fee.
+                              example: false
+                - title: Pass Through
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        quote_id:
+                          type: string
+                          format: uuid
+                          description: Unique quote identifier. Pass as quote_id when creating a payment to lock in the quoted fees.
+                          example: 5831ce86-cd88-4aba-b1fd-32dcf6e1a030
+                        expire_at:
+                          type: integer
+                          description: Unix timestamp when this quote expires. Request a new quote after expiry.
+                          example: 1770916749
+                        order_amount:
+                          type: string
+                          description: Order amount provided in the request, in USD.
+                          example: '100.00'
+                        integration_type:
+                          type: string
+                          example: PASS_THROUGH
+                        settlement_config:
+                          type: object
+                          properties:
+                            settlement_via:
+                              type: string
+                              example: FEE_RETENTION
+                            rebalance_fee:
+                              type: boolean
+                              example: false
+                            destination_details:
+                              type: object
+                              properties:
+                                wallet_address:
+                                  type: string
+                                  example: bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+                                currency:
+                                  type: string
+                                  example: BTC
+                                rail:
+                                  type: string
+                                  example: BITCOIN
+                        quote_estimation:
+                          type: object
+                          properties:
+                            payment_fee:
+                              type: string
+                              description: Fee charged by the exchange for processing the payment.
+                              example: '0.00'
+                            conversion_fee:
+                              type: string
+                              description: Fee charged for currency conversion where applicable.
+                              example: '0.00'
+                            withdrawal_fee:
+                              type: string
+                              description: Fee charged for withdrawing funds from the exchange.
+                              example: '0.00'
+                            gas_fee:
+                              type: string
+                              description: Blockchain network gas fee for the on-chain settlement transaction.
+                              example: '0.50'
+                            total_developer_fee:
+                              type: string
+                              description: 'Sum of developer-configured fees: fixed fee plus percentage of order_amount.'
+                              example: '2.65'
+                            total_fee:
+                              type: string
+                              description: 'Total of all fees: gas_fee + payment_fee + conversion_fee + withdrawal_fee + total_developer_fee.'
+                              example: '3.15'
+                            total_order_amount:
+                              type: string
+                              description: Gross amount charged to the payer. When rebalance_fee is false, settlement_amount equals order_amount minus total_fee.
+                              example: '100.00'
+                            ata_fee_applied:
+                              type: boolean
+                              description: Whether a Solana Associated Token Account creation fee was applied to gas_fee.
+                              example: false
+                - title: OKX
+                  type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        quote_id:
+                          type: string
+                          format: uuid
+                          description: Unique quote identifier. Pass as quote_id when creating a payment to lock in the quoted fees.
+                          example: e9d4c7b2-1a3f-4e85-90f2-c6d8a1b3e4f7
+                        expire_at:
+                          type: integer
+                          description: Unix timestamp when this quote expires. Request a new quote after expiry.
+                          example: 1770916749
+                        order_amount:
+                          type: string
+                          description: Order amount provided in the request, in USD.
+                          example: '100.00'
+                        integration_type:
+                          type: string
+                          example: OKX
+                        settlement_config:
+                          type: object
+                          properties:
+                            settlement_via:
+                              type: string
+                              example: ONE_TO_ONE
+                            rebalance_fee:
+                              type: boolean
+                              example: false
+                            destination_details:
+                              type: object
+                              properties:
+                                wallet_address:
+                                  type: string
+                                  example: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                                currency:
+                                  type: string
+                                  example: USDC
+                                rail:
+                                  type: string
+                                  example: SOLANA
+                        quote_estimation:
+                          type: object
+                          properties:
+                            payment_fee:
+                              type: string
+                              description: Fee charged by the exchange for processing the payment.
+                              example: '0.00'
+                            conversion_fee:
+                              type: string
+                              description: Fee charged for currency conversion where applicable.
+                              example: '0.00'
+                            withdrawal_fee:
+                              type: string
+                              description: Fee charged for withdrawing funds from the exchange.
+                              example: '0.00'
+                            gas_fee:
+                              type: string
+                              description: Blockchain network gas fee for the on-chain settlement transaction.
+                              example: '0.50'
+                            total_developer_fee:
+                              type: string
+                              description: 'Sum of developer-configured fees: fixed fee plus percentage of order_amount.'
+                              example: '2.65'
+                            total_fee:
+                              type: string
+                              description: 'Total of all fees: gas_fee + payment_fee + conversion_fee + withdrawal_fee + total_developer_fee.'
+                              example: '3.15'
+                            total_order_amount:
+                              type: string
+                              description: Gross amount charged to the payer. When rebalance_fee is false, settlement_amount equals order_amount minus total_fee.
+                              example: '106.30'
+                            ata_fee_applied:
+                              type: boolean
+                              description: Whether a Solana Associated Token Account creation fee was applied to gas_fee.
+                              example: false
+              examples:
+                Bybit:
+                  summary: Bybit
+                  value:
+                    data:
+                      quote_id: 4081fa09-7761-42b6-8f66-24beae1a2ca5
+                      expire_at: 1770916749
+                      order_amount: '100.00'
+                      integration_type: BYBIT
+                      settlement_config:
+                        settlement_via: MARKET_ORDER
+                        rebalance_fee: true
+                        destination_details:
+                          wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                          currency: USDC
+                          rail: SOLANA
+                      quote_estimation:
+                        payment_fee: '0.00'
+                        conversion_fee: '0.00'
+                        withdrawal_fee: '0.00'
+                        gas_fee: '0.50'
+                        total_fee: '0.50'
+                        total_order_amount: '100.00'
+                        ata_fee_applied: false
+                Pass Through:
+                  summary: Pass Through
+                  value:
+                    data:
+                      quote_id: 5831ce86-cd88-4aba-b1fd-32dcf6e1a030
+                      expire_at: 1770916749
+                      order_amount: '100.00'
+                      integration_type: PASS_THROUGH
+                      settlement_config:
+                        settlement_via: FEE_RETENTION
+                        rebalance_fee: false
+                        destination_details:
+                          wallet_address: bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+                          currency: BTC
+                          rail: BITCOIN
+                      quote_estimation:
+                        payment_fee: '0.00'
+                        conversion_fee: '0.00'
+                        withdrawal_fee: '0.00'
+                        gas_fee: '0.50'
+                        total_developer_fee: '2.65'
+                        total_fee: '3.15'
+                        total_order_amount: '100.00'
+                        ata_fee_applied: false
+                Kraken:
+                  summary: Kraken
+                  value:
+                    data:
+                      quote_id: 76e8bcc0-a6b4-41f7-b3d2-76cfbe910fe3
+                      expire_at: 1770916749
+                      order_amount: '100.00'
+                      integration_type: KRAKEN
+                      settlement_config:
+                        settlement_via: ONE_TO_ONE
+                        rebalance_fee: false
+                        destination_details:
+                          wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                          currency: PYUSD
+                          rail: SOLANA
+                      quote_estimation:
+                        payment_fee: '0.00'
+                        conversion_fee: '0.00'
+                        withdrawal_fee: '0.00'
+                        gas_fee: '0.50'
+                        total_developer_fee: '2.65'
+                        total_fee: '3.15'
+                        total_order_amount: '100.00'
+                        ata_fee_applied: false
+                OKX:
+                  summary: OKX
+                  value:
+                    data:
+                      quote_id: e9d4c7b2-1a3f-4e85-90f2-c6d8a1b3e4f7
+                      expire_at: 1770916749
+                      order_amount: '100.00'
+                      integration_type: OKX
+                      settlement_config:
+                        settlement_via: ONE_TO_ONE
+                        rebalance_fee: false
+                        destination_details:
+                          wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                          currency: USDC
+                          rail: SOLANA
+                      quote_estimation:
+                        payment_fee: '0.00'
+                        conversion_fee: '0.00'
+                        withdrawal_fee: '0.00'
+                        gas_fee: '0.50'
+                        total_developer_fee: '2.65'
+                        total_fee: '3.15'
+                        total_order_amount: '106.30'
+                        ata_fee_applied: false
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+components:
+  responses:
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint

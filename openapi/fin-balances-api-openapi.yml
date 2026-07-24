@@ -1,0 +1,66 @@
+openapi: 3.1.0
+info:
+  title: Fin.com Authentication Balances API
+  version: 1.0.0
+  description: A simple API specificationFo
+servers:
+- url: https://sandbox.api.fin.com
+  description: Sandbox server
+- url: https://api.fin.com
+  description: Production server
+tags:
+- name: Balances
+  description: Retrieve wallet balance information
+paths:
+  /v1/wallet/balances:
+    get:
+      summary: Fetch Prefunded Balance
+      description: Retrieve the current prefunded wallet balances
+      x-mint:
+        content: "<Note>\n  To enable prefundable wallets, you must first reach out to the fin.com\n  team to enable wallets for you for both **sandbox** and **production**\n</Note>\n"
+      tags:
+      - Balances
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Wallet balances retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        currency:
+                          type: string
+                          enum:
+                          - USD
+                          example: USD
+                        amount:
+                          type: integer
+                          description: Amount in cents (multiplied by 100)
+                          example: 150000
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+components:
+  responses:
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint

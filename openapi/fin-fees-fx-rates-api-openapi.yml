@@ -1,0 +1,448 @@
+openapi: 3.1.0
+info:
+  title: Fin.com Authentication Fees & FX Rates API
+  version: 1.0.0
+  description: A simple API specificationFo
+servers:
+- url: https://sandbox.api.fin.com
+  description: Sandbox server
+- url: https://api.fin.com
+  description: Production server
+tags:
+- name: Fees & FX Rates
+  description: Retrieve fees and foreign exchange rates
+paths:
+  /v1/fx-rate:
+    get:
+      summary: Fetch Exchange Rates
+      description: Retrieve exchange rates for a specific country or currency.
+      x-mint:
+        content: "<Note>\n  Provide either `country_code` or `currency_code`, but not both.\n</Note>\n"
+      tags:
+      - Fees & FX Rates
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: country_code
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/CountryCode'
+      - name: currency_code
+        in: query
+        required: false
+        schema:
+          type: string
+          pattern: ^[A-Z]{3}$
+        example: EUR
+      responses:
+        '200':
+          description: Exchange rates retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      from_currency:
+                        type: string
+                        example: USD
+                      to_currency:
+                        type: string
+                        example: EUR
+                      exchange_rate:
+                        type: number
+                        format: float
+                        example: 0.88
+                      valid_from:
+                        type: string
+                        format: date-time
+                        example: '2026-05-20T19:34:03Z'
+                      valid_till:
+                        type: string
+                        format: date-time
+                        example: '2026-05-20T20:34:03Z'
+              example:
+                data:
+                  from_currency: USD
+                  to_currency: EUR
+                  exchange_rate: 0.88
+                  valid_from: '2026-05-20T19:34:03Z'
+                  valid_till: '2026-05-20T20:34:03Z'
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+  /v1/fee-calculation:
+    post:
+      summary: Calculate Exchange Rates
+      description: Calculate exchange rates and applicable fees for a transaction.
+      x-mint:
+        content: 'Pass either `source_amount` or `destination_amount`. Use `beneficiary_id` instead of
+
+          `destination_currency` to get developer-fee-aware calculations.
+
+          '
+      tags:
+      - Fees & FX Rates
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source_currency:
+                  type: string
+                  pattern: ^[A-Z]{3}$
+                  example: USD
+                source_amount:
+                  type: number
+                  example: 3508679
+                destination_amount:
+                  type: number
+                  example: 59456
+                destination_currency:
+                  type: string
+                  pattern: ^[A-Z]{3}$
+                  example: CAD
+                beneficiary_id:
+                  type: string
+                  format: uuid
+                  example: ceb7e6c9-ef2a-41c2-8459-38d67ec3c655
+            examples:
+              With source amount:
+                value:
+                  source_currency: USD
+                  source_amount: 3508679
+                  destination_currency: CAD
+                  beneficiary_id: ceb7e6c9-ef2a-41c2-8459-38d67ec3c655
+              With destination amount:
+                value:
+                  source_currency: USD
+                  destination_amount: 59456
+                  destination_currency: CAD
+                  beneficiary_id: ceb7e6c9-ef2a-41c2-8459-38d67ec3c655
+      responses:
+        '200':
+          description: Fee calculation completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      source_currency:
+                        type: string
+                        example: USD
+                      destination_currency:
+                        type: string
+                        example: CAD
+                      source_amount:
+                        type: number
+                        example: 3508679
+                      exchange_rate:
+                        type: number
+                        format: float
+                        example: 1.45
+                      destination_amount:
+                        type: number
+                        example: 508679
+                      valid_till:
+                        type: string
+                        format: date-time
+                        example: '2026-01-19T09:59:29Z'
+                      fee:
+                        type: object
+                        properties:
+                          fixed:
+                            type: number
+                            example: 25
+                          percentage:
+                            type: number
+                            example: 4
+                          total:
+                            type: number
+                            example: 29
+                          is_fee_applied:
+                            type: boolean
+                            example: true
+        '401':
+          $ref: '#/components/responses/AuthenticationError'
+components:
+  responses:
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
+  schemas:
+    CountryCode:
+      type: string
+      description: ISO 3166-1 alpha-3 country code
+      example: USA
+      enum:
+      - AFG
+      - ALB
+      - DZA
+      - ASM
+      - AND
+      - AGO
+      - AIA
+      - ATA
+      - ATG
+      - ARG
+      - ARM
+      - ABW
+      - AUS
+      - AUT
+      - AZE
+      - BHS
+      - BHR
+      - BGD
+      - BRB
+      - BLR
+      - BEL
+      - BLZ
+      - BEN
+      - BMU
+      - BTN
+      - BOL
+      - BES
+      - BIH
+      - BWA
+      - BVT
+      - BRA
+      - IOT
+      - BRN
+      - BGR
+      - BFA
+      - BDI
+      - CPV
+      - KHM
+      - CMR
+      - CAN
+      - CYM
+      - CAF
+      - TCD
+      - CHL
+      - CHN
+      - CXR
+      - CCK
+      - COL
+      - COM
+      - COD
+      - COG
+      - COK
+      - CRI
+      - HRV
+      - CUB
+      - CUW
+      - CYP
+      - CZE
+      - CIV
+      - DNK
+      - DJI
+      - DMA
+      - DOM
+      - ECU
+      - EGY
+      - SLV
+      - GNQ
+      - ERI
+      - EST
+      - SWZ
+      - ETH
+      - FLK
+      - FRO
+      - FJI
+      - FIN
+      - FRA
+      - GUF
+      - PYF
+      - ATF
+      - GAB
+      - GMB
+      - GEO
+      - DEU
+      - GHA
+      - GIB
+      - GRC
+      - GRL
+      - GRD
+      - GLP
+      - GUM
+      - GTM
+      - GGY
+      - GIN
+      - GNB
+      - GUY
+      - HTI
+      - HMD
+      - VAT
+      - HND
+      - HKG
+      - HUN
+      - ISL
+      - IND
+      - IDN
+      - IRN
+      - IRQ
+      - IRL
+      - IMN
+      - ISR
+      - ITA
+      - JAM
+      - JPN
+      - JEY
+      - JOR
+      - KAZ
+      - KEN
+      - KIR
+      - PRK
+      - KOR
+      - KWT
+      - KGZ
+      - LAO
+      - LVA
+      - LBN
+      - LSO
+      - LBR
+      - LBY
+      - LIE
+      - LTU
+      - LUX
+      - MAC
+      - MDG
+      - MWI
+      - MYS
+      - MDV
+      - MLI
+      - MLT
+      - MHL
+      - MTQ
+      - MRT
+      - MUS
+      - MYT
+      - MEX
+      - FSM
+      - MDA
+      - MCO
+      - MNG
+      - MNE
+      - MSR
+      - MAR
+      - MOZ
+      - MMR
+      - NAM
+      - NRU
+      - NPL
+      - NLD
+      - NCL
+      - NZL
+      - NIC
+      - NER
+      - NGA
+      - NIU
+      - NFK
+      - MNP
+      - NOR
+      - OMN
+      - PAK
+      - PLW
+      - PSE
+      - PAN
+      - PNG
+      - PRY
+      - PER
+      - PHL
+      - PCN
+      - POL
+      - PRT
+      - PRI
+      - QAT
+      - MKD
+      - ROU
+      - RUS
+      - RWA
+      - REU
+      - BLM
+      - SHN
+      - KNA
+      - LCA
+      - MAF
+      - SPM
+      - VCT
+      - WSM
+      - SMR
+      - STP
+      - SAU
+      - SEN
+      - SRB
+      - SYC
+      - SLE
+      - SGP
+      - SXM
+      - SVK
+      - SVN
+      - SLB
+      - SOM
+      - ZAF
+      - SGS
+      - SSD
+      - ESP
+      - LKA
+      - SDN
+      - SUR
+      - SJM
+      - SWE
+      - CHE
+      - SYR
+      - TWN
+      - TJK
+      - TZA
+      - THA
+      - TLS
+      - TGO
+      - TKL
+      - TON
+      - TTO
+      - TUN
+      - TUR
+      - TKM
+      - TCA
+      - TUV
+      - UGA
+      - UKR
+      - ARE
+      - GBR
+      - UMI
+      - USA
+      - URY
+      - UZB
+      - VUT
+      - VEN
+      - VNM
+      - VGB
+      - VIR
+      - WLF
+      - ESH
+      - YEM
+      - ZMB
+      - ZWE
+      - ALA
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint
