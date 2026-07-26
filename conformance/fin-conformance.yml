@@ -1,0 +1,38 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fin-openapi-original.yml
+notes: >-
+  Standards conformance derived from the OpenAPI spec and developer docs. No
+  published third-party certification program (SOC 2 / ISO 27001 / PCI DSS) was
+  found on a trust page, so no Compliance pointer is emitted; the entries below
+  assert cross-cutting/technical standards only. Fin.com operates licensed
+  entities (UAE, Lithuania) and runs KYC/KYB onboarding and compliance SLAs.
+standards:
+- id: oauth2-client-credentials
+  conforms: true
+  evidence: docs describe an OAuth 2.0 client-credentials token flow (/v1/oauth/token)
+- id: http-bearer-jwt
+  conforms: true
+  evidence: openapi securityScheme type http scheme bearer bearerFormat JWT
+- id: openapi-3.1
+  conforms: true
+  evidence: spec is openapi 3.1.0 with a webhooks object
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors are custom JSON, not application/problem+json
+- id: hmac-webhook-signatures
+  conforms: true
+  evidence: webhooks signed with HMAC-SHA256 via x-fin-signature header
+- id: iso-3166-country-codes
+  conforms: true
+  evidence: catalogue endpoints return ISO 3166-1 alpha-3 and ISO 3166-2 codes
+- id: iso-4217-currency-codes
+  conforms: true
+  evidence: multi-currency amounts and FX endpoints use ISO 4217 currency codes
+- id: kyc-kyb-onboarding
+  conforms: true
+  evidence: individual/business customer onboarding with identity/ownership document verification
+- id: fhir-r4
+  conforms: false
+- id: scim-2.0
+  conforms: false

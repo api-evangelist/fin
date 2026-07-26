@@ -1,0 +1,62 @@
+generated: '2026-07-19'
+method: searched
+source: openapi/fin-openapi-original.yml
+docs: https://developer.fin.com/
+summary: >-
+  Cross-cutting request/response semantics for the Fin.com Orchestration API,
+  derived from the OpenAPI 3.1 spec and the developer docs. No idempotency-key
+  mechanism is documented; retries are not covered by an idempotency contract.
+authentication:
+  style: oauth2-client-credentials + http bearer (JWT)
+  token_endpoint: /v1/oauth/token
+  refresh_endpoint: /v1/oauth/refresh-token
+  ref: authentication/fin-authentication.yml
+versioning:
+  scheme: uri-path
+  versions: [v1, v2, v3]
+  notes: >-
+    Version is encoded in the URL path (e.g. /v1/customers, /v2/customers,
+    /v3/beneficiaries). Newer major versions of a resource run alongside older
+    ones during migration windows.
+  ref: lifecycle/fin-lifecycle.yml
+pagination:
+  style: page-number
+  request_params:
+    - current_page   # 1-based page index
+    - per_page       # results per page, must be between 1 and 100
+  response_fields:
+    - current_page
+    - per_page
+    - total_page
+  envelope: Responses carry a `pagination` object (schema components.schemas.Pagination).
+idempotency:
+  supported: false
+  notes: >-
+    No Idempotency-Key header or idempotency contract is documented in the spec
+    or docs. Some write operations self-guard against duplicates by returning
+    409 Conflict (e.g. duplicate beneficiary account details, an attach already
+    in flight, wallets that already exist).
+request_tracing:
+  request_id_header: null
+  notes: No request-id / trace-id correlation header is documented.
+error_envelope:
+  format: custom-json
+  problem_json: false
+  notes: >-
+    Errors are returned as JSON (not RFC 9457 application/problem+json). 422
+    responses carry Fin-detected validation errors; see errors/.
+  ref: errors/fin-problem-types.yml
+rate_limiting:
+  signaled: false
+  notes: No rate-limit response headers (X-RateLimit-*, Retry-After) are documented in the spec.
+webhooks:
+  delivery: HTTP POST
+  signature_header: x-fin-signature
+  algorithm_header: x-fin-signature-algorithm
+  algorithm_default: sha256 (HMAC)
+  verification: >-
+    Compute HMAC over the raw request body using your webhook secret and the
+    algorithm from x-fin-signature-algorithm; constant-time compare against
+    x-fin-signature.
+  docs: https://developer.fin.com/guides/webhooks/verifying-webhooks
+  ref: asyncapi/fin-webhooks.yml

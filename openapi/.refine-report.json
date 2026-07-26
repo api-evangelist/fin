@@ -1,0 +1,30 @@
+{
+  "provider": "fin",
+  "sources": [
+    "fin-authentication-api-openapi.yml",
+    "fin-balances-api-openapi.yml",
+    "fin-beneficiaries-api-openapi.yml",
+    "fin-catalogue-api-openapi.yml",
+    "fin-crypto-orchestration-api-openapi.yml",
+    "fin-customers-api-openapi.yml",
+    "fin-fees-fx-rates-api-openapi.yml",
+    "fin-transactions-api-openapi.yml",
+    "fin-virtual-accounts-api-openapi.yml"
+  ],
+  "outputs": [
+    "fin-authentication-api-openapi.yml",
+    "fin-balances-api-openapi.yml",
+    "fin-beneficiaries-api-openapi.yml",
+    "fin-catalogue-api-openapi.yml",
+    "fin-crypto-orchestration-api-openapi.yml",
+    "fin-customers-api-openapi.yml",
+    "fin-fees-fx-rates-api-openapi.yml",
+    "fin-transactions-api-openapi.yml",
+    "fin-virtual-accounts-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

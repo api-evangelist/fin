@@ -1,0 +1,196 @@
+generated: '2026-07-19'
+method: derived
+status: candidate
+source: openapi/fin-openapi-original.yml
+note: No official/hosted Fin.com MCP server was found. Candidate tool list derived one-tool-per-operation
+  from the OpenAPI spec; not a published server.
+server:
+  name: fin
+  transport: http
+tools:
+- name: issue_a_token
+  description: Issue a Token
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/oauth/token]
+- name: refresh_a_token
+  description: Refresh a Token
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/oauth/refresh-token]
+- name: list_customers_v2
+  description: List Customers V2
+  source_operation: openapi/fin-openapi-original.yml [GET /v2/customers]
+- name: list_customers
+  description: List Customers
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/customers]
+- name: get_customer_details_v2
+  description: Get Customer Details V2
+  source_operation: openapi/fin-openapi-original.yml [GET /v2/customers/{customer_id}]
+- name: get_customer_details
+  description: Get Customer Details
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/customers/{customer_id}]
+- name: update_customer
+  description: Update Customer
+  source_operation: openapi/fin-openapi-original.yml [PATCH /v1/customers/{customer_id}]
+- name: create_customer_wallets
+  description: Create Customer Wallets
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/customers/{customer_id}/wallets]
+- name: get_customer_wallets
+  description: Get Customer Wallets
+  source_operation: openapi/fin-openapi-original.yml [GET /v2/customers/{customer_id}/wallets]
+- name: get_customer_capabilities
+  description: Get Customer Capabilities
+  source_operation: openapi/fin-openapi-original.yml [GET /v2/customers/{customer_id}/capabilities]
+- name: create_individual_customer_v2
+  description: Create Individual Customer V2
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/customers/individual]
+- name: create_individual_customer
+  description: Create Individual Customer
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/customers/individual]
+- name: create_business_customer_v2
+  description: Create Business Customer V2
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/customers/business]
+- name: create_business_customer
+  description: Create Business Customer
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/customers/business]
+- name: upload_document
+  description: Upload Document
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/customers/upload]
+- name: attach_documents_to_individual_customer_v2
+  description: Attach Documents to Individual Customer V2
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/customers/{customer_id}/individual/attach]
+- name: attach_documents_to_individual_customer
+  description: Attach Documents to Individual Customer
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/customers/individual/attach]
+- name: attach_document_to_associated_party
+  description: Attach Document To Associated Party
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/customers/associated-parties/individual/attach]
+- name: attach_documents_to_business_customer
+  description: Attach Documents to Business Customer
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/customers/business/attach]
+- name: enable_usd_features
+  description: Enable USD Features
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/customers/enable-preference]
+- name: attach_documents_to_business_customer_v2
+  description: Attach Documents to Business Customer V2
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/customers/{customer_id}/business/attach]
+- name: attach_documents_to_associated_party_v2
+  description: Attach Documents to Associated Party V2
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/customers/{customer_id}/associated-parties/individual/attach]
+- name: list_available_countries
+  description: List Available Countries
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/beneficiaries/countries]
+- name: list_bank_identifiers
+  description: List Bank Identifiers
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/beneficiaries/methods]
+- name: list_bank_branch_identifiers
+  description: List Bank Branch Identifiers
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/beneficiaries/methods/{method_id}/branches]
+- name: create_beneficiary_v3
+  description: Create Beneficiary V3
+  source_operation: openapi/fin-openapi-original.yml [POST /v3/beneficiaries]
+- name: create_beneficiary
+  description: Create Beneficiary
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/beneficiaries]
+- name: list_beneficiaries_for_a_customer
+  description: List Beneficiaries For a Customer
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/customers/{customer_id}/beneficiaries]
+- name: fetch_beneficiary_details_v2
+  description: Fetch Beneficiary Details v2
+  source_operation: openapi/fin-openapi-original.yml [GET /v2/beneficiaries/details]
+- name: fetch_beneficiary_details_v1
+  description: Fetch Beneficiary Details v1
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/beneficiaries/details]
+- name: update_beneficiary_active_status
+  description: Update Beneficiary Active Status
+  source_operation: openapi/fin-openapi-original.yml [PATCH /v1/beneficiaries]
+- name: upload_beneficiary_documents
+  description: Upload Beneficiary Documents
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/beneficiaries/{beneficiary_id}/documents]
+- name: list_customer_transactions
+  description: List Customer Transactions
+  source_operation: openapi/fin-openapi-original.yml [GET /v2/transactions]
+- name: execute_quote
+  description: Execute Quote
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/transactions]
+- name: list_beneficiary_transactions
+  description: List Beneficiary Transactions
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/beneficiaries/{beneficiary_id}/transactions]
+- name: create_a_transfer
+  description: Create a Transfer
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/transactions/transfer-payout]
+- name: settle_a_transfer
+  description: Settle a Transfer
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/transactions/transfer-payout/settle]
+- name: execute_batch_transfer
+  description: Execute Batch Transfer
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/batch/transactions/commit]
+- name: fetch_batch_details
+  description: Fetch Batch Details
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/batch/transactions/commit/{batch_id}]
+- name: create_quote
+  description: Create Quote
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/transactions/quote]
+- name: get_transaction_by_id_v2
+  description: Fetch Transaction Details V2
+  source_operation: openapi/fin-openapi-original.yml [GET /v2/transactions/{transaction_id}]
+- name: get_transaction_by_id
+  description: Fetch Transaction Details V1
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/transactions/{transaction_id}]
+- name: create_a_payment
+  description: Create a Payment
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/transit/payment]
+- name: fetch_a_payment
+  description: Fetch a Payment
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/transit/payment/{payment_id}]
+- name: create_a_crypto_payment_quote
+  description: Create a crypto payment quote
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/transit/quote]
+- name: fetch_prefunded_balance
+  description: Fetch Prefunded Balance
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/wallet/balances]
+- name: create_virtual_account_v2
+  description: Create Virtual Account V2
+  source_operation: openapi/fin-openapi-original.yml [POST /v2/customers/{customer_id}/virtual-accounts]
+- name: list_virtual_accounts_v2
+  description: List Virtual Accounts V2
+  source_operation: openapi/fin-openapi-original.yml [GET /v2/customers/{customer_id}/virtual-accounts]
+- name: list_virtual_accounts_v1
+  description: List Virtual Accounts V1
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/customers/virtual-account]
+- name: create_virtual_account
+  description: Create Virtual Account
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/customers/virtual-account]
+- name: update_virtual_account
+  description: Update Virtual Account
+  source_operation: openapi/fin-openapi-original.yml [PUT /v1/customers/virtual-account]
+- name: fetch_virtual_account_transactions
+  description: Fetch Virtual Account Transactions
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/virtual-account/{virtual_account_id}/transactions]
+- name: fetch_exchange_rates
+  description: Fetch Exchange Rates
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/fx-rate]
+- name: calculate_exchange_rates
+  description: Calculate Exchange Rates
+  source_operation: openapi/fin-openapi-original.yml [POST /v1/fee-calculation]
+- name: list_industries
+  description: List Industries
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/industries]
+- name: list_occupations
+  description: List Occupations
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/occupations]
+- name: list_source_of_funds
+  description: List Source of Funds
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/source-of-funds]
+- name: list_source_of_wealth
+  description: List Source of Wealth
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/source-of-wealth]
+- name: list_account_purposes
+  description: List Account Purposes
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/purposes]
+- name: list_generic_country_codes
+  description: List Generic Country Codes
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/countries]
+- name: list_subdivision_codes_iso_3166_1_alpha_2
+  description: 'List Subdivision Codes: ISO 3166-1 alpha-2'
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/countries/{country_code}/subdivisions]
+- name: list_transaction_purposes
+  description: List Transaction Purposes
+  source_operation: openapi/fin-openapi-original.yml [GET /v1/transaction-purposes]

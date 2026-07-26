@@ -1,0 +1,25 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Fin.com API
+  version: 1.0.0
+extends: openapi/fin-openapi-original.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-rating: 4
+    x-apievangelist-notes: >-
+      Payments/money-movement API (cross-border stablecoin rails). Strong: 62
+      operations across 8 tags, 13 HMAC-signed webhook events, sandbox + prod
+      environments, dated changelog with a documented deprecation policy, in-spec
+      response examples. Gaps to raise with the provider: 58 of 62 operations have
+      no operationId; errors are custom JSON rather than RFC 9457
+      application/problem+json; no idempotency-key contract; no rate-limit
+      response headers documented.
+- target: $.info
+  update:
+    x-apievangelist-conventions:
+      pagination: page-number (current_page / per_page 1-100, pagination envelope)
+      auth: oauth2 client-credentials -> http bearer JWT
+      versioning: uri-path (v1/v2/v3)
+      webhooks: HMAC-SHA256 via x-fin-signature
+      idempotency: not documented

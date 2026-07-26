@@ -1,0 +1,21 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.fin.com/
+docs: https://developer.fin.com/faqs/technical-integration
+notes: >-
+  Fin.com exposes a fully separate Sandbox environment addressed by its own host,
+  distinct from Production. Sandbox credentials (client_id / client_secret) are
+  issued per account; no public/global magic test values are published in the
+  docs, so none are recorded here (never invented). Test tokens are obtained the
+  same way as live tokens, against the sandbox token endpoint.
+environments:
+- name: sandbox
+  base_url: https://sandbox.api.fin.com
+  token_endpoint: https://sandbox.api.fin.com/v1/oauth/token
+- name: production
+  base_url: https://api.fin.com
+  token_endpoint: https://api.fin.com/v1/oauth/token
+test_vs_live:
+  separation: distinct host per environment (sandbox.api.fin.com vs api.fin.com)
+  credentials: per-account OAuth client credentials; sandbox keys are separate from live keys
+magic_test_values: []

@@ -1,8 +1,16 @@
 aid: fin
 name: Fin
-description: 'Fin is a company surfaced as a portfolio company of accel, iconiq-capital, kleiner-perkins
-  and added to the API Evangelist network as a stub for enrichment. Sector: ai. This profile is a lead
-  awaiting the enrichment pipeline.'
+description: >-
+  Fin (fin.com) is a global cross-border payments infrastructure company that moves
+  money internationally over stablecoin rails and direct liquidity networks instead
+  of traditional correspondent banking, settling in minutes rather than days. Its
+  Orchestration API lets businesses onboard individual and business customers
+  (KYC/KYB), create beneficiaries, quote FX and fees, send transfer and batch
+  payouts, provision multi-currency virtual accounts that convert fiat deposits to
+  crypto (e.g. USD to USDC), and run crypto orchestration across exchanges. Founded
+  by ex-Citadel engineers, Fin raised a $17M Series A to bring its stablecoin-powered
+  high-value payments product to market. This profile was enriched from the public
+  developer surface at developer.fin.com.
 url: https://raw.githubusercontent.com/api-evangelist/fin/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -10,20 +18,280 @@ x-backed-by:
 - accel
 - iconiq-capital
 - kleiner-perkins
-x-tier: stub
+x-backed-by-note: >-
+  Inherited from the VC-portfolio stub that seeded this repo and left unverified.
+  Public reporting attributes fin.com's $17M Series A to Pantera Capital, Sequoia
+  Capital and Samsung Next; the listed firms were not confirmed for this entity.
+x-tier: enriched
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://cdn.sanity.io/images/xemwqsar/production/0e65aec0795ced77ed5301b8627cbb88059d11d2-1200x630.webp?w=1200&h=630&q=80&fit=crop
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-19'
 tags:
 - Company
-- Ai
-apis: []
+- Payments
+- Cross-Border Payments
+- Stablecoins
+- Fintech
+- Money Movement
+- Foreign Exchange
+- Virtual Accounts
+- Crypto
+apis:
+- aid: fin:fin-authentication-api
+  name: Fin Authentication API
+  description: A modified OAuth 2.0 Client Credential Flow
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-authentication-api-openapi.yml
+  - type: Authentication
+    url: authentication/fin-authentication.yml
+  - type: Webhooks
+    url: asyncapi/fin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/fin-problem-types.yml
+  - type: Conventions
+    url: conventions/fin-conventions.yml
+  - type: DataModel
+    url: data-model/fin-data-model.yml
+- aid: fin:fin-balances-api
+  name: Fin Balances API
+  description: Retrieve wallet balance information
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Balances
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-balances-api-openapi.yml
+  - type: Authentication
+    url: authentication/fin-authentication.yml
+  - type: Webhooks
+    url: asyncapi/fin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/fin-problem-types.yml
+  - type: Conventions
+    url: conventions/fin-conventions.yml
+  - type: DataModel
+    url: data-model/fin-data-model.yml
+- aid: fin:fin-beneficiaries-api
+  name: Fin Beneficiaries API
+  description: Manage beneficiary accounts for payments and transfers
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Beneficiaries
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-beneficiaries-api-openapi.yml
+  - type: Authentication
+    url: authentication/fin-authentication.yml
+  - type: Webhooks
+    url: asyncapi/fin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/fin-problem-types.yml
+  - type: Conventions
+    url: conventions/fin-conventions.yml
+  - type: DataModel
+    url: data-model/fin-data-model.yml
+- aid: fin:fin-catalogue-api
+  name: Fin Catalogue API
+  description: >-
+    A set of endpoints to retrieve contextual data to assemble requests
+
+    to fin.com's API
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Catalogue
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-catalogue-api-openapi.yml
+  - type: Authentication
+    url: authentication/fin-authentication.yml
+  - type: Webhooks
+    url: asyncapi/fin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/fin-problem-types.yml
+  - type: Conventions
+    url: conventions/fin-conventions.yml
+  - type: DataModel
+    url: data-model/fin-data-model.yml
+- aid: fin:fin-crypto-orchestration-api
+  name: Fin Crypto Orchestration API
+  description: The Crypto Orchestration API from Fin — 3 operation(s) for crypto orchestration.
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Crypto Orchestration
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-crypto-orchestration-api-openapi.yml
+  - type: Authentication
+    url: authentication/fin-authentication.yml
+  - type: Webhooks
+    url: asyncapi/fin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/fin-problem-types.yml
+  - type: Conventions
+    url: conventions/fin-conventions.yml
+  - type: DataModel
+    url: data-model/fin-data-model.yml
+- aid: fin:fin-customers-api
+  name: Fin Customers API
+  description: Customer management and document upload operations
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-customers-api-openapi.yml
+  - type: Authentication
+    url: authentication/fin-authentication.yml
+  - type: Webhooks
+    url: asyncapi/fin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/fin-problem-types.yml
+  - type: Conventions
+    url: conventions/fin-conventions.yml
+  - type: DataModel
+    url: data-model/fin-data-model.yml
+- aid: fin:fin-fees-fx-rates-api
+  name: Fin Fees & FX Rates API
+  description: Retrieve fees and foreign exchange rates
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Fees & FX Rates
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-fees-fx-rates-api-openapi.yml
+  - type: Authentication
+    url: authentication/fin-authentication.yml
+  - type: Webhooks
+    url: asyncapi/fin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/fin-problem-types.yml
+  - type: Conventions
+    url: conventions/fin-conventions.yml
+  - type: DataModel
+    url: data-model/fin-data-model.yml
+- aid: fin:fin-transactions-api
+  name: Fin Transactions API
+  description: Transaction history and management for beneficiaries
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-transactions-api-openapi.yml
+  - type: Authentication
+    url: authentication/fin-authentication.yml
+  - type: Webhooks
+    url: asyncapi/fin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/fin-problem-types.yml
+  - type: Conventions
+    url: conventions/fin-conventions.yml
+  - type: DataModel
+    url: data-model/fin-data-model.yml
+- aid: fin:fin-virtual-accounts-api
+  name: Fin Virtual Accounts API
+  description: Create and manage virtual accounts for USD to USDC conversions
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Virtual Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-virtual-accounts-api-openapi.yml
+  - type: Authentication
+    url: authentication/fin-authentication.yml
+  - type: Webhooks
+    url: asyncapi/fin-webhooks.yml
+  - type: ErrorCatalog
+    url: errors/fin-problem-types.yml
+  - type: Conventions
+    url: conventions/fin-conventions.yml
+  - type: DataModel
+    url: data-model/fin-data-model.yml
+common:
+- type: DeveloperPortal
+  url: https://developer.fin.com/
+- type: Documentation
+  url: https://developer.fin.com/
+- type: APIReference
+  url: https://developer.fin.com/api-reference
+- type: GettingStarted
+  url: https://developer.fin.com/index
+- type: OpenAPI
+  url: openapi/fin-openapi-original.yml
+- type: Overlay
+  url: overlays/fin-openapi-overlay.yaml
+- type: Authentication
+  url: authentication/fin-authentication.yml
+- type: Conventions
+  url: conventions/fin-conventions.yml
+- type: ErrorCatalog
+  url: errors/fin-problem-types.yml
+- type: Webhooks
+  url: asyncapi/fin-webhooks.yml
+- type: Conformance
+  url: conformance/fin-conformance.yml
+- type: Lifecycle
+  url: lifecycle/fin-lifecycle.yml
+- type: StatusPage
+  url: https://fin.instatus.com
+- type: Deprecation
+  url: https://developer.fin.com/changelogs/2026-04-20
+- type: ChangeLog
+  url: changelog/fin-changelog.yml
+- type: Sandbox
+  url: sandbox/fin-sandbox.yml
+- type: DataModel
+  url: data-model/fin-data-model.yml
+- type: MCPServer
+  url: mcp/fin-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: AgenticAccess
+  url: agentic-access/fin-agentic-access.yml
+- type: DomainSecurity
+  url: security/fin-domain-security.yml
+- type: LLMsTxt
+  url: llms/fin-llms.txt
+- type: Support
+  url: mailto:support@fin.com
+- type: Blog
+  url: https://www.fin.com/stories
+- type: Website
+  url: https://www.fin.com
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
-common:
-- type: Website
-  url: http://www.fin.com
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

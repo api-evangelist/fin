@@ -1,0 +1,42 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fin-openapi-original.yml
+format: custom-json
+notes: >-
+  Derived from the 4xx/5xx responses declared across the Fin.com OpenAPI. Errors
+  are returned as JSON, NOT RFC 9457 application/problem+json. Descriptions are
+  taken verbatim from the spec's response descriptions. 401 Unauthorized is
+  declared on nearly every operation (missing/invalid bearer token).
+problems:
+- status: 400
+  title: Bad Request
+  detail: Invalid input format, malformed JSON / unparseable payload, or validation failed.
+- status: 401
+  title: Unauthorized
+  detail: Missing, invalid, or expired bearer token. Re-issue a token via /v1/oauth/token.
+- status: 403
+  title: Forbidden
+  detail: >-
+    Resource not owned by the client, wrong api_version, resource not in an
+    allowed status, or the referenced payment/customer does not belong to you.
+- status: 404
+  title: Not Found
+  detail: Customer, transaction, or payment ID not found.
+- status: 409
+  title: Conflict
+  detail: >-
+    Duplicate resource or an operation already in flight (e.g. a beneficiary with
+    the same account details already exists, another attach for the customer is
+    in flight, or one or more requested wallets already exist).
+- status: 422
+  title: Unprocessable Entity
+  detail: Validation error detected by Fin.
+- status: 423
+  title: Locked
+  detail: The requested capability is not available for your client (e.g. RELIANCE verification not enabled).
+- status: 428
+  title: Precondition Required / Provider Error
+  detail: Error thrown from an upstream provider; forwards the partner's HTTP status code.
+- status: 500
+  title: Internal Server Error
+  detail: Internal server error.

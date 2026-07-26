@@ -1,0 +1,26 @@
+generated: '2026-07-19'
+method: generated
+source: openapi/fin-openapi-original.yml
+note: >-
+  Packaged Agent Skills for Fin.com marquee flows. Steps are grounded in real
+  operations from the OpenAPI (referenced by method+path; the spec omits
+  operationIds on most operations). No provider-published skills/AGENTS.md were found.
+skills:
+- file: fin-onboard-and-payout.md
+  name: Onboard a customer and send a cross-border payout
+  api: openapi/fin-openapi-original.yml
+  operations:
+    - POST /v1/oauth/token
+    - POST /v2/customers/individual
+    - POST /v3/beneficiaries
+    - POST /v1/fee-calculation
+    - POST /v1/transactions/transfer-payout
+    - GET /v1/transactions/{transaction_id}
+- file: fin-virtual-account-collect.md
+  name: Provision a virtual account to collect and convert funds
+  api: openapi/fin-openapi-original.yml
+  operations:
+    - POST /v1/oauth/token
+    - POST /v2/customers/{customer_id}/virtual-accounts
+    - GET /v2/customers/{customer_id}/virtual-accounts
+    - GET /v1/virtual-account/{virtual_account_id}/transactions

@@ -1,0 +1,67 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fin-openapi-original.yml
+notes: >-
+  Entity-relationship graph derived from the Fin.com OpenAPI paths, schemas, and
+  id-reference path parameters (customer_id, beneficiary_id, virtual_account_id,
+  batch_id, transaction_id, payment_id). Identifiers are UUIDs.
+entities:
+- name: Customer
+  kind: individual | business
+  schemas: [IndividualCustomerDetailV2, BusinessCustomerDetailV2, IndividualCustomerData, BusinessCustomerData]
+  id_param: customer_id
+- name: AssociatedParty
+  note: UBOs / directors attached to a business customer
+  schemas: [V2AssociatedParty]
+- name: Beneficiary
+  schemas: [BeneficiaryWebhookData]
+  id_param: beneficiary_id
+- name: Transaction
+  kinds: [transfer-payout, batch, crypto-withdrawal, quote]
+  id_param: transaction_id
+- name: BatchTransaction
+  id_param: batch_id
+- name: VirtualAccount
+  schemas: [VirtualAccount, VirtualAccountWebhookData, VirtualAccountV2StatusWebhookData]
+  id_param: virtual_account_id
+- name: CustomerWallet
+  schemas: [CustomerWallet]
+  note: crypto wallets provisioned per customer across chains/tokens (POLYGON/ETHEREUM/SOLANA -> USDC)
+- name: TransitPayment
+  note: crypto orchestration payment (ByBit / Kraken / OKX / Pass Through)
+  id_param: payment_id
+relationships:
+- from: Customer
+  to: Beneficiary
+  type: has_many
+  via: customer_id
+- from: Customer
+  to: AssociatedParty
+  type: has_many
+  via: associated party attach on business customer
+- from: Customer
+  to: VirtualAccount
+  type: has_many
+  via: customer_id
+- from: Customer
+  to: CustomerWallet
+  type: has_many
+  via: customer_id
+- from: Customer
+  to: Transaction
+  type: has_many
+  via: customer_id
+- from: Beneficiary
+  to: Transaction
+  type: has_many
+  via: beneficiary_id
+- from: BatchTransaction
+  to: Transaction
+  type: has_many
+  via: batch items
+- from: Transaction
+  belongs_to: Customer
+  via: customer_id
+- from: Beneficiary
+  belongs_to: Customer
+  via: customer_id

@@ -1,0 +1,39 @@
+generated: '2026-07-19'
+method: derived
+source: openapi/fin-openapi-original.yml
+spec_type: Webhooks
+docs: https://developer.fin.com/guides/webhooks/verifying-webhooks
+delivery: HTTP POST to a subscriber-configured endpoint
+envelope_schema: components.schemas.WebhookEventEnvelope
+signature:
+  header: x-fin-signature
+  algorithm_header: x-fin-signature-algorithm
+  algorithm_default: sha256
+  scheme: HMAC over the raw request body using the webhook secret; constant-time compare
+events:
+- event: transit.payment.status
+  description: Triggered when a transit (crypto orchestration) payment's status changes through the payment and settlement flow.
+- event: customer.created
+  description: Triggered when a customer is successfully created.
+- event: customer.status
+  description: Triggered when a customer's status changes during verification.
+- event: customer.rfi
+  description: Triggered when compliance requests additional information/documents (customer status ACTION_REQUIRED).
+- event: transaction.status
+  description: Triggered when a transaction's status changes.
+- event: virtual_account.created
+  description: Triggered when a new virtual account (v1) is created for a customer.
+- event: virtual_account.created.v2
+  description: Triggered when a new v2 virtual account is created for a customer.
+- event: virtual_account.status
+  description: Triggered when a virtual account's (v1) status changes.
+- event: virtual_account.status.v2
+  description: Triggered when a v2 virtual account's status changes.
+- event: beneficiary.created
+  description: Triggered when a new beneficiary is created.
+- event: beneficiary.status
+  description: Triggered when a beneficiary's status changes.
+- event: beneficiary.liquidation.deposit
+  description: Triggered when any transfer hits a beneficiary's liquidation address.
+- event: batch.transaction.item.status
+  description: Triggered when a batch transaction item's status changes after committing a batch.

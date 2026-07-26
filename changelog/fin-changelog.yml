@@ -1,0 +1,49 @@
+generated: '2026-07-19'
+method: searched
+source: https://developer.fin.com/llms.txt
+docs: https://developer.fin.com/changelogs/2026-07-14
+scheme: dated
+notes: >-
+  Fin.com publishes a dated changelog. Recent window captured below from the
+  changelog index; highlights for the two most recent entries were read from the
+  entry pages. Full history lives on the live changelog.
+entries:
+- date: '2026-07-14'
+  breaking: true
+  highlights: >-
+    Pay-in endpoints (POST/GET /v2/transactions/pay-ins) temporarily unavailable,
+    returning early August 2026. Create Virtual Account V2 gained EUR and MXN
+    source currencies and FEDNOW/SEPA/SPEI rails. New POST /v2/customers/{id}/wallets
+    provisions multiple crypto wallets asynchronously (POLYGON/ETHEREUM/SOLANA ->
+    USDC). Get Customer Wallets now returns a status field.
+- date: '2026-06-16'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-06-10'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-05-01'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-04-20'
+  breaking: true
+  highlights: >-
+    API migration guide; v1->v2 and v2->v3 endpoint deprecations with a
+    May 20, 2026 deadline. See lifecycle/fin-lifecycle.yml.
+- date: '2026-04-13'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-02-16'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-02-11'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-02-10'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-02-03'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-01-25'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-01-19'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-01-09'
+  highlights: Changelog entry (see live changelog).
+- date: '2026-01-02'
+  highlights: Changelog entry (see live changelog).
+- date: '2025-12-31'
+  highlights: Changelog entry (see live changelog).

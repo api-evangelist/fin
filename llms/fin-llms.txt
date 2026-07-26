@@ -1,0 +1,138 @@
+# Fin.com
+
+## Docs
+
+- [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token.md): Generate an access token using client credentials
+- [Refresh a Token](https://developer.fin.com/api-reference/authentication/refresh-a-token.md): Generate a new token pair based on a refresh token.
+- [Fetch Prefunded Balance](https://developer.fin.com/api-reference/balances/fetch-prefunded-balance.md): Retrieve the current prefunded wallet balances
+- [Create Beneficiary](https://developer.fin.com/api-reference/beneficiaries/create-beneficiary.md): Create a new beneficiary account for payments and transfers
+- [Create Beneficiary V3](https://developer.fin.com/api-reference/beneficiaries/create-beneficiary-v3.md): Create a new beneficiary for payments and transfers. Supports bank accounts, e-wallets, and external crypto wallets as destination types.
+- [Fetch Beneficiary Details v1](https://developer.fin.com/api-reference/beneficiaries/fetch-beneficiary-details-v1.md): Retrieve detailed information for a specific beneficiary
+- [Fetch Beneficiary Details v2](https://developer.fin.com/api-reference/beneficiaries/fetch-beneficiary-details-v2.md): Retrieve detailed information for a specific beneficiary. Returns structured data for bank accounts, e-wallets, and external crypto wallet destinations.
+- [List Available Countries](https://developer.fin.com/api-reference/beneficiaries/list-available-countries.md): Retrieve a list of countries supported for beneficiary creation with available payment methods and phone validation rules
+- [List Bank Branch Identifiers](https://developer.fin.com/api-reference/beneficiaries/list-bank-branch-identifiers.md): Retrieve a list of available branches for a specific bank or payment method
+- [List Bank Identifiers](https://developer.fin.com/api-reference/beneficiaries/list-bank-identifiers.md): Retrieve a list of available banks or e-wallet providers for a specific country and method type
+- [List Beneficiaries For a Customer](https://developer.fin.com/api-reference/beneficiaries/list-beneficiaries-for-a-customer.md): Retrieve all beneficiaries associated with a specific customer
+- [Update Beneficiary Active Status](https://developer.fin.com/api-reference/beneficiaries/update-beneficiary-active-status.md): Update the active status of a beneficiary to enable or disable it
+- [List Account Purposes](https://developer.fin.com/api-reference/catalogue/list-account-purposes.md): Retrieve a list of available account purposes
+- [List Generic Country Codes](https://developer.fin.com/api-reference/catalogue/list-countries.md): Retrieve a list of country specific codes following ISO 3166-1 alpha-3 standard
+- [List Industries](https://developer.fin.com/api-reference/catalogue/list-industries.md): Retrieve a list of available industries
+- [List Occupations](https://developer.fin.com/api-reference/catalogue/list-occupations.md): Retrieve a list of available occupations
+- [List Source of Funds](https://developer.fin.com/api-reference/catalogue/list-source-of-funds.md): Retrieve a list of available source of funds
+- [List Source of Wealth](https://developer.fin.com/api-reference/catalogue/list-source-of-wealth.md): Retrieve a list of available source of wealth options
+- [List Subdivision Codes: ISO 3166-1 alpha-2](https://developer.fin.com/api-reference/catalogue/list-subdivisions.md): Retrieve a list of subdivision codes for a specific country following ISO 3166-2 standard
+- [List Transaction Purposes](https://developer.fin.com/api-reference/catalogue/list-transaction-purposes.md): Retrieve a list of available transaction purposes
+- [Create a crypto payment quote](https://developer.fin.com/api-reference/crypto-orchestration/create-a-crypto-payment-quote.md): Generate a fee estimation quote for a transit payment
+- [Create a Payment](https://developer.fin.com/api-reference/crypto-orchestration/create-a-payment.md): Create a new payment order for a supported integration type (ByBit, Kraken, OKX, Pass Through)
+- [Fetch a Payment](https://developer.fin.com/api-reference/crypto-orchestration/fetch-a-payment.md): Retrieve payment details by payment ID
+- [Attach Document To Associated Party](https://developer.fin.com/api-reference/customers/attach-document-to-associated-party.md): Attach proof of identity and proof of address documents to associated parties of an existing customer
+- [Attach Documents to Associated Party V2](https://developer.fin.com/api-reference/customers/attach-documents-to-associated-party-v2.md): Attach identifying documents and address documents for one or more associated parties of a business customer. Replaces the v1 proof_of_identity / proof_of_address structure with separate identifying_documents and address_documents arrays, allowing multiple ID documents per party.
+- [Attach Documents to Business Customer](https://developer.fin.com/api-reference/customers/attach-documents-to-business-customer.md): Attach ownership structure, company details, and legal presence documents to an existing business customer
+- [Attach Documents to Business Customer V2](https://developer.fin.com/api-reference/customers/attach-documents-to-business-customer-v2.md): Attach formation, ownership, and supporting documents to an existing business customer. Documents are categorised into three arrays: formation_documents, ownership_documents, and supporting_documents, replacing the v1 ownership_structure / company_details / legal_presence structure.
+- [Attach Documents to Individual Customer](https://developer.fin.com/api-reference/customers/attach-documents-to-individual-customer.md): Attach proof of identity and proof of address documents to an existing individual customer
+- [Attach Documents to Individual Customer V2](https://developer.fin.com/api-reference/customers/attach-documents-to-individual-customer-v2.md): Attach identifying and address documents to an existing v2 individual customer. Replaces the v1 proof_of_identity / proof_of_address structure with separate identifying_documents and address_documents arrays. Documents are processed asynchronously.
+- [Create Business Customer](https://developer.fin.com/api-reference/customers/create-business-customer.md): Create a new business customer with verification details, addresses, and associated parties
+- [Create Business Customer V2](https://developer.fin.com/api-reference/customers/create-business-customer-v2.md): Create a new business customer with full KYB profile, associated parties (UBOs/directors), compliance data, and optionally holding structure and public listing details.
+- [Create Customer Wallets](https://developer.fin.com/api-reference/customers/create-customer-wallets.md): Provisions one or more crypto wallets for a customer across supported chains and tokens.
+- [Create Individual Customer](https://developer.fin.com/api-reference/customers/create-individual-customer.md): Create a new individual customer with verification details
+- [Create Individual Customer V2](https://developer.fin.com/api-reference/customers/create-individual-customer-v2.md): Create a new individual customer with verification details, basic info, address, and financial profile.
+- [Enable USD Features](https://developer.fin.com/api-reference/customers/enable-usd-features.md): Enable USD features for an existing customer
+- [Get Customer Capabilities](https://developer.fin.com/api-reference/customers/get-customer-capabilities.md): Returns the on-ramp and off-ramp capabilities available for a customer, including the supported rails and their activation status for each currency and corridor.
+- [Get Customer Details](https://developer.fin.com/api-reference/customers/get-customer-details.md): Retrieve detailed information for a specific customer
+- [Get Customer Details V2](https://developer.fin.com/api-reference/customers/get-customer-details-v2.md): Retrieve detailed information for a specific customer
+- [Get Customer Wallets](https://developer.fin.com/api-reference/customers/get-customer-wallets.md): Returns all crypto wallets linked to a customer across supported chains and tokens.
+- [List Customers](https://developer.fin.com/api-reference/customers/list-customers.md): Retrieve a list of customers filtered by type
+- [List Customers V2](https://developer.fin.com/api-reference/customers/list-customers-v2.md): Retrieve a list of customers filtered by type
+- [Update Customer](https://developer.fin.com/api-reference/customers/update-customer.md): Submit an RFI response for an individual or business customer. You must pass only the fields and documents specified in the RFI. Submitting data that was not requested will trigger an error.
+- [Upload Document](https://developer.fin.com/api-reference/customers/upload-document.md): Upload customer documents using multipart/form-data. Files can be uploaded with arbitrary field names (e.g., poa, poi, passport, file1, etc.)
+- [Calculate Exchange Rates](https://developer.fin.com/api-reference/fees-fx/calculate-exchange-rates.md): Calculate exchange rates and applicable fees for a transaction.
+- [Fetch Exchange Rates](https://developer.fin.com/api-reference/fees-fx/fetch-exchange-rates.md): Retrieve exchange rates for a specific country or currency.
+- [Create a Transfer](https://developer.fin.com/api-reference/transactions/create-a-transfer.md): Initiate a transfer payout to a beneficiary.
+- [Create Quote](https://developer.fin.com/api-reference/transactions/create-quote.md): Returns fee and receivable amount estimations for a crypto withdrawal from a Fin.com internal wallet to a customer's external crypto wallet.
+- [Execute Batch Transfer](https://developer.fin.com/api-reference/transactions/execute-batch-transfer.md): Execute multiple transfer payouts in a single batch operation.
+- [Execute Quote](https://developer.fin.com/api-reference/transactions/execute-quote.md): Executes a quote returned from the Create Quote endpoint, initiating a crypto withdrawal to the beneficiary's external wallet.
+- [Fetch Batch Details](https://developer.fin.com/api-reference/transactions/fetch-batch-details.md): Retrieve detailed information about a batch transaction including all items and their statuses
+- [Fetch Transaction Details V1](https://developer.fin.com/api-reference/transactions/fetch-transaction-details-v1.md): Returns full details for a transaction by ID, including status, amounts, fees, and settlement data. The populated fields vary based on the transaction type.
+- [Fetch Transaction Details V2](https://developer.fin.com/api-reference/transactions/fetch-transaction-details-v2.md): Returns full details for a transaction by ID, including status, amounts, fees, and settlement data. The populated fields vary based on the transaction type.
+- [List Beneficiary Transactions](https://developer.fin.com/api-reference/transactions/list-beneficiary-transactions.md): Retrieve a paginated list of all transactions for a specific beneficiary
+- [List Customer Transactions](https://developer.fin.com/api-reference/transactions/list-customer-transactions.md): Returns a paginated list of transactions for a customer, optionally filtered by transaction type.
+- [Settle a Transfer](https://developer.fin.com/api-reference/transactions/settle-a-transfer.md): Settle a previously created transfer payout
+- [Upload Beneficiary Documents](https://developer.fin.com/api-reference/transactions/upload-beneficiary-documents.md): Upload one or more documents for a specific beneficiary using multipart/form-data
+- [Create Virtual Account](https://developer.fin.com/api-reference/virtual-accounts/create-virtual-account.md): Create a virtual bank account for a customer to convert USD deposits to USDC on Polygon
+- [Create Virtual Account V2](https://developer.fin.com/api-reference/virtual-accounts/create-virtual-account-v2.md): Create a virtual bank account for a specific customer to convert fiat deposits to crypto. The `customer_id` path parameter identifies the customer for whom the virtual account is being created.
+- [Fetch Virtual Account Transactions](https://developer.fin.com/api-reference/virtual-accounts/fetch-virtual-account-transactions.md): Retrieve a paginated list of all transactions for a specific virtual account
+- [List Virtual Accounts V1](https://developer.fin.com/api-reference/virtual-accounts/list-virtual-accounts-v1.md): Retrieve a list of all virtual accounts for a specific customer
+- [List Virtual Accounts V2](https://developer.fin.com/api-reference/virtual-accounts/list-virtual-accounts-v2.md): Retrieve a list of all virtual accounts for a specific customer
+- [Update Virtual Account](https://developer.fin.com/api-reference/virtual-accounts/update-virtual-account.md): Update an existing virtual bank account's developer fee percentage and destination wallet address
+- [Batch Transaction Item Status](https://developer.fin.com/api-reference/webhooks/batch-transaction-item-status.md): Triggered when a batch transaction item's status changes after committing a batch.
+- [Beneficiary Created](https://developer.fin.com/api-reference/webhooks/beneficiary-created.md): Triggered when a new beneficiary is created in the system.
+- [Beneficiary Liquidation Deposit](https://developer.fin.com/api-reference/webhooks/beneficiary-liquidation-deposit.md): Triggered when any transfer hits a beneficiary's liquidation address.
+- [Beneficiary Status](https://developer.fin.com/api-reference/webhooks/beneficiary-status.md): Triggered when a beneficiary's status changes.
+- [Customer Created](https://developer.fin.com/api-reference/webhooks/customer-created.md): Triggered when a customer is successfully created.
+- [Customer RFI](https://developer.fin.com/api-reference/webhooks/customer-rfi.md): Triggered when the compliance team requests additional information or documents from a customer. Sets the customer status to ACTION_REQUIRED. The payload includes a structured list of what is missing, invalid, or expired, scoped to either the customer or a specific associated party.
+- [Customer Status](https://developer.fin.com/api-reference/webhooks/customer-status.md): Triggered when a customer's status changes during verification.
+- [Transaction Status](https://developer.fin.com/api-reference/webhooks/transaction-status.md): Triggered when a transaction's status changes.
+- [Transit Payment Status](https://developer.fin.com/api-reference/webhooks/transit-payment-status.md): Triggered when a transit payment's status changes through the payment and settlement flow.
+- [Virtual Account Created V1](https://developer.fin.com/api-reference/webhooks/virtual-account-created-v1.md): Triggered when a new virtual account is created for a customer.
+- [Virtual Account Created V2](https://developer.fin.com/api-reference/webhooks/virtual-account-created-v2.md): Triggered when a new V2 virtual account is created for a customer.
+- [Virtual Account Status V1](https://developer.fin.com/api-reference/webhooks/virtual-account-status-v1.md): Triggered when a virtual account's status changes.
+- [Virtual Account Status V2](https://developer.fin.com/api-reference/webhooks/virtual-account-status-v2.md): Triggered when a V2 virtual account’s status changes.
+- [Bank account & routing number validation rules](https://developer.fin.com/bank-account-and-routing-validation-rules.md): Allowed values for bank account and routing schemes when creating a beneficiary.
+- [December 31, 2025](https://developer.fin.com/changelogs/2025-12-31.md): Changelog for December 31, 2025
+- [January 02, 2026](https://developer.fin.com/changelogs/2026-01-02.md): Changelog for January 02, 2026
+- [January 09, 2026](https://developer.fin.com/changelogs/2026-01-09.md): Changelog for January 09, 2026
+- [January 19, 2026](https://developer.fin.com/changelogs/2026-01-19.md): Changelog for January 19, 2026
+- [January 25, 2026](https://developer.fin.com/changelogs/2026-01-25.md): Changelog for January 25, 2026
+- [February 03, 2026](https://developer.fin.com/changelogs/2026-02-03.md): Changelog for February 03, 2026
+- [February 10, 2026](https://developer.fin.com/changelogs/2026-02-10.md): Changelog for February 10, 2026
+- [February 11, 2026](https://developer.fin.com/changelogs/2026-02-11.md): Changelog for February 11, 2026
+- [February 16, 2025](https://developer.fin.com/changelogs/2026-02-16.md): Changelog for February 16, 2025
+- [April 20, 2026](https://developer.fin.com/changelogs/2026-04-20.md): API Migration Guide — deprecation deadline May 20, 2026
+- [July 14, 2026](https://developer.fin.com/changelogs/2026-07-14.md): Changelog for July 14, 2026
+- [April 13, 2026](https://developer.fin.com/changelogs/april-13-2026.md): Changelog for April 13, 2026
+- [June 10, 2026](https://developer.fin.com/changelogs/june-10-2026.md): Changelog for June 10, 2026
+- [June 16, 2026](https://developer.fin.com/changelogs/june-16-2026.md): Changelog for June 16, 2026
+- [May 01, 2026](https://developer.fin.com/changelogs/untitled-page.md): Changelog for May 01, 2026
+- [Definition of Statuses](https://developer.fin.com/crypto-orchestration/definition-of-statuses.md)
+- [ByBit](https://developer.fin.com/crypto-orchestration/integration-types/bybit.md)
+- [Kraken ](https://developer.fin.com/crypto-orchestration/integration-types/kraken.md)
+- [OKX](https://developer.fin.com/crypto-orchestration/integration-types/okx.md)
+- [Pass through](https://developer.fin.com/crypto-orchestration/integration-types/pass-through.md)
+- [Introduction - Fin Crypto Orchestration](https://developer.fin.com/crypto-orchestration/introduction.md)
+- [Legends & Concepts](https://developer.fin.com/crypto-orchestration/legends-and-concepts.md)
+- [Transit Payment Webhooks](https://developer.fin.com/crypto-orchestration/transit-payment-webhooks.md)
+- [How USD features work for a customer](https://developer.fin.com/faqs/how-usd-feature-work-for-a-customer.md)
+- [Individual ID Document Upload](https://developer.fin.com/faqs/individual-id-document-upload.md): Best practices and edge cases for uploading individual ID documents through fin.com.
+- [Technical Integration](https://developer.fin.com/faqs/technical-integration.md): FAQs regarding API integration, sandbox testing, and technical capabilities.
+- [business-industry-codes](https://developer.fin.com/guides/compliance/business-industry-codes.md)
+- [Business Tax ID documents by region](https://developer.fin.com/guides/compliance/business-tax-id-documents-by-region.md): The following lists tax ID types that Fin.com will accept for businesses by region.
+- [Entity-wise document requirement](https://developer.fin.com/guides/compliance/entity-wise-document-requirement.md)
+- [High Risk Activities](https://developer.fin.com/guides/compliance/high-risk-businesses.md): Understanding disclosure requirements and prohibited activities for business customers
+- [Individual Tax ID documents](https://developer.fin.com/guides/compliance/individual-tax-id-documents.md): The following lists tax ID types that Fin.com will accept for Individuals and associated parties by region.
+- [Business Onboarding Requirements — Quick Reference](https://developer.fin.com/guides/compliance/kyb-guidelines-to-succeed.md)
+- [Guidance on nested in payments & onboarding](https://developer.fin.com/guides/compliance/nested-payments-and-onboarding.md): How Fin handles nested payments & onboarding
+- [Migrating V1 Customers to V2](https://developer.fin.com/guides/customers/migrating-v1-customers-to-v2.md): Field-by-field checklist of the additional information required to bring already-approved V1 individual and business customers up to V2 parity.
+- [Onboarding Business Customers](https://developer.fin.com/guides/customers/onboarding-businesses.md): Complete guide to onboarding business clients with company details, financial profiles, addresses, and associated parties.
+- [Onboarding Individual Customers](https://developer.fin.com/guides/customers/onboarding-individuals.md): Complete guide to onboarding individual customers with personal details, financial profiles, and identity verification
+- [Funding Your Balance](https://developer.fin.com/guides/funding-your-balance.md): Learn how to fund your Fin.com balance to enable transfers and payouts to beneficiaries on behalf of your customers
+- [Orchestration Dashboard Usage](https://developer.fin.com/guides/others/dashboard-platform.md): Guide on getting started with the Fin.com Orchestration Dashboard.
+- [Supported cryptocurrencies](https://developer.fin.com/guides/others/supported-cryptocurrencies.md)
+- [Coverage & capabilities](https://developer.fin.com/guides/pricing-and-coverage/coverage-and-capabilities.md): Details on Fin.com's coverage and capabilities.
+- [Verifying Webhooks](https://developer.fin.com/guides/webhooks/verifying-webhooks.md): Learn how to verify webhook signatures to ensure authenticity and security
+- [Introduction & Key Concepts](https://developer.fin.com/index.md): Fin.com's Orchestration API documentation
+- [Beneficiary Onboarding Guide](https://developer.fin.com/onboarding-beneficiaries.md)
+- [Bank Holidays 2026](https://developer.fin.com/operational-information/bank-holidays-2026.md): Banking partner holiday schedule for US and Singapore rails in 2026.
+- [Processing Windows & Cutoff Times](https://developer.fin.com/operational-information/processing-windows-and-cutoffs.md): Cutoff times and settlement windows across fiat and crypto rails.
+- [SLAs for Compliance](https://developer.fin.com/operational-information/sla-for-compliance.md)
+- [Sender & Receiver Relationships](https://developer.fin.com/receiver-relationship.md): Understanding relationship types between senders and beneficiaries for compliant transactions
+
+## OpenAPI Specs
+
+- [openapi](https://developer.fin.com/api-reference/openapi.yaml)
+- [_old_simple_spec](https://developer.fin.com/_scratch/_old_simple_spec.json)
+- [_old_openapi](https://developer.fin.com/_scratch/_old_openapi.json)
+- [openapi-polymarket](https://developer.fin.com/api-reference/spec/openapi-polymarket.yaml)
+
+## Optional
+
+- [Main Site](https://fin.com)
