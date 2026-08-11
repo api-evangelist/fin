@@ -244,7 +244,7 @@ common:
 - type: GettingStarted
   url: https://developer.fin.com/index
 - type: OpenAPI
-  url: openapi/fin-openapi-original.yml
+  url: openapi/_original/fin-openapi-original.yml
 - type: Overlay
   url: overlays/fin-openapi-overlay.yaml
 - type: Authentication
