@@ -37,7 +37,7 @@ accessModel:
   generated: '2026-07-22'
   method: derived
 image: https://cdn.sanity.io/images/xemwqsar/production/0e65aec0795ced77ed5301b8627cbb88059d11d2-1200x630.webp?w=1200&h=630&q=80&fit=crop
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-07-19'
 tags:
