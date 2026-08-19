@@ -1,0 +1,252 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fin.com Authentication Transactions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Customer Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v2/transactions",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "765d498e-a267-4154-9d2f-9e411a0b50dd",
+                "type": "query",
+                "description": "The customer ID to fetch transactions for."
+              },
+              {
+                "name": "type",
+                "value": "CRYPTO_WITHDRAWAL",
+                "type": "query",
+                "description": "Filter transactions by type."
+              },
+              {
+                "name": "current_page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve"
+              },
+              {
+                "name": "per_page",
+                "value": "10",
+                "type": "query",
+                "description": "Number of results per page. Must be between 1 and 100."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of transactions for a customer, optionally filtered by transaction type."
+        },
+        {
+          "info": {
+            "name": "Execute Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/transactions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Executes a quote returned from the Create Quote endpoint, initiating a crypto withdrawal to the beneficiary's external wallet."
+        },
+        {
+          "info": {
+            "name": "List Beneficiary Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/beneficiaries/:beneficiary_id/transactions",
+            "params": [
+              {
+                "name": "beneficiary_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a paginated list of all transactions for a specific beneficiary"
+        },
+        {
+          "info": {
+            "name": "Create a Transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/transactions/transfer-payout",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Initiate a transfer payout to a beneficiary.\n\n**Validation Rules:**\n- Minimum amount: 500 cents (5.00 in major currency units)\n- Attachments array is optional, but if provided must contain at least one item\n"
+        },
+        {
+          "info": {
+            "name": "Settle a Transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/transactions/transfer-payout/settle",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Settle a previously created transfer payout"
+        },
+        {
+          "info": {
+            "name": "Execute Batch Transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/batch/transactions/commit",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Execute multiple transfer payouts in a single batch operation."
+        },
+        {
+          "info": {
+            "name": "Fetch Batch Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/batch/transactions/commit/:batch_id",
+            "params": [
+              {
+                "name": "batch_id",
+                "value": "ad1a0a29-5a7f-4982-98cc-3f4416724660",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve detailed information about a batch transaction including all items and their statuses"
+        },
+        {
+          "info": {
+            "name": "Create Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/transactions/quote",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns fee and receivable amount estimations for a crypto withdrawal from a Fin.com internal wallet to a customer's external crypto wallet."
+        },
+        {
+          "info": {
+            "name": "Fetch Transaction Details V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v2/transactions/:transaction_id",
+            "params": [
+              {
+                "name": "transaction_id",
+                "value": "8c92e9dd-6456-4aee-a441-1861144f1d8b",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns full details for a transaction by ID, including status, amounts, fees, and settlement data. The populated fields vary based on the transaction type."
+        },
+        {
+          "info": {
+            "name": "Fetch Transaction Details V1",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/transactions/:transaction_id",
+            "params": [
+              {
+                "name": "transaction_id",
+                "value": "7f0124cd-6845-47d3-8b39-43f80cd50274",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns full details for a transaction by ID, including status, amounts, fees, and settlement data. The populated fields vary based on the transaction type."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,167 @@
+{
+  "item": [
+    {
+      "id": "6c042f89-b695-4dd5-94ad-f4f54f05601f",
+      "name": "Balances",
+      "description": {
+        "content": "Retrieve wallet balance information",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b5894c29-9c6e-44ac-82e4-d3e6a89a188e",
+          "name": "Fetch Prefunded Balance",
+          "request": {
+            "name": "Fetch Prefunded Balance",
+            "description": {
+              "content": "Retrieve the current prefunded wallet balances",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "wallet",
+                "balances"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4ade0eeb-a901-4880-9a8d-b620841964e6",
+              "name": "Wallet balances retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "wallet",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"currency\": \"USD\",\n      \"amount\": 150000\n    },\n    {\n      \"currency\": \"USD\",\n      \"amount\": 150000\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23da0f1a-b4af-4164-b186-b2935a291464",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "wallet",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.api.fin.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "88813e96-ab5e-411d-88cc-e2f7237dd8a4",
+    "name": "Fin.com Authentication Balances API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A simple API specificationFo",
+      "type": "text/plain"
+    }
+  }
+}

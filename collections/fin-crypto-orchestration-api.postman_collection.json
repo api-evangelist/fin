@@ -1,0 +1,736 @@
+{
+  "item": [
+    {
+      "id": "3b11af94-b27b-47a5-97e8-64891cb52991",
+      "name": "Crypto Orchestration",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c4056c92-95d0-4b5e-8feb-7b4b5a44a779",
+          "name": "Create a Payment",
+          "request": {
+            "name": "Create a Payment",
+            "description": {
+              "content": "Create a new payment order for a supported integration type (ByBit, Kraken, OKX, Pass Through)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "transit",
+                "payment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"integration_type\": \"<string>\",\n  \"order_info\": {\n    \"merchant_trade_no\": \"<uuid>\",\n    \"currency\": \"<string>\",\n    \"currency_type\": \"<string>\",\n    \"success_url\": \"<uri>\",\n    \"failed_url\": \"<uri>\",\n    \"payment_type\": \"<string>\",\n    \"goods\": [\n      {\n        \"shopping_name\": \"<string>\",\n        \"mcc_code\": \"<string>\",\n        \"goods_name\": \"<string>\",\n        \"goods_detail\": \"<string>\"\n      }\n    ],\n    \"env\": {\n      \"terminal_type\": \"<string>\",\n      \"device\": \"<string>\",\n      \"browser_version\": \"<string>\",\n      \"ip\": \"<ipv4>\"\n    },\n    \"merchant_name\": \"<string>\",\n    \"client_id\": \"<string>\",\n    \"order_amount\": \"<string>\",\n    \"quote_id\": \"<string>\",\n    \"rail\": \"<string>\",\n    \"redirection_url\": \"<uri>\",\n    \"remarks\": \"<string>\",\n    \"order_expire_time\": 3600,\n    \"customer\": {\n      \"uid\": \"<string>\",\n      \"external_user_id\": \"<string>\",\n      \"user_name\": \"<string>\",\n      \"register_time\": \"<integer>\",\n      \"kyc_country\": \"<string>\"\n    },\n    \"risk_info\": {\n      \"terminal_type\": \"<string>\"\n    }\n  },\n  \"fin\": {\n    \"settlement_config\": {\n      \"settlement_via\": \"<string>\",\n      \"destination_details\": {\n        \"wallet_address\": \"<string>\",\n        \"currency\": \"<string>\",\n        \"rail\": \"<string>\"\n      }\n    },\n    \"developer_fee\": {\n      \"fixed\": \"<string>\",\n      \"percentage\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f21ac39b-1cb0-4589-81b2-74f288d8c3d2",
+              "name": "Payment created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "payment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"integration_type\": \"BYBIT\",\n  \"order_info\": {\n    \"merchant_name\": \"PayPal\",\n    \"client_id\": \"client_001\",\n    \"payment_type\": \"E_COMMERCE\",\n    \"merchant_trade_no\": \"841e4ba2-1234-5678-9abc-a2a45de7bd00\",\n    \"order_amount\": \"100.00\",\n    \"currency\": \"USDT\",\n    \"currency_type\": \"crypto\",\n    \"success_url\": \"https://example.com/success\",\n    \"failed_url\": \"https://example.com/failed\",\n    \"order_expire_time\": 3600,\n    \"goods\": [\n      {\n        \"shopping_name\": \"test good1\",\n        \"mcc_code\": \"1520\",\n        \"goods_name\": \"test1\",\n        \"goods_detail\": \"First product\"\n      }\n    ],\n    \"env\": {\n      \"terminal_type\": \"APP\",\n      \"device\": \"iPhone 15\",\n      \"browser_version\": \"iOS 17.0 Safari\",\n      \"ip\": \"192.168.0.1\"\n    }\n  },\n  \"fin\": {\n    \"settlement_config\": {\n      \"settlement_via\": \"MARKET_ORDER\",\n      \"destination_details\": {\n        \"wallet_address\": \"7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU\",\n        \"currency\": \"USDC\",\n        \"rail\": \"SOLANA\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"payment_id\": \"d5da5f80-b8bc-7706-098a-656a2bf7f524\",\n    \"integration_type\": \"BYBIT\",\n    \"provider_response\": {\n      \"pay_id\": \"01JN6AZVEMAC8H9SED6JES3QH8\",\n      \"terminal_type\": \"APP\",\n      \"expire_time\": 1740751953,\n      \"create_time\": 1740748353,\n      \"checkout_link\": \"\",\n      \"qr_content\": \"data:image/png;base64,/9j/2...f/Z\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14eadb7b-3d8d-4a17-b18d-bfd6ffe04b1d",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "payment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"integration_type\": \"BYBIT\",\n  \"order_info\": {\n    \"merchant_name\": \"PayPal\",\n    \"client_id\": \"client_001\",\n    \"payment_type\": \"E_COMMERCE\",\n    \"merchant_trade_no\": \"841e4ba2-1234-5678-9abc-a2a45de7bd00\",\n    \"order_amount\": \"100.00\",\n    \"currency\": \"USDT\",\n    \"currency_type\": \"crypto\",\n    \"success_url\": \"https://example.com/success\",\n    \"failed_url\": \"https://example.com/failed\",\n    \"order_expire_time\": 3600,\n    \"goods\": [\n      {\n        \"shopping_name\": \"test good1\",\n        \"mcc_code\": \"1520\",\n        \"goods_name\": \"test1\",\n        \"goods_detail\": \"First product\"\n      }\n    ],\n    \"env\": {\n      \"terminal_type\": \"APP\",\n      \"device\": \"iPhone 15\",\n      \"browser_version\": \"iOS 17.0 Safari\",\n      \"ip\": \"192.168.0.1\"\n    }\n  },\n  \"fin\": {\n    \"settlement_config\": {\n      \"settlement_via\": \"MARKET_ORDER\",\n      \"destination_details\": {\n        \"wallet_address\": \"7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU\",\n        \"currency\": \"USDC\",\n        \"rail\": \"SOLANA\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bcfd2ef6-bde7-4c4a-a33d-39da4b6a464a",
+              "name": "Validation error detected by Fin",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "payment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"integration_type\": \"BYBIT\",\n  \"order_info\": {\n    \"merchant_name\": \"PayPal\",\n    \"client_id\": \"client_001\",\n    \"payment_type\": \"E_COMMERCE\",\n    \"merchant_trade_no\": \"841e4ba2-1234-5678-9abc-a2a45de7bd00\",\n    \"order_amount\": \"100.00\",\n    \"currency\": \"USDT\",\n    \"currency_type\": \"crypto\",\n    \"success_url\": \"https://example.com/success\",\n    \"failed_url\": \"https://example.com/failed\",\n    \"order_expire_time\": 3600,\n    \"goods\": [\n      {\n        \"shopping_name\": \"test good1\",\n        \"mcc_code\": \"1520\",\n        \"goods_name\": \"test1\",\n        \"goods_detail\": \"First product\"\n      }\n    ],\n    \"env\": {\n      \"terminal_type\": \"APP\",\n      \"device\": \"iPhone 15\",\n      \"browser_version\": \"iOS 17.0 Safari\",\n      \"ip\": \"192.168.0.1\"\n    }\n  },\n  \"fin\": {\n    \"settlement_config\": {\n      \"settlement_via\": \"MARKET_ORDER\",\n      \"destination_details\": {\n        \"wallet_address\": \"7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU\",\n        \"currency\": \"USDC\",\n        \"rail\": \"SOLANA\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 422,\n    \"type\": \"FIN_ERROR\",\n    \"message\": \"One or more fields are invalid\",\n    \"details\": [\n      {\n        \"field\": \"string\",\n        \"message\": \"string\"\n      },\n      {\n        \"field\": \"string\",\n        \"message\": \"string\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f6803176-5545-4e9f-b577-af24004eb324",
+              "name": "Error thrown from provider (forwards partner's HTTP status code)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "payment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"integration_type\": \"BYBIT\",\n  \"order_info\": {\n    \"merchant_name\": \"PayPal\",\n    \"client_id\": \"client_001\",\n    \"payment_type\": \"E_COMMERCE\",\n    \"merchant_trade_no\": \"841e4ba2-1234-5678-9abc-a2a45de7bd00\",\n    \"order_amount\": \"100.00\",\n    \"currency\": \"USDT\",\n    \"currency_type\": \"crypto\",\n    \"success_url\": \"https://example.com/success\",\n    \"failed_url\": \"https://example.com/failed\",\n    \"order_expire_time\": 3600,\n    \"goods\": [\n      {\n        \"shopping_name\": \"test good1\",\n        \"mcc_code\": \"1520\",\n        \"goods_name\": \"test1\",\n        \"goods_detail\": \"First product\"\n      }\n    ],\n    \"env\": {\n      \"terminal_type\": \"APP\",\n      \"device\": \"iPhone 15\",\n      \"browser_version\": \"iOS 17.0 Safari\",\n      \"ip\": \"192.168.0.1\"\n    }\n  },\n  \"fin\": {\n    \"settlement_config\": {\n      \"settlement_via\": \"MARKET_ORDER\",\n      \"destination_details\": {\n        \"wallet_address\": \"7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU\",\n        \"currency\": \"USDC\",\n        \"rail\": \"SOLANA\"\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Precondition Required",
+              "code": 428,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 500104,\n    \"type\": \"PROVIDER_ERROR\",\n    \"message\": \"Balance not Available\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "856fc0b2-d288-4778-a33d-8516f1ffb6fe",
+          "name": "Fetch a Payment",
+          "request": {
+            "name": "Fetch a Payment",
+            "description": {
+              "content": "Retrieve payment details by payment ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "transit",
+                "payment",
+                ":payment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "payment_id",
+                  "description": "(Required) The unique payment identifier returned from Create Payment"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c1caeb2b-9783-41ed-8d57-81d824096689",
+              "name": "Payment details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "payment",
+                    ":payment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "payment_id",
+                      "description": "(Required) The unique payment identifier returned from Create Payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"payment_id\": \"FIN_PROVIDED_UUID\",\n    \"integration_type\": \"BYBIT\",\n    \"status\": \"PAY_INIT\",\n    \"create_time\": 1740748353,\n    \"payment_info\": {\n      \"pay_id\": \"01JN6AZVEMAC8H9SED6JES3QH8\",\n      \"merchant_trade_no\": \"841e4ba2-...-a2a45de7bd00\",\n      \"amount\": \"100\",\n      \"status\": \"PAY_INIT\",\n      \"currency\": \"USDT\",\n      \"currency_type\": \"crypto\",\n      \"expire_time\": 1740751953,\n      \"payment_time\": 0\n    },\n    \"settlement_info\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d2a03a9-ad34-464c-b51d-8fe310c6c865",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "payment",
+                    ":payment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "payment_id",
+                      "description": "(Required) The unique payment identifier returned from Create Payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d396afb-89ab-4381-a798-f13f2068d28f",
+              "name": "Payment ID doesn't belong to you",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "payment",
+                    ":payment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "payment_id",
+                      "description": "(Required) The unique payment identifier returned from Create Payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 403,\n    \"type\": \"FIN_ERROR\",\n    \"message\": \"Payment ID doesn't belong to you\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "384d4343-07bf-4a6c-972f-127a67c13c40",
+              "name": "Payment ID not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "payment",
+                    ":payment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "payment_id",
+                      "description": "(Required) The unique payment identifier returned from Create Payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 404,\n    \"type\": \"FIN_ERROR\",\n    \"message\": \"Payment ID not found\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "420584d9-9e7c-4472-8d6c-ba113b5ba830",
+          "name": "Create a crypto payment quote",
+          "request": {
+            "name": "Create a crypto payment quote",
+            "description": {
+              "content": "Generate a fee estimation quote for a transit payment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "transit",
+                "quote"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_amount\": \"<string>\",\n  \"integration_type\": \"<string>\",\n  \"settlement_config\": {\n    \"settlement_via\": \"<string>\",\n    \"rebalance_fee\": \"<boolean>\",\n    \"destination_details\": {\n      \"wallet_address\": \"<string>\",\n      \"currency\": \"<string>\",\n      \"rail\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e0863e82-ad66-423a-a168-31427bd8ce93",
+              "name": "Quote created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order_amount\": \"100.00\",\n  \"integration_type\": \"BYBIT\",\n  \"settlement_config\": {\n    \"settlement_via\": \"MARKET_ORDER\",\n    \"rebalance_fee\": true,\n    \"destination_details\": {\n      \"wallet_address\": \"7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU\",\n      \"currency\": \"USDC\",\n      \"rail\": \"SOLANA\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"quote_id\": \"4081fa09-7761-42b6-8f66-24beae1a2ca5\",\n    \"expire_at\": 1770916749,\n    \"order_amount\": \"100.00\",\n    \"integration_type\": \"BYBIT\",\n    \"settlement_config\": {\n      \"settlement_via\": \"MARKET_ORDER\",\n      \"rebalance_fee\": true,\n      \"destination_details\": {\n        \"wallet_address\": \"7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU\",\n        \"currency\": \"USDC\",\n        \"rail\": \"SOLANA\"\n      }\n    },\n    \"quote_estimation\": {\n      \"payment_fee\": \"0.00\",\n      \"conversion_fee\": \"0.00\",\n      \"withdrawal_fee\": \"0.00\",\n      \"gas_fee\": \"0.50\",\n      \"total_fee\": \"0.50\",\n      \"total_order_amount\": \"100.00\",\n      \"ata_fee_applied\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "871b4c7f-ddab-48af-bf0f-822718f3e4eb",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transit",
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order_amount\": \"100.00\",\n  \"integration_type\": \"BYBIT\",\n  \"settlement_config\": {\n    \"settlement_via\": \"MARKET_ORDER\",\n    \"rebalance_fee\": true,\n    \"destination_details\": {\n      \"wallet_address\": \"7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU\",\n      \"currency\": \"USDC\",\n      \"rail\": \"SOLANA\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.api.fin.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "7629d331-612c-450f-ad1c-f1d6db150299",
+    "name": "Fin.com Authentication Crypto Orchestration API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A simple API specificationFo",
+      "type": "text/plain"
+    }
+  }
+}

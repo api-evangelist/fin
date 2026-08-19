@@ -1,0 +1,172 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fin.com Authentication Virtual Accounts API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Virtual Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Virtual Accounts V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v2/customers/:customer_id/virtual-accounts",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "0fb72092-22a8-4df8-a6d9-1a28f86b7d44",
+                "type": "path",
+                "description": "Unique identifier for the customer"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page"
+              },
+              {
+                "name": "current_page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a list of all virtual accounts for a specific customer"
+        },
+        {
+          "info": {
+            "name": "Create Virtual Account V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/customers/:customer_id/virtual-accounts",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06",
+                "type": "path",
+                "description": "Unique identifier of the customer to create the virtual account for."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a virtual bank account for a specific customer to convert fiat deposits to crypto. The `customer_id` path parameter identifies the customer for whom the virtual account is being created."
+        },
+        {
+          "info": {
+            "name": "List Virtual Accounts V1",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/customers/virtual-account",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "196ce546-900d-4294-90ca-5546a5923f35",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a list of all virtual accounts for a specific customer"
+        },
+        {
+          "info": {
+            "name": "Create Virtual Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/customers/virtual-account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a virtual bank account for a customer to convert USD deposits to USDC on Polygon"
+        },
+        {
+          "info": {
+            "name": "Update Virtual Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://sandbox.api.fin.com/v1/customers/virtual-account",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update an existing virtual bank account's developer fee percentage and destination wallet address"
+        },
+        {
+          "info": {
+            "name": "Fetch Virtual Account Transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/virtual-account/:virtual_account_id/transactions",
+            "params": [
+              {
+                "name": "virtual_account_id",
+                "value": "3e7ce5ef-09bc-4e80-97f1-651ac483546f",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a paginated list of all transactions for a specific virtual account"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

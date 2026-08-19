@@ -1,0 +1,247 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fin.com Authentication Beneficiaries API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Beneficiaries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Available Countries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/beneficiaries/countries",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a list of countries supported for beneficiary creation with available payment methods and phone validation rules"
+        },
+        {
+          "info": {
+            "name": "List Bank Identifiers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/beneficiaries/methods",
+            "params": [
+              {
+                "name": "country_code",
+                "value": "BGD",
+                "type": "query"
+              },
+              {
+                "name": "method",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a list of available banks or e-wallet providers for a specific country and method type"
+        },
+        {
+          "info": {
+            "name": "List Bank Branch Identifiers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/beneficiaries/methods/:method_id/branches",
+            "params": [
+              {
+                "name": "method_id",
+                "value": "1472",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a list of available branches for a specific bank or payment method"
+        },
+        {
+          "info": {
+            "name": "Create Beneficiary V3",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v3/beneficiaries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new beneficiary for payments and transfers. Supports bank accounts, e-wallets, and external crypto wallets as destination types."
+        },
+        {
+          "info": {
+            "name": "Create Beneficiary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/beneficiaries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new beneficiary account for payments and transfers"
+        },
+        {
+          "info": {
+            "name": "List Beneficiaries For a Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/customers/:customer_id/beneficiaries",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "ad41fac1-e406-445b-aea4-69381c39ca5d",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve all beneficiaries associated with a specific customer"
+        },
+        {
+          "info": {
+            "name": "Fetch Beneficiary Details v2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v2/beneficiaries/details",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "31526861-ebe0-4f84-a7b2-2c3ec1cc47f9",
+                "type": "query"
+              },
+              {
+                "name": "beneficiary_id",
+                "value": "4c0c63db-580f-4e16-af24-e84ea8937dd8",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve detailed information for a specific beneficiary. Returns structured data for bank accounts, e-wallets, and external crypto wallet destinations."
+        },
+        {
+          "info": {
+            "name": "Fetch Beneficiary Details v1",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/beneficiaries/details",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "ad41fac1-e406-445b-aea4-69381c39ca5d",
+                "type": "query"
+              },
+              {
+                "name": "beneficiary_id",
+                "value": "f653e109-6c62-4aa4-869c-418c874e0a6c",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve detailed information for a specific beneficiary"
+        },
+        {
+          "info": {
+            "name": "Update Beneficiary Active Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.api.fin.com/v1/beneficiaries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update the active status of a beneficiary to enable or disable it"
+        },
+        {
+          "info": {
+            "name": "Upload Beneficiary Documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/beneficiaries/:beneficiary_id/documents",
+            "params": [
+              {
+                "name": "beneficiary_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "doc1",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload one or more documents for a specific beneficiary using multipart/form-data"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

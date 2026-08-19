@@ -1,0 +1,1547 @@
+{
+  "item": [
+    {
+      "id": "f254eeae-e096-4c5c-a8a9-84907a37b883",
+      "name": "Virtual Accounts",
+      "description": {
+        "content": "Create and manage virtual accounts for USD to USDC conversions",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "162ef2a0-097c-4561-a449-35a50b837797",
+          "name": "Create Virtual Account V2",
+          "request": {
+            "name": "Create Virtual Account V2",
+            "description": {
+              "content": "Create a virtual bank account for a specific customer to convert fiat deposits to crypto. The `customer_id` path parameter identifies the customer for whom the virtual account is being created.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "customers",
+                ":customer_id",
+                "virtual-accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "customer_id",
+                  "description": "(Required) Unique identifier of the customer to create the virtual account for."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": {\n    \"wallet\": \"<string>\",\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"source\": {\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"developer_fee\": {\n    \"percentage\": \"<number>\",\n    \"fixed\": \"<number>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cb853443-1bcf-47b9-9743-b87be440e94c",
+              "name": "Virtual account created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "customers",
+                    ":customer_id",
+                    "virtual-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "customer_id",
+                      "description": "(Required) Unique identifier of the customer to create the virtual account for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": {\n    \"wallet\": \"0x6e41e83d406185b358bd72111ab1206cb82eb67f\",\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"source\": {\n    \"currency\": \"USD\",\n    \"rail\": \"FEDWIRE\"\n  },\n  \"developer_fee\": {\n    \"percentage\": 0.1,\n    \"fixed\": 0.1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"024e784b-bc27-4a4c-82ee-80000fbf53c5\",\n    \"status\": \"PROCESSING\",\n    \"customer_id\": \"0fb72092-22a8-4df8-a6d9-1a28f86b7d44\",\n    \"created_at\": \"2026-04-04T11:05:20.963676Z\",\n    \"rfi\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e899360-9cc5-440b-92fa-813e27d0e638",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "customers",
+                    ":customer_id",
+                    "virtual-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "customer_id",
+                      "description": "(Required) Unique identifier of the customer to create the virtual account for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": {\n    \"wallet\": \"0x6e41e83d406185b358bd72111ab1206cb82eb67f\",\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"source\": {\n    \"currency\": \"USD\",\n    \"rail\": \"FEDWIRE\"\n  },\n  \"developer_fee\": {\n    \"percentage\": 0.1,\n    \"fixed\": 0.1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2acb8e52-d347-4753-b450-f22f49562c30",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "customers",
+                    ":customer_id",
+                    "virtual-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "customer_id",
+                      "description": "(Required) Unique identifier of the customer to create the virtual account for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": {\n    \"wallet\": \"0x6e41e83d406185b358bd72111ab1206cb82eb67f\",\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"source\": {\n    \"currency\": \"USD\",\n    \"rail\": \"FEDWIRE\"\n  },\n  \"developer_fee\": {\n    \"percentage\": 0.1,\n    \"fixed\": 0.1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\",\n      \"key_3\": \"string\",\n      \"key_4\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "371cd8a7-519c-457e-aa58-207ce1a9e89d",
+          "name": "List Virtual Accounts V2",
+          "request": {
+            "name": "List Virtual Accounts V2",
+            "description": {
+              "content": "Retrieve a list of all virtual accounts for a specific customer",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "customers",
+                ":customer_id",
+                "virtual-accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_page",
+                  "value": "1",
+                  "description": "The page number to retrieve"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "customer_id",
+                  "description": "(Required) Unique identifier for the customer"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e855eddc-c8d6-4657-bb46-5d69aad516ed",
+              "name": "Virtual accounts retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "customers",
+                    ":customer_id",
+                    "virtual-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "customer_id",
+                      "description": "(Required) Unique identifier for the customer"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"virtual_accounts\": [\n      {\n        \"id\": \"024e784b-bc27-4a4c-82ee-80000fbf53c5\",\n        \"status\": \"PROCESSING\",\n        \"developer_fee_percent\": 0,\n        \"developer_fee_fixed\": 0.3,\n        \"customer_id\": \"0fb72092-22a8-4df8-a6d9-1a28f86b7d44\",\n        \"created_at\": \"2026-04-04T11:05:20.963676Z\",\n        \"updated_at\": \"2026-04-04T11:05:20.963676Z\",\n        \"deposit_instructions\": null,\n        \"destination\": {\n          \"currency\": \"USDC\",\n          \"destination_chain\": \"POLYGON\",\n          \"address\": \"0x6e41e83d406185b358bd72111ab1206cb82eb67f\"\n        },\n        \"rfi\": null\n      },\n      {\n        \"id\": \"1c1919e3-ce2e-4728-9efe-12b8be8e964d\",\n        \"status\": \"ACTIVE\",\n        \"developer_fee_percent\": 0,\n        \"developer_fee_fixed\": null,\n        \"customer_id\": \"0fb72092-22a8-4df8-a6d9-1a28f86b7d44\",\n        \"created_at\": \"2026-04-04T11:04:16.156771Z\",\n        \"updated_at\": \"2026-04-04T11:04:16.156771Z\",\n        \"deposit_instructions\": {\n          \"currency\": \"USD\",\n          \"bank_name\": \"Bank of Nowhere\",\n          \"bank_address\": \"1800 North Pole St., Orlando, FL 32801\",\n          \"bank_routing_number\": \"101019644\",\n          \"bank_account_number\": \"2611508020\",\n          \"payment_rails\": [\n            \"ACH\",\n            \"FEDWIRE\"\n          ],\n          \"bank_country\": null,\n          \"account_type\": null,\n          \"bank_code\": null\n        },\n        \"destination\": {\n          \"currency\": \"USDC\",\n          \"destination_chain\": \"POLYGON\",\n          \"address\": \"0x6e41e83d406185b358bd72111ab1206cb82eb67f\"\n        },\n        \"rfi\": null\n      }\n    ],\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 2\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c4a551c-5d1d-4d5b-bcd3-4df08b607b35",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "customers",
+                    ":customer_id",
+                    "virtual-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "customer_id",
+                      "description": "(Required) Unique identifier for the customer"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a43021f2-518f-4cad-87a1-c11d1459f30c",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "customers",
+                    ":customer_id",
+                    "virtual-accounts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "customer_id",
+                      "description": "(Required) Unique identifier for the customer"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9c78646d-cbd0-4ef5-951a-75a100829d60",
+          "name": "List Virtual Accounts V1",
+          "request": {
+            "name": "List Virtual Accounts V1",
+            "description": {
+              "content": "Retrieve a list of all virtual accounts for a specific customer",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "customers",
+                "virtual-account"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "customer_id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3d63f255-1517-411c-9f0f-465cb4e1c7ca",
+              "name": "Virtual accounts retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "196ce546-900d-4294-90ca-5546a5923f35"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"virtual_accounts\": [\n      {\n        \"id\": \"92eceee4-ec6a-4fe3-a224-f5914cabe001\",\n        \"status\": \"ACTIVE\",\n        \"developer_fee_percent\": 1.65,\n        \"customer_id\": \"196ce546-900d-4294-90ca-5546a5923f35\",\n        \"created_at\": \"2025-12-22T06:09:23.456895Z\",\n        \"updated_at\": \"2025-12-22T06:09:23.456895Z\",\n        \"deposit_instructions\": {\n          \"currency\": \"USD\",\n          \"bank_name\": \"Bank of Nowhere\",\n          \"bank_address\": \"1800 North Pole St., Orlando, FL 32801\",\n          \"bank_routing_number\": \"101019644\",\n          \"bank_account_number\": \"900336047672\",\n          \"bank_beneficiary_name\": \"Portgas D Ace\",\n          \"bank_beneficiary_address\": \"321 British Columbia City, British Columbia, BC V0C 1Y0, CA\",\n          \"payment_rails\": [\n            \"ACH\",\n            \"FEDWIRE\"\n          ]\n        },\n        \"destination\": {\n          \"currency\": \"USDC\",\n          \"destination_chain\": \"POLYGON\",\n          \"address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\"\n        }\n      },\n      {\n        \"id\": \"92eceee4-ec6a-4fe3-a224-f5914cabe001\",\n        \"status\": \"ACTIVE\",\n        \"developer_fee_percent\": 1.65,\n        \"customer_id\": \"196ce546-900d-4294-90ca-5546a5923f35\",\n        \"created_at\": \"2025-12-22T06:09:23.456895Z\",\n        \"updated_at\": \"2025-12-22T06:09:23.456895Z\",\n        \"deposit_instructions\": {\n          \"currency\": \"USD\",\n          \"bank_name\": \"Bank of Nowhere\",\n          \"bank_address\": \"1800 North Pole St., Orlando, FL 32801\",\n          \"bank_routing_number\": \"101019644\",\n          \"bank_account_number\": \"900336047672\",\n          \"bank_beneficiary_name\": \"Portgas D Ace\",\n          \"bank_beneficiary_address\": \"321 British Columbia City, British Columbia, BC V0C 1Y0, CA\",\n          \"payment_rails\": [\n            \"ACH\",\n            \"FEDWIRE\"\n          ]\n        },\n        \"destination\": {\n          \"currency\": \"USDC\",\n          \"destination_chain\": \"ETHEREUM\",\n          \"address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\"\n        }\n      }\n    ],\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 6\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5131890-8105-426f-8fab-88482af7cffc",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "196ce546-900d-4294-90ca-5546a5923f35"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05c716bd-3df9-4aa4-81ae-813bc038125c",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "196ce546-900d-4294-90ca-5546a5923f35"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "60795e4a-e6ac-41b0-be99-e08eb6796743",
+          "name": "Create Virtual Account",
+          "request": {
+            "name": "Create Virtual Account",
+            "description": {
+              "content": "Create a virtual bank account for a customer to convert USD deposits to USDC on Polygon",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "customers",
+                "virtual-account"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"<uuid>\",\n  \"destination_currency\": \"USDC\",\n  \"destination_chain\": \"POLYGON\",\n  \"source_rail\": \"<string>\",\n  \"source_currency\": \"<string>\",\n  \"destination_wallet_address\": \"<string>\",\n  \"developer_fee_percentage\": \"<number>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7d07419a-ce99-44ac-a9be-12a920e7a753",
+              "name": "Virtual account created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"5a6f47f7-7326-409f-a4da-90e409133fb8\",\n  \"destination_currency\": \"USDC\",\n  \"destination_chain\": \"POLYGON\",\n  \"source_rail\": \"ACH\",\n  \"source_currency\": \"USD\",\n  \"destination_wallet_address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\",\n  \"developer_fee_percentage\": 1.5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"92eceee4-ec6a-4fe3-a224-f5914cabe001\",\n    \"status\": \"ACTIVE\",\n    \"developer_fee_percent\": 1.65,\n    \"customer_id\": \"196ce546-900d-4294-90ca-5546a5923f35\",\n    \"created_at\": \"2025-12-22T06:09:23.456895Z\",\n    \"updated_at\": \"2025-12-22T06:09:23.456895Z\",\n    \"deposit_instructions\": {\n      \"currency\": \"USD\",\n      \"bank_name\": \"Bank of Nowhere\",\n      \"bank_address\": \"1800 North Pole St., Orlando, FL 32801\",\n      \"bank_routing_number\": \"101019644\",\n      \"bank_account_number\": \"900336047672\",\n      \"bank_beneficiary_name\": \"Portgas D Ace\",\n      \"bank_beneficiary_address\": \"321 British Columbia City, British Columbia, BC V0C 1Y0, CA\",\n      \"payment_rails\": [\n        \"ACH\",\n        \"FEDWIRE\"\n      ]\n    },\n    \"destination\": {\n      \"currency\": \"USDC\",\n      \"destination_chain\": \"POLYGON\",\n      \"address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1944d618-4c56-4a28-acd5-f7b49d8a6722",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"5a6f47f7-7326-409f-a4da-90e409133fb8\",\n  \"destination_currency\": \"USDC\",\n  \"destination_chain\": \"POLYGON\",\n  \"source_rail\": \"ACH\",\n  \"source_currency\": \"USD\",\n  \"destination_wallet_address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\",\n  \"developer_fee_percentage\": 1.5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ca3383e-4fb7-4a8c-b078-7a44395e0d52",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"5a6f47f7-7326-409f-a4da-90e409133fb8\",\n  \"destination_currency\": \"USDC\",\n  \"destination_chain\": \"POLYGON\",\n  \"source_rail\": \"ACH\",\n  \"source_currency\": \"USD\",\n  \"destination_wallet_address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\",\n  \"developer_fee_percentage\": 1.5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff545c0a-24d4-4745-b94f-8fa4a811e320",
+          "name": "Update Virtual Account",
+          "request": {
+            "name": "Update Virtual Account",
+            "description": {
+              "content": "Update an existing virtual bank account's developer fee percentage and destination wallet address",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "customers",
+                "virtual-account"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<uuid>\",\n  \"customer_id\": \"<uuid>\",\n  \"developer_fee_percentage\": \"<number>\",\n  \"destination_wallet_address\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cf54fd39-fcc4-45c1-ac33-cb85dc81b895",
+              "name": "Virtual account updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"f8715e46-f46a-41dc-94ec-bd9797683510\",\n  \"customer_id\": \"22c6b566-5ecc-49b7-b812-076c64735596\",\n  \"developer_fee_percentage\": 1.25,\n  \"destination_wallet_address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"92eceee4-ec6a-4fe3-a224-f5914cabe001\",\n    \"status\": \"ACTIVE\",\n    \"developer_fee_percent\": 1.65,\n    \"customer_id\": \"196ce546-900d-4294-90ca-5546a5923f35\",\n    \"created_at\": \"2025-12-22T06:09:23.456895Z\",\n    \"updated_at\": \"2025-12-22T06:09:23.456895Z\",\n    \"deposit_instructions\": {\n      \"currency\": \"USD\",\n      \"bank_name\": \"Bank of Nowhere\",\n      \"bank_address\": \"1800 North Pole St., Orlando, FL 32801\",\n      \"bank_routing_number\": \"101019644\",\n      \"bank_account_number\": \"900336047672\",\n      \"bank_beneficiary_name\": \"Portgas D Ace\",\n      \"bank_beneficiary_address\": \"321 British Columbia City, British Columbia, BC V0C 1Y0, CA\",\n      \"payment_rails\": [\n        \"ACH\",\n        \"FEDWIRE\"\n      ]\n    },\n    \"destination\": {\n      \"currency\": \"USDC\",\n      \"destination_chain\": \"POLYGON\",\n      \"address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f67c5f4-7ace-49a9-8cd9-d3e05ff1eb25",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"f8715e46-f46a-41dc-94ec-bd9797683510\",\n  \"customer_id\": \"22c6b566-5ecc-49b7-b812-076c64735596\",\n  \"developer_fee_percentage\": 1.25,\n  \"destination_wallet_address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d80f3b81-629c-44fc-9290-b0b8c0bb755b",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"f8715e46-f46a-41dc-94ec-bd9797683510\",\n  \"customer_id\": \"22c6b566-5ecc-49b7-b812-076c64735596\",\n  \"developer_fee_percentage\": 1.25,\n  \"destination_wallet_address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "587a32fb-7a1b-4084-8d4a-77297e97ac83",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    "virtual-account"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"f8715e46-f46a-41dc-94ec-bd9797683510\",\n  \"customer_id\": \"22c6b566-5ecc-49b7-b812-076c64735596\",\n  \"developer_fee_percentage\": 1.25,\n  \"destination_wallet_address\": \"0x7f1568190e318da16a9ef5a46cba19d5b97d9b29\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7173f393-0768-44f0-af11-338b252413a9",
+          "name": "Fetch Virtual Account Transactions",
+          "request": {
+            "name": "Fetch Virtual Account Transactions",
+            "description": {
+              "content": "Retrieve a paginated list of all transactions for a specific virtual account",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "virtual-account",
+                ":virtual_account_id",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "virtual_account_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "359cbf90-c630-493c-b0a4-afe1438b4b9b",
+              "name": "Virtual account transactions retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "virtual-account",
+                    ":virtual_account_id",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "virtual_account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"transactions\": [\n      {\n        \"id\": \"e34a382f-f0b6-40f2-b53b-97cb31f0506c\",\n        \"transaction_type\": \"ONRAMP\",\n        \"beneficiary_id\": \"bd14787c-1d72-9bab-1b50-b52b5475ac54\",\n        \"hash\": \"string\",\n        \"transaction_ref_id\": \"b1555ec2-4ad9-fb59-c03a-33ba7be42d6a\",\n        \"from_amount\": 0,\n        \"payout_amount\": 0,\n        \"processing_amount\": 4109.955762517413,\n        \"status\": \"COMPLETED\",\n        \"fx_rate\": 0,\n        \"developer_fee\": 0,\n        \"developer_fee_percentage\": 0,\n        \"developer_fee_fixed\": 5523.901232493427,\n        \"from_currency\": \"USD\",\n        \"payout_currency\": \"USDC\",\n        \"virtual_account_id\": \"e83dfaea-a882-0c40-6a08-3803e827997b\",\n        \"created_at\": \"2017-09-04T16:42:32.020Z\",\n        \"updated_at\": \"1975-06-18T19:58:01.626Z\"\n      },\n      {\n        \"id\": \"e34a382f-f0b6-40f2-b53b-97cb31f0506c\",\n        \"transaction_type\": \"ONRAMP\",\n        \"beneficiary_id\": \"2c423014-d586-08e1-b01f-58b4ea0f8c92\",\n        \"hash\": \"string\",\n        \"transaction_ref_id\": \"b5489af9-a1e9-99e2-61c1-97f8a924fb51\",\n        \"from_amount\": 0,\n        \"payout_amount\": 0,\n        \"processing_amount\": 7032.232602743591,\n        \"status\": \"COMPLETED\",\n        \"fx_rate\": 0,\n        \"developer_fee\": 0,\n        \"developer_fee_percentage\": 0,\n        \"developer_fee_fixed\": 3122.6241874944117,\n        \"from_currency\": \"USD\",\n        \"payout_currency\": \"USDC\",\n        \"virtual_account_id\": \"98b3337a-8407-2c30-9089-4e67a21b5054\",\n        \"created_at\": \"1979-07-21T13:00:34.734Z\",\n        \"updated_at\": \"1984-11-30T20:21:23.246Z\"\n      }\n    ],\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 4\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a5044e8-49a2-450d-97c3-118829cad996",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "virtual-account",
+                    ":virtual_account_id",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "virtual_account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "063a6c95-ff0f-4bf0-aba9-5c91260758b8",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "virtual-account",
+                    ":virtual_account_id",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "virtual_account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa2e6acd-707e-48db-9040-57b33cde1970",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "virtual-account",
+                    ":virtual_account_id",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "virtual_account_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.api.fin.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8462618d-b374-4546-9d53-1a4518930a19",
+    "name": "Fin.com Authentication Virtual Accounts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A simple API specificationFo",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,1391 @@
+{
+  "item": [
+    {
+      "id": "f60d4b70-bfe2-4590-81d6-5f5f58afb709",
+      "name": "Catalogue",
+      "description": {
+        "content": "A set of endpoints to retrieve contextual data to assemble requests\nto fin.com's API\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "adc523a1-ecff-4ff6-9e04-a5d268676620",
+          "name": "List Industries",
+          "request": {
+            "name": "List Industries",
+            "description": {
+              "content": "Retrieve a list of available industries",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "industries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_page",
+                  "value": "1",
+                  "description": "The page number to retrieve"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cda5574b-a158-4efa-9715-233a6a20a275",
+              "name": "List of industries retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "industries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 10\n    },\n    \"industries\": [\n      {\n        \"id\": 1,\n        \"title\": \"Oilseed Except Soybean Farming\"\n      },\n      {\n        \"id\": 1,\n        \"title\": \"Oilseed Except Soybean Farming\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05776547-1071-4aef-8b62-8ce1053b7c38",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "industries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8579bf2a-443f-47d7-b7ee-5e1c31fb06d8",
+          "name": "List Occupations",
+          "request": {
+            "name": "List Occupations",
+            "description": {
+              "content": "Retrieve a list of available occupations",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "occupations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_page",
+                  "value": "1",
+                  "description": "The page number to retrieve"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "59200241-9d3f-4d61-b087-0bd8836cac19",
+              "name": "List of occupations retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "occupations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 10\n    },\n    \"occupations\": [\n      {\n        \"id\": 1,\n        \"title\": \"Software Engineer\"\n      },\n      {\n        \"id\": 1,\n        \"title\": \"Software Engineer\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7edef512-f823-4934-b726-a2f685972e13",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "occupations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a76f20f5-bf4b-4123-b5d4-f756ce586ca8",
+          "name": "List Source of Funds",
+          "request": {
+            "name": "List Source of Funds",
+            "description": {
+              "content": "Retrieve a list of available source of funds",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "source-of-funds"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_page",
+                  "value": "1",
+                  "description": "The page number to retrieve"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "(Required) Filter source of funds by type"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7ec75f00-1e99-4508-a8b2-3d0f9c535ea2",
+              "name": "List of source of funds retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "source-of-funds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 10\n    },\n    \"source_of_funds\": [\n      {\n        \"id\": 1,\n        \"title\": \"Employment Income\"\n      },\n      {\n        \"id\": 1,\n        \"title\": \"Employment Income\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f2264a4-7a71-4ae8-8e08-4c9a17a50d83",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "source-of-funds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b9e4719e-a331-48a8-9351-63344471abf5",
+          "name": "List Source of Wealth",
+          "request": {
+            "name": "List Source of Wealth",
+            "description": {
+              "content": "Retrieve a list of available source of wealth options",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "source-of-wealth"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_page",
+                  "value": "1",
+                  "description": "The page number to retrieve"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "(Required) Filter source of wealth by type"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9433bd5f-5735-496a-b42b-2681cce133c3",
+              "name": "List of source of wealth retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "source-of-wealth"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 7\n    },\n    \"source_of_wealth\": [\n      {\n        \"id\": 1,\n        \"title\": \"Business dividends or profits\"\n      },\n      {\n        \"id\": 2,\n        \"title\": \"Investment income\"\n      },\n      {\n        \"id\": 3,\n        \"title\": \"Real estate\"\n      },\n      {\n        \"id\": 4,\n        \"title\": \"Inheritance\"\n      },\n      {\n        \"id\": 5,\n        \"title\": \"Salary\"\n      },\n      {\n        \"id\": 6,\n        \"title\": \"Sale of business\"\n      },\n      {\n        \"id\": 7,\n        \"title\": \"Other\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06c4eebf-54fd-4f20-a2da-d0288df207a3",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "source-of-wealth"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bf3e0603-45e3-4fbc-a667-f4a970ed28d7",
+          "name": "List Account Purposes",
+          "request": {
+            "name": "List Account Purposes",
+            "description": {
+              "content": "Retrieve a list of available account purposes",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "purposes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_page",
+                  "value": "1",
+                  "description": "The page number to retrieve"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "(Required) Filter account purposes by type"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "33f08e6c-536e-425a-a8c0-065bcb30a6b0",
+              "name": "List of account purposes retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "purposes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 10\n    },\n    \"purposes\": [\n      {\n        \"id\": 1,\n        \"title\": \"Personal Savings\"\n      },\n      {\n        \"id\": 1,\n        \"title\": \"Personal Savings\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c42558be-d8e6-4c1a-845e-14b67baf568c",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "purposes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "47816b2b-9a56-4e15-b318-0b8b84230cdb",
+          "name": "List Generic Country Codes",
+          "request": {
+            "name": "List Generic Country Codes",
+            "description": {
+              "content": "Retrieve a list of country specific codes following ISO 3166-1 alpha-3 standard",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "countries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_page",
+                  "value": "1",
+                  "description": "The page number to retrieve"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c061efec-43f4-40d7-bbf9-515d8fef8d53",
+              "name": "List of countries retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "countries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 20,\n      \"total_page\": 13,\n      \"total\": 248\n    },\n    \"countries\": [\n      {\n        \"code\": \"AFG\",\n        \"name\": \"Afghanistan\",\n        \"currency_code\": \"AFN\",\n        \"phone_code\": \"+93\",\n        \"flag_url\": \"https://flagcdn.com/af.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A\\\\d{4}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"ALA\",\n        \"name\": \"Åland Islands\",\n        \"currency_code\": \"EUR\",\n        \"phone_code\": \"+358\",\n        \"flag_url\": \"https://flagcdn.com/ax.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A22\\\\d{3}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"ALB\",\n        \"name\": \"Albania\",\n        \"currency_code\": \"ALL\",\n        \"phone_code\": \"+355\",\n        \"flag_url\": \"https://flagcdn.com/al.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A\\\\d{4}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"DZA\",\n        \"name\": \"Algeria\",\n        \"currency_code\": \"DZD\",\n        \"phone_code\": \"+213\",\n        \"flag_url\": \"https://flagcdn.com/dz.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A\\\\d{5}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"ASM\",\n        \"name\": \"American Samoa\",\n        \"currency_code\": \"USD\",\n        \"phone_code\": \"+1-684\",\n        \"flag_url\": \"https://flagcdn.com/as.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A(96799)(?:[ \\\\-](\\\\d{4}))?\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"AND\",\n        \"name\": \"Andorra\",\n        \"currency_code\": \"EUR\",\n        \"phone_code\": \"+376\",\n        \"flag_url\": \"https://flagcdn.com/ad.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\AAD[1-7]0\\\\d\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"AGO\",\n        \"name\": \"Angola\",\n        \"currency_code\": \"AOA\",\n        \"phone_code\": \"+244\",\n        \"flag_url\": \"https://flagcdn.com/ao.svg\",\n        \"postal_code\": {\n          \"required\": false,\n          \"regex\": null\n        }\n      },\n      {\n        \"code\": \"AIA\",\n        \"name\": \"Anguilla\",\n        \"currency_code\": \"XCD\",\n        \"phone_code\": \"+1-264\",\n        \"flag_url\": \"https://flagcdn.com/ai.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A(?:AI-)?2640\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"ATA\",\n        \"name\": \"Antarctica\",\n        \"flag_url\": \"https://flagcdn.com/aq.svg\",\n        \"postal_code\": {\n          \"required\": false,\n          \"regex\": null\n        }\n      },\n      {\n        \"code\": \"ATG\",\n        \"name\": \"Antigua and Barbuda\",\n        \"currency_code\": \"XCD\",\n        \"phone_code\": \"+1-268\",\n        \"flag_url\": \"https://flagcdn.com/ag.svg\",\n        \"postal_code\": {\n          \"required\": false,\n          \"regex\": null\n        }\n      },\n      {\n        \"code\": \"ARG\",\n        \"name\": \"Argentina\",\n        \"currency_code\": \"ARS\",\n        \"phone_code\": \"+54\",\n        \"flag_url\": \"https://flagcdn.com/ar.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A((?:[A-HJ-NP-Z])?\\\\d{4})([A-Z]{3})?\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"ARM\",\n        \"name\": \"Armenia\",\n        \"currency_code\": \"AMD\",\n        \"phone_code\": \"+374\",\n        \"flag_url\": \"https://flagcdn.com/am.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A(?:37)?\\\\d{4}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"ABW\",\n        \"name\": \"Aruba\",\n        \"currency_code\": \"AWG\",\n        \"phone_code\": \"+297\",\n        \"flag_url\": \"https://flagcdn.com/aw.svg\",\n        \"postal_code\": {\n          \"required\": false,\n          \"regex\": null\n        }\n      },\n      {\n        \"code\": \"AUS\",\n        \"name\": \"Australia\",\n        \"currency_code\": \"AUD\",\n        \"phone_code\": \"+61\",\n        \"flag_url\": \"https://flagcdn.com/au.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A\\\\d{4}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"AUT\",\n        \"name\": \"Austria\",\n        \"currency_code\": \"EUR\",\n        \"phone_code\": \"+43\",\n        \"flag_url\": \"https://flagcdn.com/at.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A\\\\d{4}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"AZE\",\n        \"name\": \"Azerbaijan\",\n        \"currency_code\": \"AZN\",\n        \"phone_code\": \"+994\",\n        \"flag_url\": \"https://flagcdn.com/az.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A\\\\d{4}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"BHS\",\n        \"name\": \"Bahamas\",\n        \"currency_code\": \"BSD\",\n        \"phone_code\": \"+1-242\",\n        \"flag_url\": \"https://flagcdn.com/bs.svg\",\n        \"postal_code\": {\n          \"required\": false,\n          \"regex\": null\n        }\n      },\n      {\n        \"code\": \"BHR\",\n        \"name\": \"Bahrain\",\n        \"currency_code\": \"BHD\",\n        \"phone_code\": \"+973\",\n        \"flag_url\": \"https://flagcdn.com/bh.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A(?:\\\\d|1[0-2])\\\\d{2}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"BGD\",\n        \"name\": \"Bangladesh\",\n        \"currency_code\": \"BDT\",\n        \"phone_code\": \"+880\",\n        \"flag_url\": \"https://flagcdn.com/bd.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\A\\\\d{4}\\\\Z\"\n        }\n      },\n      {\n        \"code\": \"BRB\",\n        \"name\": \"Barbados\",\n        \"currency_code\": \"BBD\",\n        \"phone_code\": \"+1-246\",\n        \"flag_url\": \"https://flagcdn.com/bb.svg\",\n        \"postal_code\": {\n          \"required\": true,\n          \"regex\": \"\\\\ABB\\\\d{5}\\\\Z\"\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8ff4643-c745-4b0d-a5e8-101ec1d7ce11",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "countries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2c396dbe-b810-477b-af11-b06eb4bf0d0f",
+          "name": "List Subdivision Codes: ISO 3166-1 alpha-2",
+          "request": {
+            "name": "List Subdivision Codes: ISO 3166-1 alpha-2",
+            "description": {
+              "content": "Retrieve a list of subdivision codes for a specific country following ISO 3166-2 standard",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "countries",
+                ":country_code",
+                "subdivisions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "country_code",
+                  "description": "(Required) ISO 3166-1 alpha-3 country code"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "14e37430-63f3-47a3-b523-4b41039304cd",
+              "name": "List of subdivisions retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "countries",
+                    ":country_code",
+                    "subdivisions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) ISO 3166-1 alpha-3 country code"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"subdivisions\": [\n      {\n        \"name\": \"Bandarban\",\n        \"code\": \"BD-01\"\n      },\n      {\n        \"name\": \"Bandarban\",\n        \"code\": \"BD-01\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fa1730f1-6cf8-45f5-964a-e1d706e695e7",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "countries",
+                    ":country_code",
+                    "subdivisions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "country_code",
+                      "description": "(Required) ISO 3166-1 alpha-3 country code"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "97081fc7-3a9e-4a24-8b55-ef0f8fbf457f",
+          "name": "List Transaction Purposes",
+          "request": {
+            "name": "List Transaction Purposes",
+            "description": {
+              "content": "Retrieve a list of available transaction purposes",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "transaction-purposes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of items to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "current_page",
+                  "value": "1",
+                  "description": "The page number to retrieve"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "(Required) Filter transaction purposes by type"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "51d40f4e-825c-433e-83a5-ee208c270410",
+              "name": "List of transaction purposes retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transaction-purposes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 10\n    },\n    \"transaction_purposes\": [\n      {\n        \"id\": 1,\n        \"title\": \"Personal Transfer\"\n      },\n      {\n        \"id\": 1,\n        \"title\": \"Personal Transfer\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "335a19e8-adc1-4278-8800-be8fdca77cdf",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transaction-purposes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.api.fin.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "49d18ee2-09e4-47af-a0b4-715dfd5c1f53",
+    "name": "Fin.com Authentication Catalogue API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A simple API specificationFo",
+      "type": "text/plain"
+    }
+  }
+}

@@ -194,3 +194,9 @@ tools:
 - name: list_transaction_purposes
   description: List Transaction Purposes
   source_operation: openapi/fin-openapi-original.yml [GET /v1/transaction-purposes]
+deployment:
+  mode: none
+  verified: derived
+  tools: 62
+  checked: '2026-08-12'
+  source: catalog MCP census

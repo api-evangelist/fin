@@ -1,0 +1,2082 @@
+{
+  "item": [
+    {
+      "id": "896291dc-aebf-4edc-b88d-b8228be52e61",
+      "name": "Beneficiaries",
+      "description": {
+        "content": "Manage beneficiary accounts for payments and transfers",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "46288bf9-ef85-4792-9181-ee9b7bba73fb",
+          "name": "List Available Countries",
+          "request": {
+            "name": "List Available Countries",
+            "description": {
+              "content": "Retrieve a list of countries supported for beneficiary creation with available payment methods and phone validation rules",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "beneficiaries",
+                "countries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4e2a73d5-845b-4090-abca-6ba2603d86af",
+              "name": "Countries list retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    "countries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 4,\n      \"code\": \"AUS\",\n      \"name\": \"Australia\",\n      \"currency_code\": \"AUD\",\n      \"phone\": {\n        \"code\": \"+61\",\n        \"max_length\": 9,\n        \"min_length\": 9\n      },\n      \"available_methods\": [\n        \"BANK\"\n      ],\n      \"flag\": \"https://flagcdn.com/au.svg\"\n    },\n    {\n      \"id\": 4,\n      \"code\": \"AUS\",\n      \"name\": \"Australia\",\n      \"currency_code\": \"AUD\",\n      \"phone\": {\n        \"code\": \"+61\",\n        \"max_length\": 9,\n        \"min_length\": 9\n      },\n      \"available_methods\": [\n        \"BANK\"\n      ],\n      \"flag\": \"https://flagcdn.com/au.svg\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "52e91eae-cf00-43e5-ba3c-a3fcb3c844ac",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    "countries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d49b7e32-0ec3-4ebb-be10-89e3fe25fb7e",
+          "name": "List Bank Identifiers",
+          "request": {
+            "name": "List Bank Identifiers",
+            "description": {
+              "content": "Retrieve a list of available banks or e-wallet providers for a specific country and method type",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "beneficiaries",
+                "methods"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "country_code",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "method",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "43d3446c-2c09-4bcf-8327-2ebca5768468",
+              "name": "Bank/method identifiers retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    "methods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "country_code",
+                      "value": "BGD"
+                    },
+                    {
+                      "key": "method",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 1461,\n      \"name\": \"AB BANK LTD.\",\n      \"method\": \"BANK\",\n      \"has_branch\": true\n    },\n    {\n      \"id\": 1461,\n      \"name\": \"AB BANK LTD.\",\n      \"method\": \"BANK\",\n      \"has_branch\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9514143-c449-4e88-8402-e9f6bbe3d3bf",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    "methods"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "country_code",
+                      "value": "BGD"
+                    },
+                    {
+                      "key": "method",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "53a9e252-2436-4c15-a4ef-519a8d1662c7",
+          "name": "List Bank Branch Identifiers",
+          "request": {
+            "name": "List Bank Branch Identifiers",
+            "description": {
+              "content": "Retrieve a list of available branches for a specific bank or payment method",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "beneficiaries",
+                "methods",
+                ":method_id",
+                "branches"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "method_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c560fb70-d30d-4b58-ae7f-db61c390732f",
+              "name": "Branch identifiers retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    "methods",
+                    ":method_id",
+                    "branches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "method_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": 21513,\n      \"name\": \"SITAKUNDA\",\n      \"branch_code\": \"string\"\n    },\n    {\n      \"id\": 21513,\n      \"name\": \"SITAKUNDA\",\n      \"branch_code\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab44ea33-ea2a-472b-92e0-d1107f7f99cf",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    "methods",
+                    ":method_id",
+                    "branches"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "method_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4c66aa77-540d-4b1d-bbee-cf3132dd20c9",
+          "name": "Create Beneficiary V3",
+          "request": {
+            "name": "Create Beneficiary V3",
+            "description": {
+              "content": "Create a new beneficiary for payments and transfers. Supports bank accounts, e-wallets, and external crypto wallets as destination types.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v3",
+                "beneficiaries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_holder\": {\n    \"type\": \"<string>\",\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"email\": \"<email>\",\n    \"phone\": \"<string>\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"postcode\": \"<string>\",\n    \"country\": \"<string>\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"<string>\",\n    \"number\": \"<string>\",\n    \"scheme\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"postcode\": \"<string>\",\n    \"country\": \"<string>\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"counter_party\": \"<string>\",\n  \"country\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"customer_id\": \"<uuid>\",\n  \"deposit_instruction\": {\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"developer_fee\": {\n    \"fixed\": \"<number>\",\n    \"percentage\": \"<number>\"\n  },\n  \"receiver_meta_data\": {\n    \"transaction_purpose_id\": \"<integer>\",\n    \"relationship\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"transaction_purpose_remarks\": \"<string>\",\n    \"occupation_id\": \"<integer>\",\n    \"occupation_remarks\": \"<string>\",\n    \"relationship_remarks\": \"<string>\",\n    \"govt_id_number\": \"<string>\",\n    \"govt_id_issue_date\": \"<date>\",\n    \"govt_id_expire_date\": \"<date>\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"<string>\",\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"settlement_config\": {\n    \"auto_settlement\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ed2f883b-58ac-4ba2-bf73-076cda65b3a7",
+              "name": "Beneficiary created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"6fa1ccd4-ffbd-4b20-a113-ccc286b35443\",\n  \"country\": \"BGD\",\n  \"currency\": \"BDT\",\n  \"counter_party\": \"FIRST_PARTY\",\n  \"account_holder\": {\n    \"type\": \"INDIVIDUAL\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+8801912244626\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Commonwealth Bank of Australia\",\n    \"number\": \"1234572211\",\n    \"scheme\": \"LOCAL\",\n    \"type\": \"SAVINGS\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"Ground Floor Tower 1, 201 Sussex Street\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"42 Wallaby Way\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"receiver_meta_data\": {\n    \"nationality\": \"AUS\",\n    \"transaction_purpose_id\": 1,\n    \"occupation_id\": 5,\n    \"relationship\": \"FAMILY_MEMBER\",\n    \"relationship_remarks\": \"Family & Friends\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"SWIFT\",\n      \"number\": \"CLNOUS66BRX\"\n    },\n    {\n      \"scheme\": \"BANK_IDENTIFIER\",\n      \"number\": 160\n    },\n    {\n      \"scheme\": \"BRANCH_IDENTIFIER\",\n      \"number\": 8\n    }\n  ],\n  \"developer_fee\": {\n    \"fixed\": 0.02,\n    \"percentage\": 0.01\n  },\n  \"deposit_instruction\": {\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x1b577931C1cC2765024bFbafad97bCe14FF2e87F\",\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"beneficiary_id\": \"0254b433-e47d-412e-844b-b735c4bbba74\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e131f75-90e8-4010-85b3-407b80c82236",
+              "name": "Bad Request - Invalid input format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"6fa1ccd4-ffbd-4b20-a113-ccc286b35443\",\n  \"country\": \"BGD\",\n  \"currency\": \"BDT\",\n  \"counter_party\": \"FIRST_PARTY\",\n  \"account_holder\": {\n    \"type\": \"INDIVIDUAL\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+8801912244626\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Commonwealth Bank of Australia\",\n    \"number\": \"1234572211\",\n    \"scheme\": \"LOCAL\",\n    \"type\": \"SAVINGS\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"Ground Floor Tower 1, 201 Sussex Street\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"42 Wallaby Way\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"receiver_meta_data\": {\n    \"nationality\": \"AUS\",\n    \"transaction_purpose_id\": 1,\n    \"occupation_id\": 5,\n    \"relationship\": \"FAMILY_MEMBER\",\n    \"relationship_remarks\": \"Family & Friends\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"SWIFT\",\n      \"number\": \"CLNOUS66BRX\"\n    },\n    {\n      \"scheme\": \"BANK_IDENTIFIER\",\n      \"number\": 160\n    },\n    {\n      \"scheme\": \"BRANCH_IDENTIFIER\",\n      \"number\": 8\n    }\n  ],\n  \"developer_fee\": {\n    \"fixed\": 0.02,\n    \"percentage\": 0.01\n  },\n  \"deposit_instruction\": {\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x1b577931C1cC2765024bFbafad97bCe14FF2e87F\",\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Validation failed!\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0775477b-f2c1-4a7e-ac5e-12f4661f67a5",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"6fa1ccd4-ffbd-4b20-a113-ccc286b35443\",\n  \"country\": \"BGD\",\n  \"currency\": \"BDT\",\n  \"counter_party\": \"FIRST_PARTY\",\n  \"account_holder\": {\n    \"type\": \"INDIVIDUAL\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+8801912244626\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Commonwealth Bank of Australia\",\n    \"number\": \"1234572211\",\n    \"scheme\": \"LOCAL\",\n    \"type\": \"SAVINGS\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"Ground Floor Tower 1, 201 Sussex Street\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"42 Wallaby Way\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"receiver_meta_data\": {\n    \"nationality\": \"AUS\",\n    \"transaction_purpose_id\": 1,\n    \"occupation_id\": 5,\n    \"relationship\": \"FAMILY_MEMBER\",\n    \"relationship_remarks\": \"Family & Friends\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"SWIFT\",\n      \"number\": \"CLNOUS66BRX\"\n    },\n    {\n      \"scheme\": \"BANK_IDENTIFIER\",\n      \"number\": 160\n    },\n    {\n      \"scheme\": \"BRANCH_IDENTIFIER\",\n      \"number\": 8\n    }\n  ],\n  \"developer_fee\": {\n    \"fixed\": 0.02,\n    \"percentage\": 0.01\n  },\n  \"deposit_instruction\": {\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x1b577931C1cC2765024bFbafad97bCe14FF2e87F\",\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11bb3d59-7b61-49c8-877a-1ad119af4f00",
+              "name": "Conflict - A beneficiary with the same account details already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"6fa1ccd4-ffbd-4b20-a113-ccc286b35443\",\n  \"country\": \"BGD\",\n  \"currency\": \"BDT\",\n  \"counter_party\": \"FIRST_PARTY\",\n  \"account_holder\": {\n    \"type\": \"INDIVIDUAL\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+8801912244626\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Commonwealth Bank of Australia\",\n    \"number\": \"1234572211\",\n    \"scheme\": \"LOCAL\",\n    \"type\": \"SAVINGS\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"Ground Floor Tower 1, 201 Sussex Street\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"42 Wallaby Way\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"receiver_meta_data\": {\n    \"nationality\": \"AUS\",\n    \"transaction_purpose_id\": 1,\n    \"occupation_id\": 5,\n    \"relationship\": \"FAMILY_MEMBER\",\n    \"relationship_remarks\": \"Family & Friends\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"SWIFT\",\n      \"number\": \"CLNOUS66BRX\"\n    },\n    {\n      \"scheme\": \"BANK_IDENTIFIER\",\n      \"number\": 160\n    },\n    {\n      \"scheme\": \"BRANCH_IDENTIFIER\",\n      \"number\": 8\n    }\n  ],\n  \"developer_fee\": {\n    \"fixed\": 0.02,\n    \"percentage\": 0.01\n  },\n  \"deposit_instruction\": {\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x1b577931C1cC2765024bFbafad97bCe14FF2e87F\",\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A beneficiary with the same account details already exists.\",\n  \"error\": {\n    \"beneficiary_id\": \"0254b433-e47d-412e-844b-b735c4bbba74\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31a4f721-01e4-4636-bc83-bf149e0f8e7c",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v3",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"6fa1ccd4-ffbd-4b20-a113-ccc286b35443\",\n  \"country\": \"BGD\",\n  \"currency\": \"BDT\",\n  \"counter_party\": \"FIRST_PARTY\",\n  \"account_holder\": {\n    \"type\": \"INDIVIDUAL\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+8801912244626\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Commonwealth Bank of Australia\",\n    \"number\": \"1234572211\",\n    \"scheme\": \"LOCAL\",\n    \"type\": \"SAVINGS\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"Ground Floor Tower 1, 201 Sussex Street\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"42 Wallaby Way\",\n    \"city\": \"Dhaka\",\n    \"state\": \"BD-13\",\n    \"postcode\": \"1212\",\n    \"country\": \"BGD\"\n  },\n  \"receiver_meta_data\": {\n    \"nationality\": \"AUS\",\n    \"transaction_purpose_id\": 1,\n    \"occupation_id\": 5,\n    \"relationship\": \"FAMILY_MEMBER\",\n    \"relationship_remarks\": \"Family & Friends\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"SWIFT\",\n      \"number\": \"CLNOUS66BRX\"\n    },\n    {\n      \"scheme\": \"BANK_IDENTIFIER\",\n      \"number\": 160\n    },\n    {\n      \"scheme\": \"BRANCH_IDENTIFIER\",\n      \"number\": 8\n    }\n  ],\n  \"developer_fee\": {\n    \"fixed\": 0.02,\n    \"percentage\": 0.01\n  },\n  \"deposit_instruction\": {\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x1b577931C1cC2765024bFbafad97bCe14FF2e87F\",\n    \"currency\": \"USDC\",\n    \"rail\": \"POLYGON\"\n  },\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eba9c2a3-1a4d-48af-b016-ac5b43e31419",
+          "name": "Create Beneficiary",
+          "request": {
+            "name": "Create Beneficiary",
+            "description": {
+              "content": "Create a new beneficiary account for payments and transfers",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "beneficiaries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_holder\": {\n    \"type\": \"<string>\",\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"email\": \"<email>\",\n    \"phone\": \"<string>\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"postcode\": \"<string>\",\n    \"country\": \"<string>\",\n    \"street_line_2\": \"<string>\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"<string>\",\n    \"number\": \"<string>\",\n    \"scheme\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"postcode\": \"<string>\",\n    \"country\": \"<string>\",\n    \"street_line_2\": \"<string>\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"country\": \"<string>\",\n  \"currency\": \"<string>\",\n  \"customer_id\": \"<string>\",\n  \"deposit_instruction\": {\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"developer_fee\": {\n    \"fixed\": \"<number>\",\n    \"percentage\": \"<number>\"\n  },\n  \"receiver_meta_data\": {\n    \"transaction_purpose_id\": \"<integer>\",\n    \"occupation_remarks\": \"<string>\",\n    \"relationship\": \"<string>\",\n    \"nationality\": \"<string>\",\n    \"transaction_purpose_remarks\": \"<string>\",\n    \"occupation_id\": \"<integer>\",\n    \"relationship_remarks\": \"<string>\",\n    \"govt_id_number\": \"<string>\",\n    \"govt_id_issue_date\": \"<date>\",\n    \"govt_id_expire_date\": \"<date>\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"<string>\",\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"counter_party\": \"<string>\",\n  \"settlement_config\": {\n    \"auto_settlement\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1751efa5-a71c-47f6-9a79-0609e8a9c5fd",
+              "name": "Beneficiary created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_holder\": {\n    \"type\": \"<string>\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+1234567890\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"456 Main Street\",\n    \"city\": \"Brooklyn\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"11201\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Apt 5B\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Chase Bank\",\n    \"number\": \"1234567890\",\n    \"scheme\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"123 Bank Street\",\n    \"city\": \"New York\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"10001\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Suite 100\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"country\": \"USA\",\n  \"currency\": \"USD\",\n  \"customer_id\": \"cust_123456\",\n  \"deposit_instruction\": {\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"developer_fee\": {\n    \"fixed\": 5,\n    \"percentage\": 2.5\n  },\n  \"receiver_meta_data\": {\n    \"transaction_purpose_id\": 1,\n    \"occupation_remarks\": \"Software Engineer\",\n    \"relationship\": \"<string>\",\n    \"nationality\": \"USA\",\n    \"transaction_purpose_remarks\": \"Monthly salary payment\",\n    \"occupation_id\": 5,\n    \"relationship_remarks\": \"Long-term contractor\",\n    \"govt_id_number\": \"JG1121316A\",\n    \"govt_id_issue_date\": \"2024-12-30\",\n    \"govt_id_expire_date\": \"2027-12-30\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"counter_party\": \"FIRST_PARTY\",\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"ben_123456\",\n    \"status\": \"active\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "900f157d-d659-49aa-a67e-b273142fada1",
+              "name": "Bad Request - Invalid input format",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_holder\": {\n    \"type\": \"<string>\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+1234567890\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"456 Main Street\",\n    \"city\": \"Brooklyn\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"11201\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Apt 5B\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Chase Bank\",\n    \"number\": \"1234567890\",\n    \"scheme\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"123 Bank Street\",\n    \"city\": \"New York\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"10001\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Suite 100\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"country\": \"USA\",\n  \"currency\": \"USD\",\n  \"customer_id\": \"cust_123456\",\n  \"deposit_instruction\": {\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"developer_fee\": {\n    \"fixed\": 5,\n    \"percentage\": 2.5\n  },\n  \"receiver_meta_data\": {\n    \"transaction_purpose_id\": 1,\n    \"occupation_remarks\": \"Software Engineer\",\n    \"relationship\": \"<string>\",\n    \"nationality\": \"USA\",\n    \"transaction_purpose_remarks\": \"Monthly salary payment\",\n    \"occupation_id\": 5,\n    \"relationship_remarks\": \"Long-term contractor\",\n    \"govt_id_number\": \"JG1121316A\",\n    \"govt_id_issue_date\": \"2024-12-30\",\n    \"govt_id_expire_date\": \"2027-12-30\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"counter_party\": \"FIRST_PARTY\",\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Validation failed!\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6352254e-5bfe-480e-bb16-5fe81509ffca",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_holder\": {\n    \"type\": \"<string>\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+1234567890\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"456 Main Street\",\n    \"city\": \"Brooklyn\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"11201\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Apt 5B\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Chase Bank\",\n    \"number\": \"1234567890\",\n    \"scheme\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"123 Bank Street\",\n    \"city\": \"New York\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"10001\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Suite 100\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"country\": \"USA\",\n  \"currency\": \"USD\",\n  \"customer_id\": \"cust_123456\",\n  \"deposit_instruction\": {\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"developer_fee\": {\n    \"fixed\": 5,\n    \"percentage\": 2.5\n  },\n  \"receiver_meta_data\": {\n    \"transaction_purpose_id\": 1,\n    \"occupation_remarks\": \"Software Engineer\",\n    \"relationship\": \"<string>\",\n    \"nationality\": \"USA\",\n    \"transaction_purpose_remarks\": \"Monthly salary payment\",\n    \"occupation_id\": 5,\n    \"relationship_remarks\": \"Long-term contractor\",\n    \"govt_id_number\": \"JG1121316A\",\n    \"govt_id_issue_date\": \"2024-12-30\",\n    \"govt_id_expire_date\": \"2027-12-30\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"counter_party\": \"FIRST_PARTY\",\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31968035-9933-4b3e-b465-d6b540822f1d",
+              "name": "Conflict - A beneficiary with the same account details already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_holder\": {\n    \"type\": \"<string>\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+1234567890\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"456 Main Street\",\n    \"city\": \"Brooklyn\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"11201\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Apt 5B\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Chase Bank\",\n    \"number\": \"1234567890\",\n    \"scheme\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"123 Bank Street\",\n    \"city\": \"New York\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"10001\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Suite 100\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"country\": \"USA\",\n  \"currency\": \"USD\",\n  \"customer_id\": \"cust_123456\",\n  \"deposit_instruction\": {\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"developer_fee\": {\n    \"fixed\": 5,\n    \"percentage\": 2.5\n  },\n  \"receiver_meta_data\": {\n    \"transaction_purpose_id\": 1,\n    \"occupation_remarks\": \"Software Engineer\",\n    \"relationship\": \"<string>\",\n    \"nationality\": \"USA\",\n    \"transaction_purpose_remarks\": \"Monthly salary payment\",\n    \"occupation_id\": 5,\n    \"relationship_remarks\": \"Long-term contractor\",\n    \"govt_id_number\": \"JG1121316A\",\n    \"govt_id_issue_date\": \"2024-12-30\",\n    \"govt_id_expire_date\": \"2027-12-30\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"counter_party\": \"FIRST_PARTY\",\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A beneficiary with the same account details already exists.\",\n  \"error\": {\n    \"beneficiary_id\": \"d9868585-78ba-4723-b0af-8f5b1cc5f9e2\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "952abea5-8f54-4e07-8236-5400cc04c8ab",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"account_holder\": {\n    \"type\": \"<string>\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+1234567890\"\n  },\n  \"account_holder_address\": {\n    \"street_line_1\": \"456 Main Street\",\n    \"city\": \"Brooklyn\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"11201\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Apt 5B\"\n  },\n  \"bank_account\": {\n    \"bank_name\": \"Chase Bank\",\n    \"number\": \"1234567890\",\n    \"scheme\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"bank_address\": {\n    \"street_line_1\": \"123 Bank Street\",\n    \"city\": \"New York\",\n    \"state\": \"US-NY\",\n    \"postcode\": \"10001\",\n    \"country\": \"USA\",\n    \"street_line_2\": \"Suite 100\"\n  },\n  \"bank_routing\": [\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    {\n      \"scheme\": \"<string>\",\n      \"number\": \"<string>\"\n    }\n  ],\n  \"country\": \"USA\",\n  \"currency\": \"USD\",\n  \"customer_id\": \"cust_123456\",\n  \"deposit_instruction\": {\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"developer_fee\": {\n    \"fixed\": 5,\n    \"percentage\": 2.5\n  },\n  \"receiver_meta_data\": {\n    \"transaction_purpose_id\": 1,\n    \"occupation_remarks\": \"Software Engineer\",\n    \"relationship\": \"<string>\",\n    \"nationality\": \"USA\",\n    \"transaction_purpose_remarks\": \"Monthly salary payment\",\n    \"occupation_id\": 5,\n    \"relationship_remarks\": \"Long-term contractor\",\n    \"govt_id_number\": \"JG1121316A\",\n    \"govt_id_issue_date\": \"2024-12-30\",\n    \"govt_id_expire_date\": \"2027-12-30\"\n  },\n  \"refund_instruction\": {\n    \"wallet_address\": \"0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb\",\n    \"currency\": \"<string>\",\n    \"rail\": \"<string>\"\n  },\n  \"counter_party\": \"FIRST_PARTY\",\n  \"settlement_config\": {\n    \"auto_settlement\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2463034f-7aeb-4aba-a43c-e731b2d58f04",
+          "name": "List Beneficiaries For a Customer",
+          "request": {
+            "name": "List Beneficiaries For a Customer",
+            "description": {
+              "content": "Retrieve all beneficiaries associated with a specific customer",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "customers",
+                ":customer_id",
+                "beneficiaries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "customer_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a5c8bf18-eed2-4ddd-8de0-eca1c8b4d861",
+              "name": "Beneficiaries list retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    ":customer_id",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "customer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"f653e109-6c62-4aa4-869c-418c874e0a6c\",\n      \"customer_id\": \"ad41fac1-e406-445b-aea4-69381c39ca5d\",\n      \"active\": true,\n      \"country_code\": \"AUS\",\n      \"business_name\": \"Investment bank\",\n      \"type\": \"BUSINESS\",\n      \"nationality\": \"AUS\",\n      \"email\": \"michael.oconnor@example.com\",\n      \"phone\": \"+61412345678\",\n      \"method\": \"BANK\",\n      \"currency\": \"AUD\",\n      \"account_number\": \"*****6789\",\n      \"refund_wallet_address\": \"0x1b577931C1cC2765024bFbafad97bCe14FF2e87F\",\n      \"developer_fee_fixed\": 1.25,\n      \"developer_fee_percentage\": 0.45,\n      \"liquidation_address\": \"0x185571d849dcfefff449bd1e9f847b1322f22834\",\n      \"auto_settlement\": false,\n      \"source_currency\": \"USDC\",\n      \"source_chain\": \"POLYGON\",\n      \"created_at\": \"2025-12-09T14:56:47.916263Z\",\n      \"updated_at\": \"2025-12-09T14:56:49.1308Z\"\n    },\n    {\n      \"id\": \"f653e109-6c62-4aa4-869c-418c874e0a6c\",\n      \"customer_id\": \"ad41fac1-e406-445b-aea4-69381c39ca5d\",\n      \"active\": true,\n      \"country_code\": \"AUS\",\n      \"business_name\": \"Investment bank\",\n      \"type\": \"BUSINESS\",\n      \"nationality\": \"AUS\",\n      \"email\": \"michael.oconnor@example.com\",\n      \"phone\": \"+61412345678\",\n      \"method\": \"BANK\",\n      \"currency\": \"AUD\",\n      \"account_number\": \"*****6789\",\n      \"refund_wallet_address\": \"0x1b577931C1cC2765024bFbafad97bCe14FF2e87F\",\n      \"developer_fee_fixed\": 1.25,\n      \"developer_fee_percentage\": 0.45,\n      \"liquidation_address\": \"0x185571d849dcfefff449bd1e9f847b1322f22834\",\n      \"auto_settlement\": false,\n      \"source_currency\": \"USDC\",\n      \"source_chain\": \"POLYGON\",\n      \"created_at\": \"2025-12-09T14:56:47.916263Z\",\n      \"updated_at\": \"2025-12-09T14:56:49.1308Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2737387-533a-4ece-93e5-9f54ded35c43",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "customers",
+                    ":customer_id",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "customer_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b41a5319-dc66-4b21-a5b1-8e2b9ace2bc4",
+          "name": "Fetch Beneficiary Details v2",
+          "request": {
+            "name": "Fetch Beneficiary Details v2",
+            "description": {
+              "content": "Retrieve detailed information for a specific beneficiary. Returns structured data for bank accounts, e-wallets, and external crypto wallet destinations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "beneficiaries",
+                "details"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "customer_id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "beneficiary_id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "202e8240-d7f5-4381-9e94-cf0ea01ed693",
+              "name": "Beneficiary details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "beneficiaries",
+                    "details"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "31526861-ebe0-4f84-a7b2-2c3ec1cc47f9"
+                    },
+                    {
+                      "key": "beneficiary_id",
+                      "value": "4c0c63db-580f-4e16-af24-e84ea8937dd8"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"4c0c63db-580f-4e16-af24-e84ea8937dd8\",\n    \"customer_id\": \"31526861-ebe0-4f84-a7b2-2c3ec1cc47f9\",\n    \"active\": true,\n    \"status\": \"ACTIVE\",\n    \"counter_party\": \"FIRST_PARTY\",\n    \"currency\": \"AUD\",\n    \"country\": \"AUS\",\n    \"account_holder\": {\n      \"type\": \"INDIVIDUAL\",\n      \"first_name\": \"John\",\n      \"last_name\": \"Doe\",\n      \"email\": \"john.doe@example.com\",\n      \"phone\": \"+61412345678\"\n    },\n    \"bank_account\": {\n      \"bank_name\": \"Commonwealth Bank of Australia\",\n      \"number\": \"123456782\",\n      \"scheme\": \"LOCAL\",\n      \"type\": \"BANK\"\n    },\n    \"bank_routing\": [\n      {\n        \"scheme\": \"BANK_IDENTIFIER\",\n        \"name\": \"AUS BANK\"\n      }\n    ],\n    \"receiver_meta_data\": {\n      \"transaction_purpose_id\": 1,\n      \"transaction_purpose_remarks\": \"Send to Family & Friends\",\n      \"occupation_id\": 504,\n      \"occupation_remarks\": \"Software quality assurance analyst and tester\",\n      \"relationship\": \"FAMILY_MEMBER\",\n      \"relationship_remarks\": \"Family & Friends\",\n      \"nationality\": \"AUS\"\n    },\n    \"bank_address\": {\n      \"street_line_1\": \"Ground Floor Tower 1, 201 Sussex Street\",\n      \"city\": \"Sydney\",\n      \"state\": \"AU-SA\",\n      \"postcode\": \"2000\",\n      \"country\": \"AUS\"\n    },\n    \"account_holder_address\": {\n      \"street_line_1\": \"42 Wallaby Way\",\n      \"city\": \"Queensland\",\n      \"state\": \"AU-SA\",\n      \"postcode\": \"2000\",\n      \"country\": \"AUS\"\n    },\n    \"developer_fee\": {\n      \"fixed\": 1.25,\n      \"percentage\": 0.45\n    },\n    \"deposit_instruction\": {\n      \"currency\": \"USDC\",\n      \"rail\": \"POLYGON\",\n      \"liquidation_address\": \"0xc0470baa27e383a570226298f598fac0612f1143\"\n    },\n    \"refund_instruction\": {\n      \"wallet_address\": \"0x1b577931C1cC2765024bFbafad97bCe14FF2e87F\",\n      \"currency\": \"USDC\",\n      \"rail\": \"POLYGON\"\n    },\n    \"e_wallet\": null,\n    \"settlement_config\": {\n      \"auto_settlement\": false\n    },\n    \"destination_wallet\": null,\n    \"created_at\": \"2025-12-31T14:29:07.100041Z\",\n    \"updated_at\": \"2025-12-31T14:29:08.675022Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ca2852af-3d3d-4ed7-bdc5-ea0f966e659c",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "beneficiaries",
+                    "details"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "31526861-ebe0-4f84-a7b2-2c3ec1cc47f9"
+                    },
+                    {
+                      "key": "beneficiary_id",
+                      "value": "4c0c63db-580f-4e16-af24-e84ea8937dd8"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1e01a6b-3a7b-41dc-8add-a067caae6334",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "beneficiaries",
+                    "details"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "31526861-ebe0-4f84-a7b2-2c3ec1cc47f9"
+                    },
+                    {
+                      "key": "beneficiary_id",
+                      "value": "4c0c63db-580f-4e16-af24-e84ea8937dd8"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6bd9a435-8052-41ed-8c89-a3e57bbd3bfb",
+          "name": "Fetch Beneficiary Details v1",
+          "request": {
+            "name": "Fetch Beneficiary Details v1",
+            "description": {
+              "content": "Retrieve detailed information for a specific beneficiary",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "beneficiaries",
+                "details"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "customer_id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "beneficiary_id",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fc8ed935-9d8c-4970-8fe2-d3f1b5a00a8e",
+              "name": "Beneficiary details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    "details"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "ad41fac1-e406-445b-aea4-69381c39ca5d"
+                    },
+                    {
+                      "key": "beneficiary_id",
+                      "value": "f653e109-6c62-4aa4-869c-418c874e0a6c"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"f653e109-6c62-4aa4-869c-418c874e0a6c\",\n    \"customer_id\": \"ad41fac1-e406-445b-aea4-69381c39ca5d\",\n    \"active\": true,\n    \"country_code\": \"AUS\",\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"business_name\": \"Investment bank\",\n    \"type\": \"INDIVIDUAL\",\n    \"nationality\": \"AUS\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+61412345678\",\n    \"method\": \"BANK\",\n    \"currency\": \"AUD\",\n    \"account_number\": \"*****6789\",\n    \"refund_wallet_address\": \"0x1b577931C1cC2765024bFbafad97bCe14FF2e87F\",\n    \"developer_fee_fixed\": 1.25,\n    \"developer_fee_percentage\": 0.45,\n    \"liquidation_address\": \"0x185571d849dcfefff449bd1e9f847b1322f22834\",\n    \"auto_settlement\": false,\n    \"source_currency\": \"USDC\",\n    \"source_chain\": \"POLYGON\",\n    \"created_at\": \"2025-12-09T14:56:47.916263Z\",\n    \"updated_at\": \"2025-12-09T14:56:49.1308Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b3d7603c-716b-4af8-af4f-bbc9653c8b1c",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    "details"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "ad41fac1-e406-445b-aea4-69381c39ca5d"
+                    },
+                    {
+                      "key": "beneficiary_id",
+                      "value": "f653e109-6c62-4aa4-869c-418c874e0a6c"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6b3e6b20-dbc9-4325-8daf-b09488f50253",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    "details"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "ad41fac1-e406-445b-aea4-69381c39ca5d"
+                    },
+                    {
+                      "key": "beneficiary_id",
+                      "value": "f653e109-6c62-4aa4-869c-418c874e0a6c"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eb499b26-78e7-470b-9aa9-495cd3aa0541",
+          "name": "Update Beneficiary Active Status",
+          "request": {
+            "name": "Update Beneficiary Active Status",
+            "description": {
+              "content": "Update the active status of a beneficiary to enable or disable it",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "beneficiaries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"beneficiary_id\": \"<uuid>\",\n  \"active\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "be449a82-f2d8-4505-92d8-f7eb19a1a623",
+              "name": "Beneficiary updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"beneficiary_id\": \"f653e109-6c62-4aa4-869c-418c874e0a6c\",\n  \"active\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"message\": \"Beneficiary updated successfully\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d898e1ce-2425-437b-aad1-d1a3c6c06474",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"beneficiary_id\": \"f653e109-6c62-4aa4-869c-418c874e0a6c\",\n  \"active\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d6207fb1-83fb-4a93-8531-14b59b954dee",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"beneficiary_id\": \"f653e109-6c62-4aa4-869c-418c874e0a6c\",\n  \"active\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "69c83357-138b-4642-a04b-4f4bb2938eb3",
+          "name": "Upload Beneficiary Documents",
+          "request": {
+            "name": "Upload Beneficiary Documents",
+            "description": {
+              "content": "Upload one or more documents for a specific beneficiary using multipart/form-data",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "beneficiaries",
+                ":beneficiary_id",
+                "documents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "beneficiary_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "doc1",
+                  "type": "file",
+                  "description": ""
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8336acc8-a740-40f9-81dc-7247dbc6b721",
+              "name": "Documents uploaded successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    ":beneficiary_id",
+                    "documents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "beneficiary_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "doc1",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"files\": [\n      {\n        \"invoice1\": \"/wKbvfH5E_Invoice.pdf\"\n      },\n      {\n        \"invoice2\": \"/XUOdWacK_Invoice.jpg\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.api.fin.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a18e7228-b4e2-4055-981e-39d0e2d50faf",
+    "name": "Fin.com Authentication Beneficiaries API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A simple API specificationFo",
+      "type": "text/plain"
+    }
+  }
+}

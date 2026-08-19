@@ -1,0 +1,2206 @@
+{
+  "item": [
+    {
+      "id": "db0dd4e3-1232-4ba4-a319-90baa460c6ff",
+      "name": "Transactions",
+      "description": {
+        "content": "Transaction history and management for beneficiaries",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0cd890b5-7b5f-4187-a8a0-08f3258e91dc",
+          "name": "List Customer Transactions",
+          "request": {
+            "name": "List Customer Transactions",
+            "description": {
+              "content": "Returns a paginated list of transactions for a customer, optionally filtered by transaction type.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "customer_id",
+                  "value": "<string>",
+                  "description": "(Required) The customer ID to fetch transactions for."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter transactions by type."
+                },
+                {
+                  "disabled": false,
+                  "key": "current_page",
+                  "value": "1",
+                  "description": "The page number to retrieve"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Number of results per page. Must be between 1 and 100."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "acc20217-7d52-403c-80ba-6d170c181883",
+              "name": "Transactions retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "765d498e-a267-4154-9d2f-9e411a0b50dd"
+                    },
+                    {
+                      "key": "type",
+                      "value": "CRYPTO_WITHDRAWAL"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 2\n    },\n    \"transactions\": [\n      {\n        \"id\": \"8c92e9dd-6456-4aee-a441-1861144f1d8b\",\n        \"transaction_type\": \"CRYPTO_WITHDRAWAL\",\n        \"customer_id\": \"1a8e3bdc-05c9-4486-bdef-93464d24c9af\",\n        \"beneficiary_id\": \"6af8d598-36a5-477d-9320-d7c5ba309107\",\n        \"hash\": \"0xd2a3d65ce04c24c7af2b4ab86ac8c3ca525d010c600733bb062be74ee3899ec9\",\n        \"status\": \"COMPLETED\",\n        \"source_currency\": \"USDC\",\n        \"destination_currency\": \"USDC\",\n        \"source_amount\": 5,\n        \"destination_amount\": 4.98535,\n        \"total_fee\": 0.014649,\n        \"created_at\": \"2026-04-29T09:56:14.906031Z\",\n        \"updated_at\": \"2026-04-29T09:56:58.631047Z\"\n      },\n      {\n        \"id\": \"2b7b52cd-20df-4a03-83a0-bc6d989fd6ad\",\n        \"transaction_type\": \"CRYPTO_WITHDRAWAL\",\n        \"customer_id\": \"1a8e3bdc-05c9-4486-bdef-93464d24c9af\",\n        \"beneficiary_id\": \"b6a1d0c1-c202-43a8-a8c9-4d09ac5eb8f2\",\n        \"hash\": \"0x03eebd78faba32e5e04b03fa0e163de557d77de7e4e25b935d992964fa0b05db\",\n        \"status\": \"COMPLETED\",\n        \"source_currency\": \"USDC\",\n        \"destination_currency\": \"USDC\",\n        \"source_amount\": 5.1,\n        \"destination_amount\": 4.996173,\n        \"total_fee\": 0.103826,\n        \"created_at\": \"2026-04-25T20:50:34.759464Z\",\n        \"updated_at\": \"2026-04-25T20:51:22.070885Z\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d75890ad-9acc-43fc-8188-e231112aa30a",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "765d498e-a267-4154-9d2f-9e411a0b50dd"
+                    },
+                    {
+                      "key": "type",
+                      "value": "CRYPTO_WITHDRAWAL"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e49bb77-e24b-4e75-bfb7-4ca55b86fcde",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "customer_id",
+                      "value": "765d498e-a267-4154-9d2f-9e411a0b50dd"
+                    },
+                    {
+                      "key": "type",
+                      "value": "CRYPTO_WITHDRAWAL"
+                    },
+                    {
+                      "key": "current_page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7082e8a5-0892-4df0-b532-e94b8723378a",
+          "name": "Execute Quote",
+          "request": {
+            "name": "Execute Quote",
+            "description": {
+              "content": "Executes a quote returned from the Create Quote endpoint, initiating a crypto withdrawal to the beneficiary's external wallet.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quote_id\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "81427972-2828-4176-94b0-035c833115f0",
+              "name": "Quote executed successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quote_id\": \"9ba7d6db-ac78-4a41-acae-f787ee6b1f24\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"transaction_id\": \"8c92e9dd-6456-4aee-a441-1861144f1d8b\",\n    \"beneficiary_id\": \"6af8d598-36a5-477d-9320-d7c5ba309107\",\n    \"created_at\": \"2026-04-29T09:56:14.906031567Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31bab9d5-f5a1-4d12-a13a-38bb45badff0",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quote_id\": \"9ba7d6db-ac78-4a41-acae-f787ee6b1f24\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0c9801b-91d3-4e94-a15e-ae43c9d32e8c",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"quote_id\": \"9ba7d6db-ac78-4a41-acae-f787ee6b1f24\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7c535a42-eb85-4bd5-a138-42a9c23023a1",
+          "name": "List Beneficiary Transactions",
+          "request": {
+            "name": "List Beneficiary Transactions",
+            "description": {
+              "content": "Retrieve a paginated list of all transactions for a specific beneficiary",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "beneficiaries",
+                ":beneficiary_id",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "beneficiary_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5555db4e-c440-46b1-9da9-3dc0e168eb5f",
+              "name": "Transactions retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    ":beneficiary_id",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "beneficiary_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"pagination\": {\n      \"current_page\": 1,\n      \"per_page\": 10,\n      \"total_page\": 1,\n      \"total\": 1\n    },\n    \"transactions\": [\n      {\n        \"id\": \"f656afd1-7735-43b0-b630-04f0ff7158b3\",\n        \"transaction_type\": \"OFFRAMP\",\n        \"beneficiary_id\": \"ead59de3-3b91-4719-f6dd-25a38668e714\",\n        \"hash\": \"string\",\n        \"transaction_ref_id\": \"string\",\n        \"from_amount\": 3,\n        \"payout_amount\": 4.35,\n        \"processing_amount\": 3,\n        \"status\": \"COMPLETED\",\n        \"fx_rate\": 1.45,\n        \"developer_fee\": 0,\n        \"developer_fee_percentage\": 0.45,\n        \"developer_fee_fixed\": 1.25,\n        \"from_currency\": \"USDC\",\n        \"payout_currency\": \"AUD\",\n        \"created_at\": \"1978-04-18T19:12:35.752Z\",\n        \"updated_at\": \"2020-04-13T01:26:37.663Z\"\n      },\n      {\n        \"id\": \"f656afd1-7735-43b0-b630-04f0ff7158b3\",\n        \"transaction_type\": \"OFFRAMP\",\n        \"beneficiary_id\": \"fca63c1d-a9b2-6b19-1640-9a2869e61622\",\n        \"hash\": \"string\",\n        \"transaction_ref_id\": \"string\",\n        \"from_amount\": 3,\n        \"payout_amount\": 4.35,\n        \"processing_amount\": 3,\n        \"status\": \"COMPLETED\",\n        \"fx_rate\": 1.45,\n        \"developer_fee\": 0,\n        \"developer_fee_percentage\": 0.45,\n        \"developer_fee_fixed\": 1.25,\n        \"from_currency\": \"USDC\",\n        \"payout_currency\": \"AUD\",\n        \"created_at\": \"1977-03-23T19:03:44.222Z\",\n        \"updated_at\": \"2004-12-12T05:24:03.265Z\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f76877a4-66d4-4055-b0d5-8ea4b7942605",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "beneficiaries",
+                    ":beneficiary_id",
+                    "transactions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "beneficiary_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ddfc1227-10be-4718-9dfd-e290a1be6886",
+          "name": "Create a Transfer",
+          "request": {
+            "name": "Create a Transfer",
+            "description": {
+              "content": "Initiate a transfer payout to a beneficiary.\n\n**Validation Rules:**\n- Minimum amount: 500 cents (5.00 in major currency units)\n- Attachments array is optional, but if provided must contain at least one item\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "transactions",
+                "transfer-payout"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"beneficiary_id\": \"<uuid>\",\n  \"reference_id\": \"<string>\",\n  \"amount\": \"<integer>\",\n  \"remarks\": \"<string>\",\n  \"attachments\": [\n    {\n      \"remark\": \"<string>\",\n      \"uri\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2b52ed7a-e49d-4d6a-9865-03d92d981641",
+              "name": "Transfer created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    "transfer-payout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"beneficiary_id\": \"d6ae4ea6-0482-47ab-a895-02e50ea6358b\",\n  \"reference_id\": \"REF-12345-ABC\",\n  \"amount\": 10000,\n  \"remarks\": \"Monthly payment for services\",\n  \"attachments\": [\n    {\n      \"remark\": \"Invoice PDF DOC\",\n      \"uri\": \"/XUOdWacK_Invoice.pdf\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"transfer_id\": \"c78dee10-7c46-4ad5-8ac8-070e39d87ff1\",\n    \"reference_id\": \"REF-12345-ABC\",\n    \"deposit_instruction\": {\n      \"liquidation_address\": \"0x203061afd3f3dd5f5756cec992d1d247f7668384\",\n      \"currency\": \"USDC\",\n      \"rail\": \"POLYGON\"\n    },\n    \"quotation\": {\n      \"currency\": \"EUR\",\n      \"to_amount\": 108,\n      \"developer_fee\": 67\n    },\n    \"created_at\": \"2026-01-01T07:35:53Z\",\n    \"expire_at\": \"2026-01-01T07:45:53Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fde599ef-4a0c-4066-bfa0-5085078e5541",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    "transfer-payout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"beneficiary_id\": \"d6ae4ea6-0482-47ab-a895-02e50ea6358b\",\n  \"reference_id\": \"REF-12345-ABC\",\n  \"amount\": 10000,\n  \"remarks\": \"Monthly payment for services\",\n  \"attachments\": [\n    {\n      \"remark\": \"Invoice PDF DOC\",\n      \"uri\": \"/XUOdWacK_Invoice.pdf\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "825b3c32-c03c-4ac2-baf7-b24a60f56ef7",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    "transfer-payout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"beneficiary_id\": \"d6ae4ea6-0482-47ab-a895-02e50ea6358b\",\n  \"reference_id\": \"REF-12345-ABC\",\n  \"amount\": 10000,\n  \"remarks\": \"Monthly payment for services\",\n  \"attachments\": [\n    {\n      \"remark\": \"Invoice PDF DOC\",\n      \"uri\": \"/XUOdWacK_Invoice.pdf\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7aee16e5-3bc3-4645-b3d1-5b709dc0ee30",
+          "name": "Settle a Transfer",
+          "request": {
+            "name": "Settle a Transfer",
+            "description": {
+              "content": "Settle a previously created transfer payout",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "transactions",
+                "transfer-payout",
+                "settle"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transfer_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4dc59a92-d7c2-4e21-84e5-7d7caca91de4",
+              "name": "Transfer settled successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    "transfer-payout",
+                    "settle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transfer_id\": \"9ac6872b-8904-4ea5-beb7-d5a936ffee10\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"transaction_id\": \"9ac6872b-8904-4ea5-beb7-d5a936ffee10\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "032c0b89-9bba-46db-86aa-a634bb81124c",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    "transfer-payout",
+                    "settle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transfer_id\": \"9ac6872b-8904-4ea5-beb7-d5a936ffee10\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae752426-fc53-47e0-92f9-a1a6099eeda3",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    "transfer-payout",
+                    "settle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"transfer_id\": \"9ac6872b-8904-4ea5-beb7-d5a936ffee10\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cdfbf280-761d-4d33-936e-4d73d3b21377",
+          "name": "Execute Batch Transfer",
+          "request": {
+            "name": "Execute Batch Transfer",
+            "description": {
+              "content": "Execute multiple transfer payouts in a single batch operation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "batch",
+                "transactions",
+                "commit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"beneficiary_id\": \"<uuid>\",\n    \"source_currency\": \"<string>\",\n    \"deduct_from\": \"<string>\",\n    \"source_amount\": \"<number>\",\n    \"destination_amount\": \"<number>\",\n    \"remarks\": \"<string>\"\n  },\n  {\n    \"beneficiary_id\": \"<uuid>\",\n    \"source_currency\": \"<string>\",\n    \"deduct_from\": \"<string>\",\n    \"source_amount\": \"<number>\",\n    \"destination_amount\": \"<number>\",\n    \"remarks\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ab8ad889-ac86-4d19-bb14-df53eca38664",
+              "name": "Batch created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "batch",
+                    "transactions",
+                    "commit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"beneficiary_id\": \"d6ae4ea6-0482-47ab-a895-02e50ea6358b\",\n    \"source_amount\": 530,\n    \"source_currency\": \"USD\",\n    \"deduct_from\": \"PREFUNDED_BALANCE\",\n    \"remarks\": \"Monthly salary payment\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"3b1d73c0-0000-0000-0000-51aa2461f1\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f59a4ffc-46f7-478d-a058-99c9323b45fc",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "batch",
+                    "transactions",
+                    "commit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"beneficiary_id\": \"d6ae4ea6-0482-47ab-a895-02e50ea6358b\",\n    \"source_amount\": 530,\n    \"source_currency\": \"USD\",\n    \"deduct_from\": \"PREFUNDED_BALANCE\",\n    \"remarks\": \"Monthly salary payment\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c2bd359c-7a62-4560-9901-21b9d518240c",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "batch",
+                    "transactions",
+                    "commit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"beneficiary_id\": \"d6ae4ea6-0482-47ab-a895-02e50ea6358b\",\n    \"source_amount\": 530,\n    \"source_currency\": \"USD\",\n    \"deduct_from\": \"PREFUNDED_BALANCE\",\n    \"remarks\": \"Monthly salary payment\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7161bd7c-7cf4-4e88-b0cf-79c56ccda9f4",
+          "name": "Fetch Batch Details",
+          "request": {
+            "name": "Fetch Batch Details",
+            "description": {
+              "content": "Retrieve detailed information about a batch transaction including all items and their statuses",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "batch",
+                "transactions",
+                "commit",
+                ":batch_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "batch_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "29b7c1e8-512b-40ed-abcd-4e4c8a401140",
+              "name": "Batch details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "batch",
+                    "transactions",
+                    "commit",
+                    ":batch_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "batch_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"batch_id\": \"ad1a0a29-5a7f-4982-98cc-3f4416724660\",\n    \"items\": [\n      {\n        \"id\": \"201f9d5b-1151-88c9-f254-bf7194d1f827\",\n        \"beneficiary_id\": \"c120033c-0f01-8764-c905-8639c42e878a\",\n        \"source_amount\": 456,\n        \"source_currency\": \"USD\",\n        \"deduct_from\": \"PREFUNDED_BALANCE\",\n        \"remarks\": \"string\",\n        \"reason\": \"string\",\n        \"status\": \"PROCESSING\",\n        \"transaction_id\": \"0806cccb-0961-dad8-798a-746eb04bd009\",\n        \"exchange_rate\": 135,\n        \"destination_currency\": \"BDT\",\n        \"destination_amount\": 261,\n        \"developer_fee\": {\n          \"fixed\": 6178.343770595446,\n          \"percentage\": 1087.5877574758908,\n          \"total\": 7132.862161147219\n        }\n      },\n      {\n        \"id\": \"58ff11b9-66ac-a20f-2a79-e509fc98acc8\",\n        \"beneficiary_id\": \"79656c68-df35-1746-bbc9-2a51cc58f771\",\n        \"source_amount\": 456,\n        \"source_currency\": \"USD\",\n        \"deduct_from\": \"PREFUNDED_BALANCE\",\n        \"remarks\": \"string\",\n        \"reason\": \"string\",\n        \"status\": \"PROCESSING\",\n        \"transaction_id\": \"047bc036-6cc9-1cb8-add0-a54dc4131583\",\n        \"exchange_rate\": 135,\n        \"destination_currency\": \"BDT\",\n        \"destination_amount\": 261,\n        \"developer_fee\": {\n          \"fixed\": 4696.350968304123,\n          \"percentage\": 9585.302665246529,\n          \"total\": 5325.3665137885755\n        }\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df7e6042-ab47-4a37-abad-367975b31a7e",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "batch",
+                    "transactions",
+                    "commit",
+                    ":batch_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "batch_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "af5eb84b-825b-45e5-8f1e-27e7690d8844",
+          "name": "Create Quote",
+          "request": {
+            "name": "Create Quote",
+            "description": {
+              "content": "Returns fee and receivable amount estimations for a crypto withdrawal from a Fin.com internal wallet to a customer's external crypto wallet.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "transactions",
+                "quote"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"beneficiary_id\": \"<uuid>\",\n  \"amount\": \"<number>\",\n  \"source\": {\n    \"crypto_wallet_id\": \"<uuid>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e3f45154-beef-4152-a698-c3c2e0753be7",
+              "name": "Quote generated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions",
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"CRYPTO_WITHDRAWAL\",\n  \"beneficiary_id\": \"6af8d598-36a5-477d-9320-d7c5ba309107\",\n  \"amount\": 5,\n  \"source\": {\n    \"crypto_wallet_id\": \"c92dfe1d-220e-4446-a5e4-cd7d46031ba5\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"quote_id\": \"9ba7d6db-ac78-4a41-acae-f787ee6b1f24\",\n    \"expire_at\": \"2026-04-29T10:09:33.524075766Z\",\n    \"amount\": 5,\n    \"destination_details\": {\n      \"address\": \"0xD2Ba7d0DaBd36498df5906fC7B054Fa9EfA9843E\",\n      \"currency\": \"USDC\",\n      \"rail\": \"POLYGON\"\n    },\n    \"quote_estimation\": {\n      \"developer_fee_fixed\": 0.01,\n      \"developer_fee_percentage\": 0.0005,\n      \"network_fee\": 0.004149,\n      \"total_fee\": 0.014649,\n      \"receivable_amount\": 4.98535,\n      \"ata_fee_applied\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "824c4352-3749-4a1b-a874-d1a938b8b2c7",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions",
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"CRYPTO_WITHDRAWAL\",\n  \"beneficiary_id\": \"6af8d598-36a5-477d-9320-d7c5ba309107\",\n  \"amount\": 5,\n  \"source\": {\n    \"crypto_wallet_id\": \"c92dfe1d-220e-4446-a5e4-cd7d46031ba5\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08d45987-3598-4104-ac6b-54776dfd29e0",
+              "name": "Failed due to a formatting error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions",
+                    "quote"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"CRYPTO_WITHDRAWAL\",\n  \"beneficiary_id\": \"6af8d598-36a5-477d-9320-d7c5ba309107\",\n  \"amount\": 5,\n  \"source\": {\n    \"crypto_wallet_id\": \"c92dfe1d-220e-4446-a5e4-cd7d46031ba5\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"errors\": [\n    {\n      \"key_0\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1272d1dd-41a4-4f36-8e54-cd698f21e5d7",
+          "name": "Fetch Transaction Details V2",
+          "request": {
+            "name": "Fetch Transaction Details V2",
+            "description": {
+              "content": "Returns full details for a transaction by ID, including status, amounts, fees, and settlement data. The populated fields vary based on the transaction type.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "transactions",
+                ":transaction_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "transaction_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "42415805-55e0-4bad-b728-b5487e11c49a",
+              "name": "Transaction details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions",
+                    ":transaction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "transaction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"8fe1ca7c-4e6e-44c6-8706-87ac74c22554\",\n    \"transaction_type\": \"ONRAMP\",\n    \"customer_id\": \"80fd79d6-ad3d-4797-ad61-fc2dd1b7639d\",\n    \"beneficiary_id\": null,\n    \"hash\": \"0x3eef859d9c1745ba24209331d67e04f26e38ce45e48c85ed50f5e66a42cd57e9\",\n    \"status\": \"COMPLETED\",\n    \"created_at\": \"2026-03-02T15:36:39.167822Z\",\n    \"updated_at\": \"2026-03-02T15:36:39.167822Z\",\n    \"batch_info\": null,\n    \"fiat_details\": {\n      \"source_amount\": 17,\n      \"source_currency\": \"USD\",\n      \"destination_amount\": 17,\n      \"destination_currency\": \"USDC\",\n      \"fx_rate\": 0\n    },\n    \"crypto_details\": {\n      \"source_amount\": null,\n      \"source_currency\": null,\n      \"source_rail\": null,\n      \"source_address\": null,\n      \"destination_amount\": null,\n      \"destination_currency\": null,\n      \"destination_rail\": null,\n      \"destination_address\": null,\n      \"tx_hash\": null\n    },\n    \"fees\": {\n      \"developer_fee\": {\n        \"fixed\": 0,\n        \"percentage\": 0\n      },\n      \"total_developer_fee\": 0,\n      \"network_fee\": 0,\n      \"conversion_fee\": 0,\n      \"total_fee\": 0\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db349ddc-2392-434c-bd59-251179907d31",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions",
+                    ":transaction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "transaction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87f8795a-99c3-435c-b342-690b4344fddd",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "transactions",
+                    ":transaction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "transaction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Resource not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "58f48940-1ace-4c95-901c-450794df0525",
+          "name": "Fetch Transaction Details V1",
+          "request": {
+            "name": "Fetch Transaction Details V1",
+            "description": {
+              "content": "Returns full details for a transaction by ID, including status, amounts, fees, and settlement data. The populated fields vary based on the transaction type.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "transactions",
+                ":transaction_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "transaction_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2ff588cd-6235-48eb-8dad-9d80f0fe30a0",
+              "name": "Transaction details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    ":transaction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "transaction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"7f0124cd-6845-47d3-8b39-43f80cd50274\",\n    \"transaction_type\": \"OFFRAMP\",\n    \"customer_id\": null,\n    \"beneficiary_id\": \"e6200609-1ebb-41bb-a4d3-fd9e3bae8419\",\n    \"hash\": \"796b21c4412f1208918cf744e38b62c95aa55674baf62a0a3b8b189c212d0b7e\",\n    \"transaction_ref_id\": \"7f0124cd-6845-47d3-8b39-43f80cd50274\",\n    \"from_amount\": 1.1,\n    \"payout_amount\": 94.919,\n    \"processing_amount\": 1.1,\n    \"status\": \"COMPLETED\",\n    \"fx_rate\": 86.29,\n    \"developer_fee\": 1.25495,\n    \"developer_fee_percentage\": 0.45,\n    \"developer_fee_fixed\": 1.25,\n    \"from_currency\": \"USD\",\n    \"payout_currency\": \"INR\",\n    \"virtual_account_id\": null,\n    \"batch_info\": null,\n    \"fiat_details\": null,\n    \"crypto_details\": null,\n    \"fees\": null,\n    \"created_at\": \"2026-01-08T08:27:22.345304Z\",\n    \"updated_at\": \"2026-01-08T08:27:33.76357Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "204ce56a-4e5b-4281-b73e-28bc9a9f4323",
+              "name": "Authentication failed due to invalid credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    ":transaction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "transaction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Authentication failed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1c94d33e-a96a-4c47-a667-cdeec6992fc3",
+              "name": "Transaction not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    ":transaction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "transaction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"TRANSACTION_NOT_FOUND\",\n    \"message\": \"The requested transaction could not be found\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1a4a2cc1-6c36-42d9-928a-d2fff669bd75",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactions",
+                    ":transaction_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "transaction_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INTERNAL_SERVER_ERROR\",\n    \"message\": \"An unexpected error occurred while processing your request\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox.api.fin.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6800d5d3-5495-4a98-be33-cc5c76067eaf",
+    "name": "Fin.com Authentication Transactions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A simple API specificationFo",
+      "type": "text/plain"
+    }
+  }
+}

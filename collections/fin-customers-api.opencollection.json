@@ -1,0 +1,502 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fin.com Authentication Customers API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Customers V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v2/customers",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter customers by type"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page"
+              },
+              {
+                "name": "current_page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a list of customers filtered by type"
+        },
+        {
+          "info": {
+            "name": "List Customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/customers",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter customers by type"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to return per page"
+              },
+              {
+                "name": "current_page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a list of customers filtered by type"
+        },
+        {
+          "info": {
+            "name": "Get Customer Details V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v2/customers/:customer_id",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve detailed information for a specific customer"
+        },
+        {
+          "info": {
+            "name": "Get Customer Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/customers/:customer_id",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "55bd6b4e-c20a-4cc8-9535-91d5557a67d9",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve detailed information for a specific customer"
+        },
+        {
+          "info": {
+            "name": "Update Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://sandbox.api.fin.com/v1/customers/:customer_id",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06",
+                "type": "path",
+                "description": "Unique identifier of the customer to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit an RFI response for an individual or business customer. You must pass only the fields and documents specified in the RFI. Submitting data that was not requested will trigger an error."
+        },
+        {
+          "info": {
+            "name": "Get Customer Wallets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v2/customers/:customer_id/wallets",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "765d498e-a267-4154-9d2f-9e411a0b50dd",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all crypto wallets linked to a customer across supported chains and tokens."
+        },
+        {
+          "info": {
+            "name": "Create Customer Wallets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/customers/:customer_id/wallets",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "765d498e-a267-4154-9d2f-9e411a0b50dd",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Provisions one or more crypto wallets for a customer across supported chains and tokens."
+        },
+        {
+          "info": {
+            "name": "Get Customer Capabilities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v2/customers/:customer_id/capabilities",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the on-ramp and off-ramp capabilities available for a customer, including the supported rails and their activation status for each currency and corridor."
+        },
+        {
+          "info": {
+            "name": "Create Individual Customer V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/customers/individual",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new individual customer with verification details, basic info, address, and financial profile."
+        },
+        {
+          "info": {
+            "name": "Create Individual Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/customers/individual",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new individual customer with verification details"
+        },
+        {
+          "info": {
+            "name": "Create Business Customer V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/customers/business",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new business customer with full KYB profile, associated parties (UBOs/directors), compliance data, and optionally holding structure and public listing details."
+        },
+        {
+          "info": {
+            "name": "Create Business Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/customers/business",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new business customer with verification details, addresses, and associated parties"
+        },
+        {
+          "info": {
+            "name": "Upload Document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/customers/upload",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "customer_id",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "passport",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "poa",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "poi",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload customer documents using multipart/form-data. Files can be uploaded with arbitrary field names (e.g., poa, poi, passport, file1, etc.)"
+        },
+        {
+          "info": {
+            "name": "Attach Documents to Individual Customer V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/customers/:customer_id/individual/attach",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "55bd6b4e-c20a-4cc8-9535-91d5557a67d9",
+                "type": "path",
+                "description": "Unique identifier for the individual customer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attach identifying and address documents to an existing v2 individual customer. Replaces the v1 proof_of_identity / proof_of_address structure with separate identifying_documents and address_documents arrays. Documents are processed asynchronously."
+        },
+        {
+          "info": {
+            "name": "Attach Documents to Individual Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/customers/individual/attach",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attach proof of identity and proof of address documents to an existing individual customer"
+        },
+        {
+          "info": {
+            "name": "Attach Document To Associated Party",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/customers/associated-parties/individual/attach",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attach proof of identity and proof of address documents to associated parties of an existing customer"
+        },
+        {
+          "info": {
+            "name": "Attach Documents to Business Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/customers/business/attach",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attach ownership structure, company details, and legal presence documents to an existing business customer"
+        },
+        {
+          "info": {
+            "name": "Enable USD Features",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/customers/enable-preference",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Enable USD features for an existing customer"
+        },
+        {
+          "info": {
+            "name": "Attach Documents to Business Customer V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/customers/:customer_id/business/attach",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06",
+                "type": "path",
+                "description": "Unique identifier for the business customer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attach formation, ownership, and supporting documents to an existing business customer. Documents are categorised into three arrays: formation_documents, ownership_documents, and supporting_documents, replacing the v1 ownership_structure / company_details / legal_presence structure."
+        },
+        {
+          "info": {
+            "name": "Attach Documents to Associated Party V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v2/customers/:customer_id/associated-parties/individual/attach",
+            "params": [
+              {
+                "name": "customer_id",
+                "value": "ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06",
+                "type": "path",
+                "description": "Unique identifier for the business customer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Attach identifying documents and address documents for one or more associated parties of a business customer. Replaces the v1 proof_of_identity / proof_of_address structure with separate identifying_documents and address_documents arrays, allowing multiple ID documents per party."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

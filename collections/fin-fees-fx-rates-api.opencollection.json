@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Fin.com Authentication Fees & FX Rates API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Fees & FX Rates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Exchange Rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sandbox.api.fin.com/v1/fx-rate",
+            "params": [
+              {
+                "name": "country_code",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "currency_code",
+                "value": "EUR",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve exchange rates for a specific country or currency."
+        },
+        {
+          "info": {
+            "name": "Calculate Exchange Rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox.api.fin.com/v1/fee-calculation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Calculate exchange rates and applicable fees for a transaction."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
