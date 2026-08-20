@@ -200,6 +200,8 @@ apis:
   humanURL: https://developer.fin.com/
   baseURL: https://api.fin.com
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
