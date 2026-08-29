@@ -24,6 +24,17 @@ x-backed-by-note: >-
   Capital and Samsung Next; the listed firms were not confirmed for this entity.
 x-tier: enriched
 x-tier-reason: portfolio-lead
+deliveryModel:
+  model: unknown
+  open_source: false
+  commercial: false
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
