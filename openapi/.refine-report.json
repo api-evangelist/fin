@@ -1,15 +1,7 @@
 {
   "provider": "fin",
   "sources": [
-    "fin-authentication-api-openapi.yml",
-    "fin-balances-api-openapi.yml",
-    "fin-beneficiaries-api-openapi.yml",
-    "fin-catalogue-api-openapi.yml",
-    "fin-crypto-orchestration-api-openapi.yml",
-    "fin-customers-api-openapi.yml",
-    "fin-fees-fx-rates-api-openapi.yml",
-    "fin-transactions-api-openapi.yml",
-    "fin-virtual-accounts-api-openapi.yml"
+    "_original/fin-openapi-original.yml"
   ],
   "outputs": [
     "fin-authentication-api-openapi.yml",
@@ -20,11 +12,27 @@
     "fin-customers-api-openapi.yml",
     "fin-fees-fx-rates-api-openapi.yml",
     "fin-transactions-api-openapi.yml",
-    "fin-virtual-accounts-api-openapi.yml"
+    "fin-virtual-accounts-api-openapi.yml",
+    "fin-webhooks-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "fin-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "fin-openapi-original.yml: declared missing tag: Crypto Orchestration",
+    "fin-openapi-original.yml: declared missing tag: Webhooks"
+  ],
+  "skipped": [
+    "fin-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fin-balances-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fin-beneficiaries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fin-catalogue-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fin-crypto-orchestration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fin-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fin-fees-fx-rates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fin-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fin-virtual-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

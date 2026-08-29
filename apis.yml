@@ -247,6 +247,16 @@ apis:
     url: conventions/fin-conventions.yml
   - type: DataModel
     url: data-model/fin-data-model.yml
+- aid: fin:fin-webhooks-api
+  name: Fin Webhooks API
+  description: The Webhooks API from Fin — 0 operation(s) for webhooks.
+  humanURL: https://developer.fin.com/
+  baseURL: https://api.fin.com
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/fin-webhooks-api-openapi.yml
 common:
 - type: DeveloperPortal
   url: https://developer.fin.com/

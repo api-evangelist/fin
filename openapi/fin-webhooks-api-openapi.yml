@@ -1,0 +1,1673 @@
+openapi: 3.2.0
+info:
+  title: Fin.com Webhooks API
+  version: 1.0.0
+  description: A simple API specificationFo
+servers:
+- url: https://sandbox.api.fin.com
+  description: Sandbox server
+- url: https://api.fin.com
+  description: Production server
+tags:
+- name: Webhooks
+paths: {}
+webhooks:
+  transit.payment.status:
+    post:
+      summary: Transit Payment Status
+      description: Triggered when a transit payment's status changes through the payment and settlement flow.
+      x-mint:
+        metadata:
+          title: transit.payment.status
+        content: "## Payment Status Values\n- **PAY_INIT**: Payment initialized\n- **PAY_PROCESS**: Payment is being processed\n- **PAY_SUCCESS**: Payment completed successfully\n- **PAY_FAILED**: Payment failed\n- **PAY_TIMEOUT**: Payment timed out\n- **PAY_CANCEL**: Payment was cancelled\n- **SETTLEMENT_INIT**: Settlement process started\n- **SETTLEMENT_SUCCESS**: Settlement completed successfully\n- **SETTLEMENT_HOLD**: On hold due to insufficient rebalancing funds. Fin will auto-proceed once funds are available.\n- **SETTLEMENT_FAILED**: Settlement failed after 3 retry attempts\n\n<Note>\n  The `settlement_info` field will be `null` for PAY_* statuses and populated for SETTLEMENT_* statuses.\n</Note>\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - event
+              - data
+              properties:
+                event:
+                  type: object
+                  required:
+                  - id
+                  - type
+                  - event_reference_id
+                  - created_at
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: 550e8400-e29b-41d4-a716-446655440000
+                    type:
+                      type: string
+                      enum:
+                      - transit.payment.status
+                      example: transit.payment.status
+                    event_reference_id:
+                      type: string
+                      format: uuid
+                      description: Reference to the payment_id
+                      example: FIN_PROVIDED_UUID
+                    created_at:
+                      type: string
+                      format: date-time
+                      example: '2025-10-10T15:40:56Z'
+                data:
+                  type: object
+                  required:
+                  - payment_id
+                  - integration_type
+                  - status
+                  - create_time
+                  - payment_info
+                  properties:
+                    payment_id:
+                      type: string
+                      format: uuid
+                      example: FIN_PROVIDED_UUID
+                    integration_type:
+                      type: string
+                      example: BYBIT
+                    quote_id:
+                      type: string
+                      format: uuid
+                      example: FIN_PROVIDED_UUID
+                    status:
+                      type: string
+                      enum:
+                      - PAY_INIT
+                      - PAY_PROCESS
+                      - PAY_SUCCESS
+                      - PAY_FAILED
+                      - PAY_TIMEOUT
+                      - PAY_CANCEL
+                      - SETTLEMENT_INIT
+                      - SETTLEMENT_HOLD
+                      - SETTLEMENT_SUCCESS
+                      - SETTLEMENT_FAILED
+                      example: PAY_INIT
+                    create_time:
+                      type: integer
+                      example: 1740748353
+                    payment_info:
+                      type: object
+                      properties:
+                        pay_id:
+                          type: string
+                          example: 01JN6AZVEMAC8H9SED6JES3QH8
+                        merchant_trade_no:
+                          type: string
+                          example: 841e4ba2-...-a2a45de7bd00
+                        amount:
+                          type: string
+                          example: '100'
+                        status:
+                          type: string
+                          enum:
+                          - PAY_INIT
+                          - PAY_PROCESS
+                          - PAY_SUCCESS
+                          - PAY_FAILED
+                          - PAY_TIMEOUT
+                          - PAY_CANCEL
+                          example: PAY_INIT
+                        currency:
+                          type: string
+                          example: USDT
+                        currency_type:
+                          type: string
+                          example: crypto
+                        expire_time:
+                          type: integer
+                          example: 1740751953
+                        payment_time:
+                          type: integer
+                          description: 0 until PAY_SUCCESS
+                          example: 0
+                    settlement_info:
+                      type: object
+                      nullable: true
+                      description: null for PAY_* statuses, populated for SETTLEMENT_* statuses
+                      properties:
+                        settlement_via:
+                          type: string
+                          enum:
+                          - ONE_TO_ONE
+                          - MARKET_ORDER
+                          - FEE_RETENTION
+                          example: MARKET_ORDER
+                        wallet_address:
+                          type: string
+                          example: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                        currency:
+                          type: string
+                          enum:
+                          - USDC
+                          - USDT
+                          - BTC
+                          - ETH
+                          example: USDC
+                        rail:
+                          type: string
+                          enum:
+                          - SOLANA
+                          - BITCOIN
+                          - ETHEREUM
+                          - BASE
+                          example: SOLANA
+                        amount:
+                          type: string
+                          example: '100'
+                        trx_hash:
+                          type: string
+                          nullable: true
+                        settle_time:
+                          type: integer
+                          example: 0
+                        status:
+                          type: string
+                          enum:
+                          - SETTLEMENT_INIT
+                          - SETTLEMENT_HOLD
+                          - SETTLEMENT_SUCCESS
+                          - SETTLEMENT_FAILED
+                          example: SETTLEMENT_INIT
+                        retry_attempts:
+                          type: integer
+                          minimum: 0
+                          maximum: 3
+                          example: 0
+            examples:
+              paymentInitiated:
+                summary: Payment Initiated
+                value:
+                  event:
+                    id: 550e8400-e29b-41d4-a716-446655440000
+                    type: transit.payment.status
+                    event_reference_id: FIN_PROVIDED_UUID
+                    created_at: '2025-10-10T15:40:56Z'
+                  data:
+                    payment_id: FIN_PROVIDED_UUID
+                    integration_type: BYBIT
+                    status: PAY_INIT
+                    create_time: 1740748353
+                    payment_info:
+                      pay_id: 01JN6AZVEMAC8H9SED6JES3QH8
+                      merchant_trade_no: 841e4ba2-...-a2a45de7bd00
+                      amount: '100'
+                      status: PAY_INIT
+                      currency: USDT
+                      currency_type: crypto
+                      expire_time: 1740751953
+                      payment_time: 0
+                    settlement_info: null
+              settlementSuccess:
+                summary: Settlement Success
+                value:
+                  event:
+                    id: 550e8400-e29b-41d4-a716-446655440003
+                    type: transit.payment.status
+                    event_reference_id: FIN_PROVIDED_UUID
+                    created_at: '2025-10-10T15:47:00Z'
+                  data:
+                    payment_id: FIN_PROVIDED_UUID
+                    integration_type: BYBIT
+                    status: SETTLEMENT_SUCCESS
+                    create_time: 1740748353
+                    payment_info:
+                      pay_id: 01JN6AZVEMAC8H9SED6JES3QH8
+                      merchant_trade_no: 841e4ba2-...-a2a45de7bd00
+                      amount: '100'
+                      status: PAY_SUCCESS
+                      currency: USDT
+                      currency_type: crypto
+                      expire_time: 1740751953
+                      payment_time: 1740748353
+                    settlement_info:
+                      settlement_via: MARKET_ORDER
+                      wallet_address: 7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU
+                      currency: USDC
+                      rail: SOLANA
+                      amount: '100'
+                      trx_hash: 0x580...
+                      settle_time: 1740748353
+                      status: SETTLEMENT_SUCCESS
+                      retry_attempts: 0
+      responses:
+        '200':
+          description: Webhook received successfully
+  customer.created:
+    post:
+      summary: Customer Created
+      description: Triggered when a customer is successfully created.
+      x-mint:
+        metadata:
+          title: customer.created
+        content: "Triggered when a customer is successfully created. Supports both `INDIVIDUAL` and `BUSINESS` customer types.\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n  Learn how to [verify webhook signatures](/guides/webhooks/verifying-webhooks).\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  oneOf:
+                  - $ref: '#/components/schemas/IndividualCustomerData'
+                  - $ref: '#/components/schemas/BusinessCustomerData'
+            examples:
+              individualCreated:
+                summary: Individual Customer Created
+                value:
+                  event:
+                    id: 60bef15c-4e30-4eb4-bc4d-aa697a7e0857
+                    event_reference_id: c3309534-1517-4d15-b244-be8f943c3823
+                    type: customer.created
+                    created_at: '2025-11-30T07:40:06.853938Z'
+                    sandbox_mode: true
+                  data:
+                    country_of_residence: USA
+                    created_at: '2025-11-30T07:40:06Z'
+                    customer_id: c3309534-1517-4d15-b244-be8f943c3823
+                    customer_status: INCOMPLETE
+                    email: john.doe@email.com
+                    first_name: John
+                    last_name: Doe
+                    phone: '+12597751234'
+                    tos_policies_url: 25764ef6-0f4f-4846-b7c6-9df0598358e9
+                    type: INDIVIDUAL
+                    verification_type: RELIANCE
+              businessCreated:
+                summary: Business Customer Created
+                value:
+                  event:
+                    id: d2a592e4-5703-46aa-b1ac-fa1fa6359abf
+                    event_reference_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
+                    type: customer.created
+                    created_at: '2026-04-13T11:38:57.819938Z'
+                    sandbox_mode: false
+                  data:
+                    associated_parties:
+                    - email: fatima.rahman22@acmecorp.com.bd
+                      id: f6b13e01-044a-4f74-a70b-d5f66b6449af
+                      ownership_percent: 60
+                      type: INDIVIDUAL
+                      verification:
+                        reason:
+                          for_customer: null
+                          for_developer: null
+                        status: INITIATED
+                        updated_at: '2026-04-13T11:38:57.824452053Z'
+                    - email: karim.islam22@acmecorp.com.bd
+                      id: f71dc19f-b9a0-49fb-bd2d-5add3c01626e
+                      ownership_percent: 40
+                      type: INDIVIDUAL
+                      verification:
+                        reason:
+                          for_customer: null
+                          for_developer: null
+                        status: INITIATED
+                        updated_at: '2026-04-13T11:38:57.824452053Z'
+                    business_name: Fin.com
+                    country_of_incorporation: BGD
+                    created_at: '2026-04-13T11:38:57Z'
+                    customer_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
+                    customer_status: INCOMPLETE
+                    email: m@tech.com
+                    phone: '+8801529876543'
+                    type: BUSINESS
+                    verification_type: STANDARD
+      responses:
+        '200':
+          description: Webhook received successfully
+  customer.status:
+    post:
+      summary: Customer Status
+      description: Triggered when a customer's status changes during verification.
+      x-mint:
+        metadata:
+          title: customer.status
+        content: "### Customer Status Values\n\nThe status values in the payload depend on which API version was used to create the customer. V1 and V2 use different status names for the same underlying states. V1 has not been deprecated and both sets of statuses are active.\n\n| Status | V1 Name | V2 Name | Description |\n|--------|---------|---------|-------------|\n| Awaiting processing | `QUEUED` | `PROCESSING` | Verification request sent to the work processor |\n| Under review | `REVIEWING` | `REVIEWING` | Customer verification is currently under review |\n| Verified | `APPROVED` | `APPROVED` | Successfully verified and approved |\n| Parties pending | `ASSOCIATED_PARTIES_REMAINING` | `ASSOCIATED_PARTIES_REMAINING` | Additional associated parties need verification |\n| Paused | `ON_HOLD` | `IN_COMPLIANCE` | Verification paused for compliance review |\n| Action needed | `REINITIATE` | `ACTION_REQUIRED` | New document upload required |\n| Rejected | `REJECTED` | `REJECTED` | Customer verification rejected |\n\n<Note>\n  `ACTION_REQUIRED` (V2) is also set by the `customer.rfi` webhook, which includes a structured payload describing exactly which documents or fields are missing or invalid.\n</Note>\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  oneOf:
+                  - $ref: '#/components/schemas/IndividualCustomerData'
+                  - $ref: '#/components/schemas/BusinessCustomerData'
+            examples:
+              v1IndividualQueued:
+                summary: 'V1: Individual Customer Queued'
+                value:
+                  event:
+                    id: 29ceb6c4-4849-4312-9b2b-5e8360647da0
+                    event_reference_id: f9e1b162-8a05-4611-9e13-f38e0eb24a29
+                    type: customer.status
+                    created_at: '2026-01-18T09:08:18.66348Z'
+                    sandbox_mode: true
+                  data:
+                    customer_id: f9e1b162-8a05-4611-9e13-f38e0eb24a29
+                    customer_status: QUEUED
+                    email: john.doe@acmecorp.com
+                    first_name: John
+                    last_name: Doe
+                    type: INDIVIDUAL
+                    verification_type: STANDARD
+              v1BusinessOnHold:
+                summary: 'V1: Business Customer On Hold'
+                value:
+                  event:
+                    id: 0deacdde-cd58-42ea-8a1c-dde8668a92e4
+                    event_reference_id: 98665e7d-7736-4762-a57a-cc1e6706302f
+                    type: customer.status
+                    created_at: '2026-01-18T10:32:59.434557Z'
+                    sandbox_mode: true
+                  data:
+                    business_name: Acme Corp Ltd
+                    country_of_incorporation: USA
+                    customer_id: 98665e7d-7736-4762-a57a-cc1e6706302f
+                    customer_status: ON_HOLD
+                    email: contact@acmecorp.com
+                    type: BUSINESS
+                    verification_type: STANDARD
+              v1BusinessReinitiate:
+                summary: 'V1: Business Customer Reinitiate'
+                value:
+                  event:
+                    id: c8f2a5b1-3e4d-4a9c-b7e2-d1f3c8a9b0e5
+                    event_reference_id: a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+                    type: customer.status
+                    created_at: '2026-01-20T14:15:30.123456Z'
+                    sandbox_mode: true
+                  data:
+                    business_name: Acme Corp Ltd
+                    country_of_incorporation: USA
+                    customer_id: a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+                    customer_status: REINITIATE
+                    email: contact@acmecorp.com
+                    type: BUSINESS
+                    verification_type: STANDARD
+              v2IndividualProcessing:
+                summary: 'V2: Individual Customer Processing'
+                value:
+                  event:
+                    id: 3a4b5c6d-7e8f-9012-abcd-ef1234567890
+                    event_reference_id: f9e1b162-8a05-4611-9e13-f38e0eb24a29
+                    type: customer.status
+                    created_at: '2026-04-04T09:08:18.66348Z'
+                    sandbox_mode: false
+                  data:
+                    customer_id: f9e1b162-8a05-4611-9e13-f38e0eb24a29
+                    customer_status: PROCESSING
+                    email: john.doe@acmecorp.com
+                    first_name: John
+                    last_name: Doe
+                    type: INDIVIDUAL
+                    verification_type: STANDARD
+              v2BusinessInCompliance:
+                summary: 'V2: Business Customer In Compliance'
+                value:
+                  event:
+                    id: 0deacdde-cd58-42ea-8a1c-dde8668a92e4
+                    event_reference_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
+                    type: customer.status
+                    created_at: '2026-04-13T11:40:51.434557Z'
+                    sandbox_mode: false
+                  data:
+                    business_name: Fin.com
+                    country_of_incorporation: BGD
+                    customer_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
+                    customer_status: IN_COMPLIANCE
+                    email: m@tech.com
+                    type: BUSINESS
+                    verification_type: STANDARD
+              v2BusinessActionRequired:
+                summary: 'V2: Business Customer Action Required'
+                value:
+                  event:
+                    id: f1e2d3c4-b5a6-7890-cdef-123456789012
+                    event_reference_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
+                    type: customer.status
+                    created_at: '2026-04-13T11:40:51.000000Z'
+                    sandbox_mode: false
+                  data:
+                    business_name: Fin.com
+                    country_of_incorporation: BGD
+                    customer_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
+                    customer_status: ACTION_REQUIRED
+                    email: m@tech.com
+                    type: BUSINESS
+                    verification_type: STANDARD
+      responses:
+        '200':
+          description: Webhook received successfully
+  customer.rfi:
+    post:
+      summary: Customer RFI
+      description: Triggered when the compliance team requests additional information or documents from a customer. Sets the customer status to ACTION_REQUIRED. The payload includes a structured list of what is missing, invalid, or expired, scoped to either the customer or a specific associated party.
+      x-mint:
+        metadata:
+          title: customer.rfi
+        content: "### When This Fires\nThis webhook fires when compliance flags one or more documents or fields\nas missing, expired, or invalid. The customer status will be set to\n`ACTION_REQUIRED`.\n\n<Note>\n  An RFI can also be triggered after a customer is already `APPROVED`. In that case the customer status remains unchanged. Only the `rrequest_for_information` object in the payload will contain data and this webhook will be received.\n</Note>\n\n### RFI Available Scope\n- **CUSTOMER**: The issue is with the customer's own documents or data\n- **ASSOCIATED PARTY**: The issue is with a specific associated party (identified by `associated_party_id`)\n\n### Field Status Values\n- **MISSING**: Document or field was not provided\n- **EXPIRED**: Document has passed its expiry date\n- **INVALID**: Document or field value does not meet requirements (see `reason`)\n\n### Section Values by Customer Type\n\n| Customer Type | Sections |\n|---------------|----------|\n| Individual | `proof_of_identity`, `proof_of_address`, `tos_policies_value` |\n| Business V1 | `company_details`, `ownership_structure`, `legal_presence` |\n| Business V2 | `formation_documents`, `ownership_documents`, `supporting_documents` |\n| Associated Party (V1) | `proof_of_identity`, `proof_of_address` |\n| Associated Party (V2) | `identifying_documents`, `tax_info`, `address_documents` |\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  type: object
+                  required:
+                  - customer_id
+                  - request_for_information
+                  properties:
+                    customer_id:
+                      type: string
+                      format: uuid
+                      description: The customer for whom information is requested.
+                      example: cust-uuid-1234
+                    request_for_information:
+                      type: array
+                      description: List of document or field issues that must be resolved.
+                      items:
+                        type: object
+                        required:
+                        - section
+                        - categories
+                        properties:
+                          section:
+                            type: string
+                            description: 'The document section with the issue. Individual: proof_of_identity, proof_of_address, tos_policies_value. Business V1: company_details, ownership_structure, legal_presence. Business V2: formation_documents, ownership_documents, supporting_documents. Associated Party V1: proof_of_identity, proof_of_address. Associated Party V2: identifying_documents, tax_info, address_documents.'
+                            example: proof_of_identity
+                          categories:
+                            type: array
+                            items:
+                              type: object
+                              required:
+                              - document_type
+                              - fields
+                              properties:
+                                document_type:
+                                  type: string
+                                  description: The type of document with the issue.
+                                  example: GOVERNMENT_ID
+                                fields:
+                                  type: array
+                                  items:
+                                    type: object
+                                    required:
+                                    - field_name
+                                    - data_type
+                                    - status
+                                    properties:
+                                      field_name:
+                                        type: string
+                                        description: The specific field with the issue.
+                                        example: files
+                                      data_type:
+                                        type: string
+                                        enum:
+                                        - URI
+                                        - DATE
+                                        - TEXT
+                                        - ENUM
+                                        description: The data type of the field.
+                                        example: URI
+                                      status:
+                                        type: string
+                                        enum:
+                                        - MISSING
+                                        - EXPIRED
+                                        - INVALID
+                                        description: The nature of the issue.
+                                        example: EXPIRED
+                                      side:
+                                        type: string
+                                        enum:
+                                        - FRONT
+                                        - BACK
+                                        nullable: true
+                                        description: For file fields only. Indicates which side of the document is affected. Null for non-file fields.
+                                        example: FRONT
+                                      reason:
+                                        type: string
+                                        nullable: true
+                                        description: Human-readable explanation. Null when status is MISSING.
+                                        example: Document has expired
+            examples:
+              individual:
+                summary: Individual Customer RFI
+                value:
+                  event:
+                    id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    event_reference_id: cust-uuid-1234
+                    type: customer.rfi
+                    created_at: '2026-04-04T10:00:00.000000Z'
+                    sandbox_mode: false
+                  data:
+                    customer_id: cust-uuid-1234
+                    request_for_information:
+                    - section: proof_of_identity
+                      categories:
+                      - document_type: GOVERNMENT_ID
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: EXPIRED
+                          reason: Document has expired
+                          side: FRONT
+                        - field_name: files
+                          data_type: URI
+                          status: INVALID
+                          reason: Back side damaged
+                          side: BACK
+                        - field_name: issue_date
+                          data_type: DATE
+                          status: MISSING
+                          reason: null
+                        - field_name: expiry_date
+                          data_type: DATE
+                          status: MISSING
+                          reason: null
+                        - field_name: text
+                          data_type: TEXT
+                          status: INVALID
+                          reason: Name mismatch
+                    - section: proof_of_address
+                      categories:
+                      - document_type: PROOF_OF_ADDRESS
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: MISSING
+                          reason: null
+                    - section: tos_policies_value
+                      categories:
+                      - document_type: TOS
+                        fields:
+                        - field_name: tos_policies_value
+                          data_type: TEXT
+                          status: MISSING
+                          reason: null
+              businessV1:
+                summary: Business Customer V1 RFI
+                value:
+                  event:
+                    id: b2c3d4e5-f6a7-8901-bcde-f12345678901
+                    event_reference_id: biz-uuid-5678
+                    type: customer.rfi
+                    created_at: '2026-04-04T10:00:00.000000Z'
+                    sandbox_mode: false
+                  data:
+                    customer_id: biz-uuid-5678
+                    request_for_information:
+                    - section: company_details
+                      categories:
+                      - document_type: CERT_OF_INCORPORATION
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: INVALID
+                          reason: Document is illegible
+                          side: FRONT
+                        - field_name: text
+                          data_type: TEXT
+                          status: INVALID
+                          reason: Business name mismatch
+                    - section: ownership_structure
+                      categories:
+                      - document_type: SHAREHOLDER_REGISTRY
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: MISSING
+                          reason: null
+                    - section: legal_presence
+                      categories:
+                      - document_type: PROOF_OF_ADDRESS
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: MISSING
+                          reason: null
+                    - section: proof_of_identity
+                      categories:
+                      - document_type: GOVERNMENT_ID
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: EXPIRED
+                          reason: Document expired
+                          side: FRONT
+                        - field_name: files
+                          data_type: URI
+                          status: INVALID
+                          reason: Back side blurry
+                          side: BACK
+                        - field_name: issue_date
+                          data_type: DATE
+                          status: MISSING
+                          reason: null
+                        - field_name: expiry_date
+                          data_type: DATE
+                          status: MISSING
+                          reason: null
+                        - field_name: text
+                          data_type: TEXT
+                          status: INVALID
+                          reason: Name mismatch
+                    - section: proof_of_address
+                      categories:
+                      - document_type: PROOF_OF_ADDRESS
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: MISSING
+                          reason: null
+              businessV2:
+                summary: Business Customer V2 RFI
+                value:
+                  event:
+                    id: c3d4e5f6-a7b8-9012-cdef-123456789012
+                    event_reference_id: biz-uuid-9999
+                    type: customer.rfi
+                    created_at: '2026-04-04T10:00:00.000000Z'
+                    sandbox_mode: false
+                  data:
+                    customer_id: biz-uuid-9999
+                    request_for_information:
+                    - section: formation_documents
+                      categories:
+                      - document_type: CERT_OF_INCORPORATION
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: INVALID
+                          reason: Document illegible
+                          side: FRONT
+                        - field_name: text
+                          data_type: TEXT
+                          status: INVALID
+                          reason: Registration number mismatch
+                    - section: ownership_documents
+                      categories:
+                      - document_type: SHAREHOLDER_REGISTRY
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: MISSING
+                          reason: null
+                    - section: supporting_documents
+                      categories:
+                      - document_type: PROOF_OF_ADDRESS
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: MISSING
+                          reason: null
+                    - section: identifying_documents
+                      categories:
+                      - document_type: GOVERNMENT_ID
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: EXPIRED
+                          reason: ID expired
+                          side: FRONT
+                        - field_name: files
+                          data_type: URI
+                          status: INVALID
+                          reason: Back side damaged
+                          side: BACK
+                        - field_name: issue_date
+                          data_type: DATE
+                          status: MISSING
+                          reason: null
+                        - field_name: expiry_date
+                          data_type: DATE
+                          status: MISSING
+                          reason: null
+                        - field_name: text
+                          data_type: TEXT
+                          status: INVALID
+                          reason: Name mismatch
+                    - section: tax_info
+                      categories:
+                      - document_type: GOVERNMENT_ID
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: MISSING
+                          reason: null
+                        - field_name: text
+                          data_type: TEXT
+                          status: INVALID
+                          reason: Tax ID mismatch
+                    - section: address_documents
+                      categories:
+                      - document_type: PROOF_OF_ADDRESS
+                        fields:
+                        - field_name: files
+                          data_type: URI
+                          status: MISSING
+                          reason: null
+      responses:
+        '200':
+          description: Webhook received successfully
+  transaction.status:
+    post:
+      summary: Transaction Status
+      description: Triggered when a transaction's status changes.
+      x-mint:
+        metadata:
+          title: transaction.status
+        content: "Transaction types: `ONRAMP`, `OFFRAMP`, `CRYPTO_DEPOSIT`, `CRYPTO_WITHDRAWAL`\n\nCommon status values: `FUNDS_RECEIVED`, `PROCESSING`, `COMPLETED`, `FAILED`, `REFUNDED`\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
+                    status:
+                      type: string
+                      enum:
+                      - FUNDS_RECEIVED
+                      - PROCESSING
+                      - COMPLETED
+                      - FAILED
+                      - CANCELLED
+                      example: FUNDS_RECEIVED
+                    beneficiary_id:
+                      type: string
+                      format: uuid
+                    from_amount:
+                      type: number
+                      example: 6
+                    from_currency:
+                      type: string
+                      example: USDC
+                    payout_amount:
+                      type: number
+                      example: 5.55595028
+                    payout_currency:
+                      type: string
+                      example: CAD
+                    processing_amount:
+                      type: number
+                      example: 4.2164
+                    fx_rate:
+                      type: number
+                      example: 1.3177
+                    developer_fee:
+                      type: number
+                      example: 1.7836
+                    developer_fee_fixed:
+                      type: number
+                      example: 1.75
+                    developer_fee_percentage:
+                      type: number
+                      example: 0.56
+                    hash:
+                      type: string
+                      example: '0x3a282c0d2364632bdf9224eadf06b463190795bce24e46d3235e44d22f953461'
+                    transaction_ref_id:
+                      type: string
+                    transaction_type:
+                      type: string
+                      description: 'Possible values: `ONRAMP`, `OFFRAMP`, `CRYPTO_DEPOSIT`, `CRYPTO_WITHDRAWAL`'
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+            examples:
+              fundsReceived:
+                summary: Funds Received
+                value:
+                  event:
+                    id: 2632ebb1-55ab-470a-9b24-accdb50aeb75
+                    event_reference_id: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
+                    type: transaction.status
+                    created_at: '2025-12-01T09:14:34.651913Z'
+                    sandbox_mode: true
+                  data:
+                    beneficiary_id: 47fcb2ca-9ed2-4188-a154-c83a04d9d34d
+                    from_amount: 6
+                    from_currency: USDC
+                    fx_rate: 1.3177
+                    id: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
+                    payout_amount: 5.55595028
+                    payout_currency: CAD
+                    status: FUNDS_RECEIVED
+                    transaction_type: ONRAMP
+      responses:
+        '200':
+          description: Webhook received successfully
+  virtual_account.created:
+    post:
+      summary: Virtual Account Created V1
+      description: Triggered when a new virtual account is created for a customer.
+      x-mint:
+        metadata:
+          title: virtual_account.created V1
+        content: "<Note>\n  Register this webhook if you are using the **Create Virtual Account V1** endpoint.\n</Note>\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  $ref: '#/components/schemas/VirtualAccountWebhookData'
+            examples:
+              created:
+                summary: Virtual Account Created
+                value:
+                  event:
+                    id: 3fb02b56-911e-42c0-843c-c08785bdde56
+                    event_reference_id: 900f750d-6868-457e-a777-1a35566a6b5f
+                    type: virtual_account.created
+                    created_at: '2025-12-10T08:11:25.269644Z'
+                    sandbox_mode: true
+                  data:
+                    id: 900f750d-6868-457e-a777-1a35566a6b5f
+                    customer_id: a41a6d76-4545-47ab-93d1-696a3221d39c
+                    status: ACTIVE
+                    developer_fee_percent: 0.5
+      responses:
+        '200':
+          description: Webhook received successfully
+  virtual_account.created.v2:
+    post:
+      summary: Virtual Account Created V2
+      description: Triggered when a new V2 virtual account is created for a customer.
+      x-mint:
+        metadata:
+          title: virtual_account.created V2
+        content: "The account starts in `PROCESSING` status. `deposit_instructions` will be null until the account becomes active.\n\n<Note>\n  Register this webhook if you are using the **Create Virtual Account V2** endpoint.\n</Note>\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/VirtualAccountV2StatusWebhookData'
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+            examples:
+              created:
+                summary: Virtual Account Created
+                value:
+                  data:
+                    id: 86b7730c-1a8b-43f9-83f6-60a60dfcb513
+                    rfi: null
+                    status: PROCESSING
+                    created_at: '2026-04-03T16:46:22.089047Z'
+                    updated_at: '2026-04-03T16:46:22.089047Z'
+                    customer_id: b22667c0-3e75-467f-9dc6-9739c348bc1a
+                    destination:
+                      address: '0x6e41e83d406185b358bd72111ab1206cb82eb67f'
+                      currency: USDC
+                      destination_chain: POLYGON
+                    developer_fee_fixed: 0.1
+                    deposit_instructions: null
+                    developer_fee_percent: 0.1
+                  event:
+                    id: 7b86dec8-34eb-4c48-9780-6a69037d4c05
+                    type: virtual_account.created.v2
+                    created_at: '2026-04-03T16:46:22.117583Z'
+                    sandbox_mode: true
+                    event_reference_id: 86b7730c-1a8b-43f9-83f6-60a60dfcb513
+      responses:
+        '200':
+          description: Webhook received successfully
+  virtual_account.status:
+    post:
+      summary: Virtual Account Status V1
+      description: Triggered when a virtual account's status changes.
+      x-mint:
+        metadata:
+          title: virtual_account.status V1
+        content: "Common status values: `ACTIVE`, `INACTIVE`, `SUSPENDED`\n\n<Note>\n  Register this webhook if you are using the **Create Virtual Account V1** endpoint.\n</Note>\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  $ref: '#/components/schemas/VirtualAccountWebhookData'
+      responses:
+        '200':
+          description: Webhook received successfully
+  virtual_account.status.v2:
+    post:
+      summary: Virtual Account Status V2
+      description: Triggered when a V2 virtual account’s status changes.
+      x-mint:
+        metadata:
+          title: virtual_account.status V2
+        content: "Possible status values: `PROCESSING`, `IN_COMPLIANCE`, `REQUEST_FOR_INFORMATION`, `ACTIVE`, `INACTIVE`, `DECLINED`\n\n<Note>\n  Register this webhook if you are using the **Create Virtual Account V2** endpoint.\n</Note>\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/VirtualAccountV2StatusWebhookData'
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+            examples:
+              statusChanged:
+                summary: Virtual Account Status Changed
+                value:
+                  data:
+                    id: ed96d65a-5fb1-49f2-8715-0c6aa32220ca
+                    rfi: null
+                    status: ACTIVE
+                    created_at: '2026-03-17T14:27:49.073891Z'
+                    updated_at: '2026-03-17T14:42:55.788231316Z'
+                    customer_id: c3088a8d-50de-48cf-a137-8d46815394f8
+                    destination:
+                      address: '0x7f1568190e318da16a9ef5a46cba19d5b97d9b29'
+                      currency: USDC
+                      destination_chain: POLYGON
+                    developer_fee_fixed: 0.22
+                    deposit_instructions:
+                      currency: USD
+                      bank_code:
+                        code: SSBAUS32
+                        type: SWIFT
+                      bank_name: SSB Bank
+                      account_type: BankSwift
+                      bank_address: null
+                      bank_country: USA
+                      payment_rails:
+                      - ACH
+                      bank_account_number: '235464829825'
+                      bank_routing_number: ''
+                    developer_fee_percent: 0
+                  event:
+                    id: 8c236a87-4ab2-49af-b22f-02d1d8e12cfa
+                    type: virtual_account.status.v2
+                    created_at: '2026-03-17T14:42:55.813225Z'
+                    sandbox_mode: true
+                    event_reference_id: ed96d65a-5fb1-49f2-8715-0c6aa32220ca
+      responses:
+        '200':
+          description: Webhook received successfully
+  beneficiary.created:
+    post:
+      summary: Beneficiary Created
+      description: Triggered when a new beneficiary is created in the system.
+      x-mint:
+        metadata:
+          title: beneficiary.created
+        content: "<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  $ref: '#/components/schemas/BeneficiaryWebhookData'
+            examples:
+              individualCreated:
+                summary: Individual Beneficiary Created
+                value:
+                  event:
+                    id: 85804b3a-bf18-4d87-94f3-f7c45e66868e
+                    event_reference_id: 4d715f20-f704-45e0-af56-19ade318e852
+                    type: beneficiary.created
+                    created_at: '2025-12-10T10:36:18.279837Z'
+                    sandbox_mode: true
+                  data:
+                    active: true
+                    beneficiary_id: 4d715f20-f704-45e0-af56-19ade318e852
+                    customer_id: efb54adf-b7f4-4716-80e3-806e11f20b7b
+                    type: INDIVIDUAL
+      responses:
+        '200':
+          description: Webhook received successfully
+  beneficiary.status:
+    post:
+      summary: Beneficiary Status
+      description: Triggered when a beneficiary's status changes.
+      x-mint:
+        metadata:
+          title: beneficiary.status
+        content: "### Beneficiary Status Values\n- **PROCESSING**: Beneficiary creation is in progress\n- **ACTIVE**: Beneficiary is verified and ready to receive payments\n- **INACTIVE**: Beneficiary has been deactivated\n- **REJECTED**: Beneficiary was rejected during verification\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  $ref: '#/components/schemas/BeneficiaryWebhookData'
+            examples:
+              processing:
+                summary: Beneficiary Processing
+                value:
+                  event:
+                    id: 40061557-f125-4b39-97d6-c16a0f1230c1
+                    event_reference_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+                    type: beneficiary.status
+                    created_at: '2026-04-04T17:38:26.843132Z'
+                    sandbox_mode: true
+                  data:
+                    type: INDIVIDUAL
+                    active: false
+                    status: PROCESSING
+                    customer_id: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
+                    beneficiary_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+              active:
+                summary: Beneficiary Active
+                value:
+                  event:
+                    id: 50072668-a236-5c40-08e7-d27b1g2341d2
+                    event_reference_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+                    type: beneficiary.status
+                    created_at: '2026-04-04T17:39:10.123456Z'
+                    sandbox_mode: true
+                  data:
+                    type: INDIVIDUAL
+                    active: true
+                    status: ACTIVE
+                    customer_id: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
+                    beneficiary_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+              inactive:
+                summary: Beneficiary Inactive
+                value:
+                  event:
+                    id: 60083779-b347-6d51-19f8-e38c2h3452e3
+                    event_reference_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+                    type: beneficiary.status
+                    created_at: '2026-04-05T08:00:00.000000Z'
+                    sandbox_mode: false
+                  data:
+                    type: INDIVIDUAL
+                    active: false
+                    status: INACTIVE
+                    customer_id: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
+                    beneficiary_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+              rejected:
+                summary: Beneficiary Rejected
+                value:
+                  event:
+                    id: 70094880-c458-7e62-20g9-f49d3i4563f4
+                    event_reference_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+                    type: beneficiary.status
+                    created_at: '2026-04-05T09:00:00.000000Z'
+                    sandbox_mode: false
+                  data:
+                    type: INDIVIDUAL
+                    active: false
+                    status: REJECTED
+                    customer_id: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
+                    beneficiary_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+      responses:
+        '200':
+          description: Webhook received successfully
+  beneficiary.liquidation.deposit:
+    post:
+      summary: Beneficiary Liquidation Deposit
+      description: Triggered when any transfer hits a beneficiary's liquidation address.
+      x-mint:
+        metadata:
+          title: beneficiary.liquidation.deposit
+        content: "<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  type: object
+                  properties:
+                    active:
+                      type: boolean
+                      example: true
+                    amount:
+                      type: number
+                      example: 3
+                    beneficiary_id:
+                      type: string
+                      format: uuid
+                      example: 5b4ea7ee-9d40-44b3-b857-dd5a890b9313
+                    customer_id:
+                      type: string
+                      format: uuid
+                      example: bea5a6c1-0611-44c6-8c29-a6608e76916c
+                    liquidation_address:
+                      type: string
+                      example: '0xade8141fd1aef58dc0a5365a32a6cfe95904c08f'
+                    txn_hash:
+                      type: string
+                      example: '0x7808238a69057600f0c8e291ffbfde87a74fb81b32fc583231352147770e2751'
+                    type:
+                      type: string
+                      enum:
+                      - INDIVIDUAL
+                      - BUSINESS
+                      example: INDIVIDUAL
+      responses:
+        '200':
+          description: Webhook received successfully
+  batch.transaction.item.status:
+    post:
+      summary: Batch Transaction Item Status
+      description: Triggered when a batch transaction item's status changes after committing a batch.
+      x-mint:
+        metadata:
+          title: batch.transaction.item.status
+        content: "Currently fired only when a transaction item reaches `PENDING` status.\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event:
+                  $ref: '#/components/schemas/WebhookEventEnvelope'
+                data:
+                  type: object
+                  properties:
+                    batch_id:
+                      type: string
+                      format: uuid
+                    batch_item_id:
+                      type: string
+                      format: uuid
+                    status:
+                      type: string
+                      enum:
+                      - PENDING
+                    transaction_id:
+                      type: string
+                      format: uuid
+            examples:
+              pending:
+                summary: Batch Transaction Item Pending
+                value:
+                  event:
+                    id: b576fcfd-981f-4abd-81d8-14b2a0a8cb39
+                    event_reference_id: ea8184e5-4250-486e-8a45-7718896c82b0
+                    type: batch.transaction.item.status
+                    created_at: '2026-01-08T16:57:20.266158Z'
+                    sandbox_mode: true
+                  data:
+                    batch_id: 8f23036c-3dc8-445a-aad9-61564e028e56
+                    batch_item_id: 05ed90f4-da44-4a56-bbd9-c65a42f925e6
+                    status: PENDING
+                    transaction_id: ea8184e5-4250-486e-8a45-7718896c82b0
+      responses:
+        '200':
+          description: Webhook received successfully
+components:
+  schemas:
+    IndividualCustomerData:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: c3309534-1517-4d15-b244-be8f943c3823
+        type:
+          type: string
+          enum:
+          - INDIVIDUAL
+        customer_status:
+          type: string
+          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
+          enum:
+          - INCOMPLETE
+          - QUEUED
+          - PROCESSING
+          - REVIEWING
+          - APPROVED
+          - ON_HOLD
+          - IN_COMPLIANCE
+          - REINITIATE
+          - ACTION_REQUIRED
+          - REJECTED
+          example: INCOMPLETE
+        email:
+          type: string
+          format: email
+          example: john.doe@email.com
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        phone:
+          type: string
+          example: '+12597751234'
+        country_of_residence:
+          type: string
+          example: USA
+        verification_type:
+          type: string
+          enum:
+          - RELIANCE
+          - STANDARD
+          example: STANDARD
+        tos_policies_url:
+          type: string
+          example: 25764ef6-0f4f-4846-b7c6-9df0598358e9
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    BeneficiaryWebhookData:
+      type: object
+      properties:
+        beneficiary_id:
+          type: string
+          format: uuid
+          example: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+        customer_id:
+          type: string
+          format: uuid
+          example: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
+        type:
+          type: string
+          enum:
+          - INDIVIDUAL
+          - BUSINESS
+          example: INDIVIDUAL
+        active:
+          type: boolean
+          example: true
+        status:
+          type: string
+          enum:
+          - PROCESSING
+          - ACTIVE
+          - INACTIVE
+          - REJECTED
+          example: ACTIVE
+    VirtualAccountWebhookData:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 900f750d-6868-457e-a777-1a35566a6b5f
+        customer_id:
+          type: string
+          format: uuid
+          example: a41a6d76-4545-47ab-93d1-696a3221d39c
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - SUSPENDED
+          example: ACTIVE
+        deposit_instructions:
+          type: object
+          properties:
+            bank_account_number:
+              type: string
+              example: '900937198167'
+            bank_routing_number:
+              type: string
+              example: '101019644'
+            bank_name:
+              type: string
+              example: Bank of Nowhere
+            bank_address:
+              type: string
+              example: 1800 North Pole St., Orlando, FL 32801
+            bank_beneficiary_name:
+              type: string
+              example: Fin.com
+            bank_beneficiary_address:
+              type: string
+              example: 250 Innovation Way, Houston, TX 77002, US
+            currency:
+              type: string
+              example: USD
+            payment_rails:
+              type: array
+              items:
+                type: string
+                enum:
+                - ACH
+                - FEDWIRE
+                - WIRE
+              example:
+              - ACH
+              - FEDWIRE
+        destination:
+          type: object
+          properties:
+            address:
+              type: string
+              example: '0x1d1f9801d6d98e49438cda3a3b8e0c9f5e6f8c44'
+            currency:
+              type: string
+              example: USDC
+            destination_chain:
+              type: string
+              example: POLYGON
+        developer_fee_percent:
+          type: number
+          example: 0.5
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    BusinessCustomerData:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
+        type:
+          type: string
+          enum:
+          - BUSINESS
+        customer_status:
+          type: string
+          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ASSOCIATED_PARTIES_REMAINING, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ASSOCIATED_PARTIES_REMAINING, IN_COMPLIANCE, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
+          enum:
+          - INCOMPLETE
+          - QUEUED
+          - PROCESSING
+          - REVIEWING
+          - APPROVED
+          - ASSOCIATED_PARTIES_REMAINING
+          - ON_HOLD
+          - IN_COMPLIANCE
+          - REINITIATE
+          - ACTION_REQUIRED
+          - REJECTED
+          example: INCOMPLETE
+        business_name:
+          type: string
+          example: Fin.com
+        email:
+          type: string
+          format: email
+          example: m@tech.com
+        phone:
+          type: string
+          example: '+8801529876543'
+        country_of_incorporation:
+          type: string
+          example: BGD
+        verification_type:
+          type: string
+          enum:
+          - RELIANCE
+          - STANDARD
+          example: RELIANCE
+        tos_policies_url:
+          type: string
+        associated_parties:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+                format: email
+              type:
+                type: string
+                enum:
+                - INDIVIDUAL
+              ownership_percent:
+                type: number
+                example: 52
+              verification:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - INITIATED
+                    - REVIEWING
+                    - APPROVED
+                    - REJECTED
+                  updated_at:
+                    type: string
+                    format: date-time
+                  reason:
+                    type: object
+                    properties:
+                      for_customer:
+                        type: string
+                        nullable: true
+                      for_developer:
+                        type: string
+                        nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    WebhookEventEnvelope:
+      type: object
+      required:
+      - id
+      - event_reference_id
+      - type
+      - created_at
+      - sandbox_mode
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 60bef15c-4e30-4eb4-bc4d-aa697a7e0857
+        event_reference_id:
+          type: string
+          format: uuid
+          example: c3309534-1517-4d15-b244-be8f943c3823
+        type:
+          type: string
+          enum:
+          - customer.created
+          - customer.status
+          - customer.rfi
+          - transaction.status
+          - virtual_account.created
+          - virtual_account.created.v2
+          - virtual_account.status
+          - virtual_account.status.v2
+          - beneficiary.created
+          - beneficiary.status
+          - beneficiary.liquidation.deposit
+          - batch.transaction.item.status
+          example: customer.created
+        created_at:
+          type: string
+          format: date-time
+          example: '2025-11-30T07:40:06.853938Z'
+        sandbox_mode:
+          type: boolean
+          example: true
+    VirtualAccountV2StatusWebhookData:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: ed96d65a-5fb1-49f2-8715-0c6aa32220ca
+        rfi:
+          type: object
+          nullable: true
+          example: null
+        status:
+          type: string
+          enum:
+          - PROCESSING
+          - IN_COMPLIANCE
+          - REQUEST_FOR_INFORMATION
+          - ACTIVE
+          - INACTIVE
+          - DECLINED
+          example: ACTIVE
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-03-17T14:27:49.073891Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-03-17T14:42:55.788231316Z'
+        customer_id:
+          type: string
+          format: uuid
+          example: c3088a8d-50de-48cf-a137-8d46815394f8
+        destination:
+          type: object
+          properties:
+            address:
+              type: string
+              example: '0x7f1568190e318da16a9ef5a46cba19d5b97d9b29'
+            currency:
+              type: string
+              example: USDC
+            destination_chain:
+              type: string
+              example: POLYGON
+        developer_fee_fixed:
+          type: number
+          example: 0.22
+        deposit_instructions:
+          type: object
+          nullable: true
+          properties:
+            currency:
+              type: string
+              example: USD
+            bank_code:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: SSBAUS32
+                type:
+                  type: string
+                  example: SWIFT
+            bank_name:
+              type: string
+              example: SSB Bank
+            account_type:
+              type: string
+              example: BankSwift
+            bank_address:
+              type: string
+              nullable: true
+              example: null
+            bank_country:
+              type: string
+              example: USA
+            payment_rails:
+              type: array
+              items:
+                type: string
+              example:
+              - ACH
+            bank_account_number:
+              type: string
+              example: '235464829825'
+            bank_routing_number:
+              type: string
+              example: ''
+        developer_fee_percent:
+          type: number
+          example: 0
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint

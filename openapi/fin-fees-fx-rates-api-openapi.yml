@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Fin.com Authentication Fees & FX Rates API
+  title: Fin.com Fees & FX Rates API
   version: 1.0.0
   description: A simple API specificationFo
 servers:
