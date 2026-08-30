@@ -253,6 +253,8 @@ apis:
   humanURL: https://developer.fin.com/
   baseURL: https://api.fin.com
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
