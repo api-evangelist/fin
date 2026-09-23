@@ -1280,91 +1280,98 @@ webhooks:
           description: Webhook received successfully
 components:
   schemas:
-    IndividualCustomerData:
+    VirtualAccountV2StatusWebhookData:
       type: object
       properties:
-        customer_id:
+        id:
           type: string
           format: uuid
-          example: c3309534-1517-4d15-b244-be8f943c3823
-        type:
-          type: string
-          enum:
-          - INDIVIDUAL
-        customer_status:
-          type: string
-          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
-          enum:
-          - INCOMPLETE
-          - QUEUED
-          - PROCESSING
-          - REVIEWING
-          - APPROVED
-          - ON_HOLD
-          - IN_COMPLIANCE
-          - REINITIATE
-          - ACTION_REQUIRED
-          - REJECTED
-          example: INCOMPLETE
-        email:
-          type: string
-          format: email
-          example: john.doe@email.com
-        first_name:
-          type: string
-          example: John
-        last_name:
-          type: string
-          example: Doe
-        phone:
-          type: string
-          example: '+12597751234'
-        country_of_residence:
-          type: string
-          example: USA
-        verification_type:
-          type: string
-          enum:
-          - RELIANCE
-          - STANDARD
-          example: STANDARD
-        tos_policies_url:
-          type: string
-          example: 25764ef6-0f4f-4846-b7c6-9df0598358e9
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-    BeneficiaryWebhookData:
-      type: object
-      properties:
-        beneficiary_id:
-          type: string
-          format: uuid
-          example: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-        customer_id:
-          type: string
-          format: uuid
-          example: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
-        type:
-          type: string
-          enum:
-          - INDIVIDUAL
-          - BUSINESS
-          example: INDIVIDUAL
-        active:
-          type: boolean
-          example: true
+          example: ed96d65a-5fb1-49f2-8715-0c6aa32220ca
+        rfi:
+          type: object
+          nullable: true
+          example: null
         status:
           type: string
           enum:
           - PROCESSING
+          - IN_COMPLIANCE
+          - REQUEST_FOR_INFORMATION
           - ACTIVE
           - INACTIVE
-          - REJECTED
+          - DECLINED
           example: ACTIVE
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-03-17T14:27:49.073891Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-03-17T14:42:55.788231316Z'
+        customer_id:
+          type: string
+          format: uuid
+          example: c3088a8d-50de-48cf-a137-8d46815394f8
+        destination:
+          type: object
+          properties:
+            address:
+              type: string
+              example: '0x7f1568190e318da16a9ef5a46cba19d5b97d9b29'
+            currency:
+              type: string
+              example: USDC
+            destination_chain:
+              type: string
+              example: POLYGON
+        developer_fee_fixed:
+          type: number
+          example: 0.22
+        deposit_instructions:
+          type: object
+          nullable: true
+          properties:
+            currency:
+              type: string
+              example: USD
+            bank_code:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: SSBAUS32
+                type:
+                  type: string
+                  example: SWIFT
+            bank_name:
+              type: string
+              example: SSB Bank
+            account_type:
+              type: string
+              example: BankSwift
+            bank_address:
+              type: string
+              nullable: true
+              example: null
+            bank_country:
+              type: string
+              example: USA
+            payment_rails:
+              type: array
+              items:
+                type: string
+              example:
+              - ACH
+            bank_account_number:
+              type: string
+              example: '235464829825'
+            bank_routing_number:
+              type: string
+              example: ''
+        developer_fee_percent:
+          type: number
+          example: 0
     VirtualAccountWebhookData:
       type: object
       properties:
@@ -1433,6 +1440,63 @@ components:
         developer_fee_percent:
           type: number
           example: 0.5
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    IndividualCustomerData:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: c3309534-1517-4d15-b244-be8f943c3823
+        type:
+          type: string
+          enum:
+          - INDIVIDUAL
+        customer_status:
+          type: string
+          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
+          enum:
+          - INCOMPLETE
+          - QUEUED
+          - PROCESSING
+          - REVIEWING
+          - APPROVED
+          - ON_HOLD
+          - IN_COMPLIANCE
+          - REINITIATE
+          - ACTION_REQUIRED
+          - REJECTED
+          example: INCOMPLETE
+        email:
+          type: string
+          format: email
+          example: john.doe@email.com
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        phone:
+          type: string
+          example: '+12597751234'
+        country_of_residence:
+          type: string
+          example: USA
+        verification_type:
+          type: string
+          enum:
+          - RELIANCE
+          - STANDARD
+          example: STANDARD
+        tos_policies_url:
+          type: string
+          example: 25764ef6-0f4f-4846-b7c6-9df0598358e9
         created_at:
           type: string
           format: date-time
@@ -1533,6 +1597,34 @@ components:
         updated_at:
           type: string
           format: date-time
+    BeneficiaryWebhookData:
+      type: object
+      properties:
+        beneficiary_id:
+          type: string
+          format: uuid
+          example: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
+        customer_id:
+          type: string
+          format: uuid
+          example: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
+        type:
+          type: string
+          enum:
+          - INDIVIDUAL
+          - BUSINESS
+          example: INDIVIDUAL
+        active:
+          type: boolean
+          example: true
+        status:
+          type: string
+          enum:
+          - PROCESSING
+          - ACTIVE
+          - INACTIVE
+          - REJECTED
+          example: ACTIVE
     WebhookEventEnvelope:
       type: object
       required:
@@ -1573,98 +1665,6 @@ components:
         sandbox_mode:
           type: boolean
           example: true
-    VirtualAccountV2StatusWebhookData:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: ed96d65a-5fb1-49f2-8715-0c6aa32220ca
-        rfi:
-          type: object
-          nullable: true
-          example: null
-        status:
-          type: string
-          enum:
-          - PROCESSING
-          - IN_COMPLIANCE
-          - REQUEST_FOR_INFORMATION
-          - ACTIVE
-          - INACTIVE
-          - DECLINED
-          example: ACTIVE
-        created_at:
-          type: string
-          format: date-time
-          example: '2026-03-17T14:27:49.073891Z'
-        updated_at:
-          type: string
-          format: date-time
-          example: '2026-03-17T14:42:55.788231316Z'
-        customer_id:
-          type: string
-          format: uuid
-          example: c3088a8d-50de-48cf-a137-8d46815394f8
-        destination:
-          type: object
-          properties:
-            address:
-              type: string
-              example: '0x7f1568190e318da16a9ef5a46cba19d5b97d9b29'
-            currency:
-              type: string
-              example: USDC
-            destination_chain:
-              type: string
-              example: POLYGON
-        developer_fee_fixed:
-          type: number
-          example: 0.22
-        deposit_instructions:
-          type: object
-          nullable: true
-          properties:
-            currency:
-              type: string
-              example: USD
-            bank_code:
-              type: object
-              properties:
-                code:
-                  type: string
-                  example: SSBAUS32
-                type:
-                  type: string
-                  example: SWIFT
-            bank_name:
-              type: string
-              example: SSB Bank
-            account_type:
-              type: string
-              example: BankSwift
-            bank_address:
-              type: string
-              nullable: true
-              example: null
-            bank_country:
-              type: string
-              example: USA
-            payment_rails:
-              type: array
-              items:
-                type: string
-              example:
-              - ACH
-            bank_account_number:
-              type: string
-              example: '235464829825'
-            bank_routing_number:
-              type: string
-              example: ''
-        developer_fee_percent:
-          type: number
-          example: 0
   securitySchemes:
     bearerAuth:
       type: http

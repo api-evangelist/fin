@@ -73,6 +73,8 @@ paths:
                   valid_till: '2026-05-20T20:34:03Z'
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1FxRate
+      x-operation-id-source: derived
   /v1/fee-calculation:
     post:
       summary: Calculate Exchange Rates
@@ -173,6 +175,8 @@ paths:
                             example: true
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: postV1FeeCalculation
+      x-operation-id-source: derived
 components:
   responses:
     AuthenticationError:

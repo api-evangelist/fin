@@ -480,6 +480,8 @@ paths:
                         nullable: true
                         items:
                           type: object
+      operationId: postV1TransitPayment
+      x-operation-id-source: derived
   /v1/transit/payment/{payment_id}:
     get:
       summary: Fetch a Payment
@@ -715,6 +717,8 @@ paths:
                       message:
                         type: string
                         example: Payment ID not found
+      operationId: getV1TransitPaymentByPaymentId
+      x-operation-id-source: derived
   /v1/transit/quote:
     post:
       summary: Create a crypto payment quote
@@ -1467,6 +1471,8 @@ paths:
                         ata_fee_applied: false
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: postV1TransitQuote
+      x-operation-id-source: derived
 components:
   responses:
     AuthenticationError:

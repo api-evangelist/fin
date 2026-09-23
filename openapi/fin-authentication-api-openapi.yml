@@ -48,6 +48,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: postV1OauthToken
+      x-operation-id-source: derived
   /v1/oauth/refresh-token:
     post:
       summary: Refresh a Token
@@ -79,18 +81,10 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: postV1OauthRefreshToken
+      x-operation-id-source: derived
 components:
   responses:
-    AuthenticationError:
-      description: Authentication failed due to invalid credentials
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Authentication failed
     ValidationError:
       description: Failed due to a formatting error.
       content:
@@ -108,6 +102,16 @@ components:
                   type: object
                   additionalProperties:
                     type: string
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
   schemas:
     TokenResponse:
       type: object

@@ -12,9 +12,7 @@ tags:
 - name: Catalogue
   description: 'A set of endpoints to retrieve contextual data to assemble requests
 
-    to fin.com''s API
-
-    '
+    to fin.com''s API'
 paths:
   /v1/industries:
     get:
@@ -55,6 +53,8 @@ paths:
                               example: Oilseed Except Soybean Farming
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1Industries
+      x-operation-id-source: derived
   /v1/occupations:
     get:
       summary: List Occupations
@@ -92,6 +92,8 @@ paths:
                               example: Software Engineer
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1Occupations
+      x-operation-id-source: derived
   /v1/source-of-funds:
     get:
       summary: List Source of Funds
@@ -138,6 +140,8 @@ paths:
                               example: Employment Income
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1SourceOfFunds
+      x-operation-id-source: derived
   /v1/source-of-wealth:
     get:
       summary: List Source of Wealth
@@ -206,6 +210,8 @@ paths:
                     title: Other
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1SourceOfWealth
+      x-operation-id-source: derived
   /v1/purposes:
     get:
       summary: List Account Purposes
@@ -252,6 +258,8 @@ paths:
                               example: Personal Savings
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1Purposes
+      x-operation-id-source: derived
   /v1/countries:
     get:
       summary: List Generic Country Codes
@@ -475,6 +483,8 @@ paths:
                       regex: \ABB\d{5}\Z
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1Countries
+      x-operation-id-source: derived
   /v1/countries/{country_code}/subdivisions:
     get:
       summary: 'List Subdivision Codes: ISO 3166-1 alpha-2'
@@ -509,6 +519,8 @@ paths:
                               example: BD-01
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1CountriesByCountryCodeSubdivisions
+      x-operation-id-source: derived
   /v1/transaction-purposes:
     get:
       summary: List Transaction Purposes
@@ -555,34 +567,9 @@ paths:
                               example: Personal Transfer
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1TransactionPurposes
+      x-operation-id-source: derived
 components:
-  parameters:
-    CountryCodeParam:
-      name: country_code
-      in: path
-      description: ISO 3166-1 alpha-3 country code
-      required: true
-      schema:
-        $ref: '#/components/schemas/CountryCode'
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of items to return per page
-      required: false
-      schema:
-        type: integer
-        default: 10
-        minimum: 1
-        maximum: 512
-    CurrentPageParam:
-      name: current_page
-      in: query
-      description: The page number to retrieve
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
   schemas:
     Pagination:
       type: object
@@ -853,6 +840,33 @@ components:
       - ZMB
       - ZWE
       - ALA
+  parameters:
+    CountryCodeParam:
+      name: country_code
+      in: path
+      description: ISO 3166-1 alpha-3 country code
+      required: true
+      schema:
+        $ref: '#/components/schemas/CountryCode'
+    CurrentPageParam:
+      name: current_page
+      in: query
+      description: The page number to retrieve
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of items to return per page
+      required: false
+      schema:
+        type: integer
+        default: 10
+        minimum: 1
+        maximum: 512
   responses:
     AuthenticationError:
       description: Authentication failed due to invalid credentials

@@ -72,6 +72,8 @@ paths:
                           example: https://flagcdn.com/au.svg
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1BeneficiariesCountries
+      x-operation-id-source: derived
   /v1/beneficiaries/methods:
     get:
       summary: List Bank Identifiers
@@ -125,6 +127,8 @@ paths:
                           example: true
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1BeneficiariesMethods
+      x-operation-id-source: derived
   /v1/beneficiaries/methods/{method_id}/branches:
     get:
       summary: List Bank Branch Identifiers
@@ -164,6 +168,8 @@ paths:
                           example: 020157391
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1BeneficiariesMethodsByMethodIdBranches
+      x-operation-id-source: derived
   /v3/beneficiaries:
     post:
       summary: Create Beneficiary V3
@@ -729,6 +735,8 @@ paths:
                         example: 0254b433-e47d-412e-844b-b735c4bbba74
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: postV3Beneficiaries
+      x-operation-id-source: derived
   /v2/beneficiaries:
     post:
       summary: Create Beneficiary
@@ -1125,6 +1133,8 @@ paths:
                         example: d9868585-78ba-4723-b0af-8f5b1cc5f9e2
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: postV2Beneficiaries
+      x-operation-id-source: derived
   /v1/customers/{customer_id}/beneficiaries:
     get:
       summary: List Beneficiaries For a Customer
@@ -1230,6 +1240,8 @@ paths:
                           example: '2025-12-09T14:56:49.1308Z'
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1CustomersByCustomerIdBeneficiaries
+      x-operation-id-source: derived
   /v2/beneficiaries/details:
     get:
       summary: Fetch Beneficiary Details v2
@@ -1605,6 +1617,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+      operationId: getV2BeneficiariesDetails
+      x-operation-id-source: derived
   /v1/beneficiaries/details:
     get:
       summary: Fetch Beneficiary Details v1
@@ -1725,6 +1739,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+      operationId: getV1BeneficiariesDetails
+      x-operation-id-source: derived
   /v1/beneficiaries:
     patch:
       summary: Update Beneficiary Active Status
@@ -1768,6 +1784,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: patchV1Beneficiaries
+      x-operation-id-source: derived
   /v1/beneficiaries/{beneficiary_id}/documents:
     post:
       summary: Upload Beneficiary Documents
@@ -1824,18 +1842,10 @@ paths:
                         example:
                         - invoice1: /wKbvfH5E_Invoice.pdf
                         - invoice2: /XUOdWacK_Invoice.jpg
+      operationId: postV1BeneficiariesByBeneficiaryIdDocuments
+      x-operation-id-source: derived
 components:
   responses:
-    AuthenticationError:
-      description: Authentication failed due to invalid credentials
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Authentication failed
     ValidationError:
       description: Failed due to a formatting error.
       content:
@@ -1863,6 +1873,16 @@ components:
               message:
                 type: string
                 example: Resource not found
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
   securitySchemes:
     bearerAuth:
       type: http

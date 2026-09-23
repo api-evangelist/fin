@@ -46,6 +46,8 @@ paths:
                           example: 150000
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1WalletBalances
+      x-operation-id-source: derived
 components:
   responses:
     AuthenticationError:

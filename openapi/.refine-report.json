@@ -22,7 +22,8 @@
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "fin-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "fin-openapi-original.yml: declared missing tag: Crypto Orchestration",
-    "fin-openapi-original.yml: declared missing tag: Webhooks"
+    "fin-openapi-original.yml: declared missing tag: Webhooks",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "fin-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -33,6 +34,7 @@
     "fin-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fin-fees-fx-rates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "fin-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-virtual-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "fin-virtual-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "fin-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }

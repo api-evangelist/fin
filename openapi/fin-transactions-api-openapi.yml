@@ -178,6 +178,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: getV2Transactions
+      x-operation-id-source: derived
     post:
       summary: Execute Quote
       description: Executes a quote returned from the Create Quote endpoint, initiating a crypto withdrawal to the beneficiary's external wallet.
@@ -233,6 +235,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: postV2Transactions
+      x-operation-id-source: derived
   /v1/beneficiaries/{beneficiary_id}/transactions:
     get:
       summary: List Beneficiary Transactions
@@ -352,6 +356,8 @@ paths:
                               format: date-time
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1BeneficiariesByBeneficiaryIdTransactions
+      x-operation-id-source: derived
   /v1/transactions/transfer-payout:
     post:
       summary: Create a Transfer
@@ -362,9 +368,7 @@ paths:
 
         - Minimum amount: 500 cents (5.00 in major currency units)
 
-        - Attachments array is optional, but if provided must contain at least one item
-
-        '
+        - Attachments array is optional, but if provided must contain at least one item'
       x-mint:
         content: "<Note>\n  This endpoint can only be used with beneficiaries created with `auto_settlement` set to `true`.\n</Note>\n"
       tags:
@@ -467,6 +471,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: postV1TransactionsTransferPayout
+      x-operation-id-source: derived
   /v1/transactions/transfer-payout/settle:
     post:
       summary: Settle a Transfer
@@ -509,6 +515,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: postV1TransactionsTransferPayoutSettle
+      x-operation-id-source: derived
   /v1/batch/transactions/commit:
     post:
       summary: Execute Batch Transfer
@@ -598,6 +606,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: postV1BatchTransactionsCommit
+      x-operation-id-source: derived
   /v1/batch/transactions/commit/{batch_id}:
     get:
       summary: Fetch Batch Details
@@ -694,6 +704,8 @@ paths:
                                   type: number
         '401':
           $ref: '#/components/responses/AuthenticationError'
+      operationId: getV1BatchTransactionsCommitByBatchId
+      x-operation-id-source: derived
   /v2/transactions/quote:
     post:
       summary: Create Quote
@@ -825,6 +837,8 @@ paths:
           $ref: '#/components/responses/AuthenticationError'
         '422':
           $ref: '#/components/responses/ValidationError'
+      operationId: postV2TransactionsQuote
+      x-operation-id-source: derived
   /v2/transactions/{transaction_id}:
     get:
       operationId: getTransactionByIdV2
@@ -1762,16 +1776,6 @@ paths:
                         example: An unexpected error occurred while processing your request
 components:
   responses:
-    AuthenticationError:
-      description: Authentication failed due to invalid credentials
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Authentication failed
     ValidationError:
       description: Failed due to a formatting error.
       content:
@@ -1799,6 +1803,16 @@ components:
               message:
                 type: string
                 example: Resource not found
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
   parameters:
     CurrentPageParam:
       name: current_page
