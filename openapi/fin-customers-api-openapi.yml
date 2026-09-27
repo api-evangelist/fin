@@ -2526,519 +2526,335 @@ components:
               uri:
                 type: string
                 example: /AbAcQ4hn_0652746727638.pdf
-    V2SupportingDocumentItem:
+    V2Address:
       type: object
       required:
-      - files
+      - street_line_1
+      - street_line_1_en
+      - city
+      - state
+      - subdivision_code
+      - postal_code
+      - country
       properties:
-        type:
+        street_line_1:
           type: string
-          enum:
-          - SHAREHOLDER_REGISTER
-          - PROOF_OF_NATURE_OF_BUSINESS
-          - PROOF_OF_ENTITY_NAME_CHANGE
-          - CERT_OF_INCUMBENCY
-          - PROOF_OF_SOURCE_OF_FUNDS
-          - PROOF_OF_SOURCE_OF_WEALTH
-          - AML_COMFORT_LETTER
-          - MARKETING_MATERIALS
-          - TAX_EXEMPT_ENTITY_CONFIRMATION
-          - E_SIGNATURE_CERTIFICATE
-          - FLOW_OF_FUNDS
-          - PROOF_OF_NATURE_OF_BUSINESS_LICENSE
-          - PROOF_OF_NATURE_OF_BUSINESS_AML_POLICY
-          - EVIDENCE_OF_GOOD_STANDING
-          - PROOF_OF_ACCOUNT_PURPOSE
-          - PROOF_OF_ADDRESS
-          - OTHER
-          description: Supporting document type.
-          example: PROOF_OF_SOURCE_OF_FUNDS
-        description:
+          description: Primary street address. P.O. Box addresses are not accepted.
+          example: 123 Main Street
+        street_line_1_en:
           type: string
-          description: Optional human-readable description of this specific document.
-          example: Bank statements for the past 6 months
-        files:
-          type: array
-          description: One or more file URIs obtained from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
-          minItems: 1
-          items:
-            type: object
-            required:
-            - uri
-            properties:
-              uri:
-                type: string
-                description: File URI returned by the upload endpoint.
-                example: /AbAcQ4hn_0652746727639.pdf
-    V2IndividualAttachIdentifyingDocument:
-      type: object
-      required:
-      - type
-      - files
-      allOf:
-      - if:
-          properties:
-            type:
-              const: DRIVERS_LICENSE
-            country:
-              const: USA
-          required:
-          - type
-          - country
-        then:
-          required:
-          - state
-      properties:
-        type:
+          description: English translation of street_line_1. Required if address contains non-ASCII characters.
+          example: 123 Main Street
+        street_line_2:
           type: string
-          enum:
-          - PASSPORT
-          - NATIONAL_ID
-          - DRIVERS_LICENSE
-          - RESIDENCE_PERMIT
-          - SELFIE
-          description: Type of identity document. At most one non-SELFIE document may be included per request. A SELFIE entry carries only `type` and `files`; all other fields are ignored for SELFIE.
-          example: PASSPORT
-        number:
+          description: Secondary address (suite, floor, unit, etc.). Optional.
+          example: Suite 400
+        street_line_2_en:
           type: string
-          description: Document number. Required for all types except SELFIE.
-          example: A12345678
-        country:
-          $ref: '#/components/schemas/CountryCode'
+          description: English translation of street_line_2. Optional.
+          example: Suite 400
+        city:
+          type: string
+          maxLength: 100
+          description: City or municipality name.
+          example: San Francisco
         state:
           type: string
-          maxLength: 64
-          description: Document issuing state. Max 64 characters. Required when the type is DRIVERS_LICENSE and country is USA.
+          description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
           example: US-CA
-        issue_date:
+        subdivision_code:
           type: string
-          format: date
-          description: Optional issue date in YYYY-MM-DD format. When provided together with expiry_date, expiry_date must be strictly later.
-          example: '2020-01-15'
-        expiry_date:
+          description: State/province code from [List Subdivisions](https://developer.fin.com/api-reference/catalogue/list-subdivisions). Same value as state field.
+          example: US-CA
+        postal_code:
           type: string
-          format: date
-          description: Expiry date in YYYY-MM-DD format. Required for all types except SELFIE. Must be in the future.
-          example: '2030-01-15'
-        files:
-          type: array
-          minItems: 1
-          description: File URIs from the [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint. PASSPORT and SELFIE take a single file; NATIONAL_ID, DRIVERS_LICENSE, and RESIDENCE_PERMIT require one FRONT and one BACK file. File URIs must be unique across the entire request (SELFIE files excluded).
-          items:
-            type: object
-            required:
-            - uri
-            properties:
-              side:
-                type: string
-                enum:
-                - FRONT
-                - BACK
-                description: Required for NATIONAL_ID, DRIVERS_LICENSE, and RESIDENCE_PERMIT. Optional for PASSPORT and SELFIE.
-                example: FRONT
-              uri:
-                type: string
-                description: File URI returned by the upload endpoint.
-                example: /AbAcQ4hn_0652746727637.pdf
-    V2Compliance:
-      type: object
-      properties:
-        operates_in_prohibited_countries:
-          type: boolean
-          description: Whether the business operates in OFAC/sanctioned countries.
-          example: false
-        additional_description_for_compliance_screening:
-          type: string
-          description: Free-text compliance notes for manual review.
-          example: We do not operate in any OFAC-sanctioned jurisdictions.
-        risk_profile:
-          $ref: '#/components/schemas/V2RiskProfile'
-        regulated_activity:
-          $ref: '#/components/schemas/V2RegulatedActivity'
-        aml:
-          $ref: '#/components/schemas/V2AML'
-    CustomerWallet:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Unique wallet identifier.
-          example: 27dbc0f2-e5ae-444b-b4ab-0764252aedf6
-        status:
-          type: string
-          enum:
-          - PENDING
-          - ACTIVE
-          - INACTIVE
-          description: Wallet provisioning status. Wallets start PENDING and move to ACTIVE (or INACTIVE) asynchronously once the wallet address has been issued; creation is not synchronous.
-          example: ACTIVE
-        currency:
-          type: string
-          description: Token held in this wallet.
-          example: USDC
-        rail:
-          type: string
-          description: Blockchain network for this wallet.
-          example: ETHEREUM
-        address:
-          type: string
-          nullable: true
-          description: On-chain wallet address. Null until the wallet is provisioned.
-          example: '0xc42a5f7083c7e8f1d9820c7660867277289cd998'
-        balance:
-          type: number
-          description: Current wallet balance.
-          example: 10.000001
-    CreateBusinessCustomerV2Input:
+          description: ZIP or postal code. Format validated per country.
+          example: '94105'
+        country:
+          $ref: '#/components/schemas/CountryCode'
+    AttachDocumentsToAssociatedPartyV2Input:
       type: object
       required:
-      - verification_type
-      - industry_codes
-      - basic_info
-      - financial_profile
-      - addresses
-      - associated_parties
+      - associated_party_attachments
       properties:
-        verification_type:
-          type: string
-          enum:
-          - STANDARD
-          - RELIANCE
-          description: Verification level. Defaults to STANDARD if omitted. RELIANCE must be explicitly enabled for your client.
-          example: STANDARD
-        industry_codes:
+        associated_party_attachments:
           type: array
-          description: NAICS 2022 6-digit industry codes. Min 1 item. See the full list at [Business-industry-codes](https://developer.fin.com/business-industry-codes).
+          description: Array of document attachments, one entry per associated party. Multiple parties can be submitted in a single request.
           minItems: 1
           items:
-            type: string
-          example:
-          - '523130'
-        basic_info:
-          $ref: '#/components/schemas/V2BasicInfo'
-        financial_profile:
-          $ref: '#/components/schemas/V2FinancialProfile'
-        addresses:
-          $ref: '#/components/schemas/V2Addresses'
-        associated_parties:
-          type: array
-          description: UBOs (≥25% ownership), directors, and authorized signatories. Min 1 item required.
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/V2AssociatedParty'
-        holding_structure:
-          $ref: '#/components/schemas/V2HoldingStructure'
-        public_listings:
-          type: array
-          description: Stock exchange listings. Required for publicly traded companies.
-          items:
-            $ref: '#/components/schemas/V2PublicListing'
-        compliance:
-          $ref: '#/components/schemas/V2Compliance'
-        meta_data:
-          type: object
-          description: Client-defined key-value metadata for internal tracking.
-          properties:
-            reference:
-              type: string
-              description: Client-defined external reference identifier.
-              example: REF-20250123-ACME
-          additionalProperties: true
-    V2RiskProfile:
+            $ref: '#/components/schemas/V2AssociatedPartyAttachment'
+    V2HoldingStructure:
       type: object
       properties:
-        high_risk_activities:
-          type: array
-          description: High-risk activities the business engages in. If non-empty, high_risk_activities_explanation is required.
-          items:
-            type: string
-            enum:
-            - adult_entertainment
-            - crypto_exchange
-            - gambling
-            - cannabis
-            - weapons
-            - money_services
-            - cross_border_payments
-          example:
-          - cross_border_payments
-        high_risk_activities_explanation:
-          type: string
-          description: Explanation of declared high-risk activities. Required when high_risk_activities is non-empty.
-          example: We facilitate cross-border B2B payments, subject to enhanced due diligence procedures.
-        conducts_money_services:
+        has_material_intermediary_ownership:
           type: boolean
-          description: Whether the business provides money services.
+          description: Whether any intermediary holds a material ownership stake.
           example: true
-        conducts_money_services_via_fin:
-          type: boolean
-          description: Whether money services are provided via financial intermediaries.
-          example: false
-        conducts_money_services_description:
-          type: string
-          description: Details about the money services offered.
-          example: Licensed money transmitter providing international wire transfer services.
-    V2OwnershipDocumentItem:
-      type: object
-      required:
-      - files
-      properties:
-        type:
-          type: string
-          enum:
-          - OWNERSHIP_INFORMATION
-          - OWNERSHIP_CHART
-          - PROOF_OF_SIGNATORY_AUTHORITY
-          description: Ownership document type.
-          example: OWNERSHIP_INFORMATION
-        description:
-          type: string
-          description: Optional human-readable description of this specific document.
-          example: Ownership information document
-        files:
+        corporate_shareholders:
           type: array
-          description: One or more file URIs obtained from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
-          minItems: 1
+          description: List of corporate (non-individual) shareholders.
           items:
-            type: object
-            required:
-            - uri
-            properties:
-              uri:
-                type: string
-                description: File URI returned by the upload endpoint.
-                example: /AbAcQ4hn_0652746727639.pdf
-    V2IdentifyingDocument:
-      type: object
-      required:
-      - country_code
-      - document_type
-      - document_id
-      properties:
-        country_code:
-          $ref: '#/components/schemas/CountryCode'
-        document_type:
-          type: string
-          description: 'Business tax ID document type, validated per country. Examples: EIN, TIN, VAT_ID, TAX_ID, etc. See all available types at [Business tax id documents by region](https://developer.fin.com/business-tax-id-documents-by-region).'
-          example: EIN
-        document_id:
-          type: string
-          description: The document ID or number. Format validated per country and document type.
-          example: 12-3456789
-    AttachDocumentsToIndividualCustomerV2Input:
-      type: object
-      required:
-      - identifying_documents
-      - address_documents
-      - tos_policies_value
-      properties:
-        identifying_documents:
+            $ref: '#/components/schemas/V2CorporateShareholder'
+        foreign_branches:
           type: array
-          minItems: 1
-          description: Government-issued identity documents. Include at most one non-SELFIE primary document (PASSPORT, NATIONAL_ID, DRIVERS_LICENSE, or RESIDENCE_PERMIT) plus an optional SELFIE entry. NATIONAL_ID, DRIVERS_LICENSE, and RESIDENCE_PERMIT require both FRONT and BACK files.
+          description: List of foreign branch registrations.
           items:
-            $ref: '#/components/schemas/V2IndividualAttachIdentifyingDocument'
-        address_documents:
-          type: array
-          minItems: 1
-          maxItems: 1
-          description: Proof of address. Exactly one entry is required.
-          items:
-            $ref: '#/components/schemas/V2IndividualAddressDocument'
-        tos_policies_value:
-          type: string
-          description: Parsed from the tos_policies_value query parameter in the tos_policies_url returned by POST /v2/customers/individual. Signifies the customer has accepted the Terms of Service.
-          example: e9414388-fbdf-4407-b5c2-bc39eae3645b
-    V2CorporateShareholder:
+            $ref: '#/components/schemas/V2ForeignBranch'
+    V2APBasicInfo:
       type: object
       required:
-      - entity_name
-      - entity_name_en
-      - registration_country_code
-      - ownership_percentage
+      - first_name
+      - first_name_en
+      - last_name
+      - last_name_en
+      - dob
+      - email
+      - phone
+      - country_of_residence
+      - primary_nationality
+      - tax_info
       properties:
-        entity_name:
+        first_name:
           type: string
-          description: Corporate shareholder's legal name.
-          example: Acme Ventures LLC
-        entity_name_en:
+          maxLength: 50
+          description: First name.
+          example: John
+        first_name_en:
           type: string
-          description: English translation of entity name. Required if entity_name contains non-ASCII characters.
-          example: Acme Ventures LLC
-        registration_country_code:
-          $ref: '#/components/schemas/CountryCode'
-        ownership_percentage:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 100
-          description: Ownership stake as a percentage (0 to 100).
-          example: 60
-        registration_number:
+          description: English transliteration of first name. Required if name contains non-ASCII characters.
+          example: John
+        middle_name:
           type: string
-          description: Entity registration number. Optional.
-          example: 98-7654321
-        entity_type:
+          description: Middle name(s). Optional.
+          example: Michael
+        middle_name_en:
           type: string
-          enum:
-          - LIMITED_LIABILITY_COMPANY
-          - PUBLICLY_LISTED_COMPANY
-          - SOLE_PROPRIETOR
-          - PARTNERSHIP
-          - CORPORATION
-          - TRUST
-          - PRIVATE_FOUNDATION
-          - CHARITY
-          - NONPROFIT_ORGANIZATION
-          - PUBLIC_AGENCY_OR_AUTHORITY
-          description: Legal entity type of the corporate shareholder. Optional.
-          example: LIMITED_LIABILITY_COMPANY
-        incorporation_date:
+          description: English transliteration of middle name. Optional.
+          example: Michael
+        last_name:
+          type: string
+          maxLength: 50
+          description: Last or family name.
+          example: Doe
+        last_name_en:
+          type: string
+          description: English transliteration of last name. Required if name contains non-ASCII characters.
+          example: Doe
+        dob:
           type: string
           format: date
-          description: Incorporation date in YYYY-MM-DD format. Optional.
-          example: '2015-03-01'
-    AttachDocumentForIndividualCustomerInput:
+          description: Date of birth in YYYY-MM-DD format. Party must be at least 18 years old.
+          example: '1985-03-20'
+        email:
+          type: string
+          format: email
+          description: Personal email address. Must be unique across all associated parties in the same request.
+          example: john.doe@acmecorp.com
+        phone:
+          type: string
+          description: Personal phone number in E.164 format.
+          example: '+14155551234'
+        country_of_residence:
+          $ref: '#/components/schemas/CountryCode'
+        primary_nationality:
+          $ref: '#/components/schemas/CountryCode'
+        secondary_nationality:
+          allOf:
+          - $ref: '#/components/schemas/CountryCode'
+          description: Secondary nationality for dual citizens. Optional.
+        tax_info:
+          type: array
+          description: Tax and identifying documents for this individual.  See all available individual tax ID document types at [Individual Tax ID documents](https://developer.fin.com/guides/compliance-and-regulatory/individual-tax-id-documents).
+          items:
+            $ref: '#/components/schemas/V2IndividualIdentifyingDocument'
+    BusinessCustomerDetailV2:
+      title: Business
       type: object
-      required:
-      - customer_id
-      - proof_of_identity
-      - proof_of_address
-      - tos_policies_value
       properties:
         customer_id:
           type: string
           format: uuid
-          example: 55bd6b4e-c20a-4cc8-9535-91d5557a67d9
-        proof_of_identity:
-          $ref: '#/components/schemas/ProofOfIdentity'
-        proof_of_address:
-          $ref: '#/components/schemas/ProofOfAddressIndividual'
-        tos_policies_value:
-          type: string
-          example: e9414388-fbdf-4407-b5c2-bc39eae3645b
-    V2IndividualIdentifyingDocument:
-      type: object
-      required:
-      - country_code
-      - document_type
-      - document_id
-      properties:
-        country_code:
-          $ref: '#/components/schemas/CountryCode'
-        document_type:
-          type: string
-          description: Individual tax ID document type, validated per country. See all available types at [Individual Tax ID documents](https://developer.fin.com/guides/compliance-and-regulatory/individual-tax-id-documents).
-          example: TIN
-        document_id:
-          type: string
-          description: The document ID or number. Format validated per country and document type.
-          example: '1234567890123'
-    V2IndividualAddressDocument:
-      type: object
-      required:
-      - type
-      - country
-      - files
-      properties:
+          example: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
         type:
           type: string
           enum:
-          - UTILITY_BILL
-          - GOVERNMENT_LETTER
-          - BANK_STATEMENT
-          description: Type of address proof document.
-          example: BANK_STATEMENT
-        country:
-          allOf:
-          - $ref: '#/components/schemas/CountryCode'
-          description: Country the address document was issued in. Must match the customer's country_of_residence.
-        issue_date:
+          - BUSINESS
+        business_name:
           type: string
-          format: date
-          description: Optional issue date in YYYY-MM-DD format.
-          example: '2024-06-15'
-        files:
-          type: array
-          minItems: 1
-          maxItems: 1
-          description: Exactly one file URI from the [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
-          items:
-            type: object
-            required:
-            - uri
-            properties:
-              side:
-                type: string
-                enum:
-                - FRONT
-                - BACK
-                description: Optional.
-                example: FRONT
-              uri:
-                type: string
-                description: File URI returned by the upload endpoint.
-                example: /XyZ123mn_0652746727639.pdf
-    V2AssociatedPartySupportingDocumentAttachment:
-      type: object
-      required:
-      - type
-      - files
-      properties:
-        type:
+          example: Fin.com
+        email:
           type: string
+          format: email
+          example: m@tech.com
+        phone:
+          type: string
+          example: '+8801529876543'
+        country_of_incorporation:
+          type: string
+          example: BGD
+        verification_type:
+          type: string
+          example: STANDARD
+        customer_status:
+          type: string
+          description: 'The following statuses have been changed from V1.
+
+            QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
           enum:
-          - MILITARY_ID
-          - MATRICULATE_ID
-          - STATE_OR_PROVINCIAL_ID
-          - VISA
-          - OTHER
-          description: Type of additional supporting document for the associated party.
-          example: MILITARY_ID
-        files:
-          type: array
-          description: One or more file URIs from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
-          minItems: 1
-          items:
-            type: object
-            required:
-            - uri
-            properties:
-              uri:
-                type: string
-                description: File URI returned by the upload endpoint.
-                example: /AbAcQ4hn_0652746727638.pdf
-    V2AddressDocumentAttachment:
-      type: object
-      required:
-      - type
-      - files
-      properties:
-        type:
+          - INCOMPLETE
+          - PROCESSING
+          - REVIEWING
+          - APPROVED
+          - ASSOCIATED_PARTIES_REMAINING
+          - IN_COMPLIANCE
+          - ACTION_REQUIRED
+          - REJECTED
+          example: IN_COMPLIANCE
+        tos_policies_url:
           type: string
-          enum:
-          - UTILITY_BILL
-          - GOVERNMENT_LETTER
-          - BANK_STATEMENT
-          - PROOF_OF_TAX_IDENTIFICATION
-          - COURT_DOCUMENT
-          - INSURANCE_STATEMENT
-          description: Type of address proof document. Must be within the last 90 days.
-          example: BANK_STATEMENT
-        files:
+          format: uri
+        associated_parties:
           type: array
-          description: One or more file URIs from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
-          minItems: 1
           items:
             type: object
-            required:
-            - uri
             properties:
-              uri:
+              id:
                 type: string
-                description: File URI returned by the upload endpoint.
-                example: /AbAcQ4hn_0652746727638.pdf
+                format: uuid
+                example: f6b13e01-044a-4f74-a70b-d5f66b6449af
+              type:
+                type: string
+                example: INDIVIDUAL
+              ownership_percent:
+                type: number
+                example: 60
+              email:
+                type: string
+                format: email
+                example: fatima.rahman22@acmecorp.com.bd
+              verification:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - INITIATED
+                    - REVIEWING
+                    - APPROVED
+                    - REJECTED
+                    example: APPROVED
+                  reason:
+                    type: object
+                    properties:
+                      for_customer:
+                        type: string
+                        nullable: true
+                      for_developer:
+                        type: string
+                        nullable: true
+                  updated_at:
+                    type: string
+                    format: date-time
+                    example: '2026-04-13T11:40:49Z'
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-01T12:03:03Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-01T12:03:03Z'
+        rejection_reason:
+          type: object
+          nullable: true
+          description: Populated when customer_status is REJECTED or ACTION_REQUIRED. Contains applicant-level, document-level, and associated party-level rejection details. Null when no rejection exists.
+          properties:
+            applicant:
+              type: object
+              nullable: true
+              description: Applicant-level rejection reason.
+              properties:
+                moderation_comment:
+                  type: string
+                  example: If you're a sole entrepreneur, upload corporate documents confirming your company's legal status.
+                reject_labels:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                  - DOCUMENT_MISSING
+            documents:
+              type: array
+              description: Document-level rejection reasons.
+              items:
+                type: object
+                properties:
+                  uri:
+                    type: string
+                    example: /7zlLPvlx_testdoc6.jpg
+                  category:
+                    type: string
+                    example: SUPPORTING_DOCUMENTS
+                  moderation_comment:
+                    type: string
+                    example: This document is not accepted. The document should be of good quality.
+                  reject_labels:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - LOW_QUALITY
+            associated_parties:
+              type: array
+              description: Associated party-level rejection reasons.
+              items:
+                type: object
+          example: null
+        request_for_information:
+          type: array
+          description: List of open requests for additional information. Populated when customer_status is ACTION_REQUIRED. Same structure as customer.rfi webhook payload.
+          items:
+            type: object
+            properties:
+              section:
+                type: string
+                example: ownership_documents
+              categories:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    document_type:
+                      type: string
+                      example: SHAREHOLDER_REGISTRY
+                    fields:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          field_name:
+                            type: string
+                            example: files
+                          data_type:
+                            type: string
+                            enum:
+                            - URI
+                            - DATE
+                            - TEXT
+                            - ENUM
+                            example: URI
+                          status:
+                            type: string
+                            enum:
+                            - MISSING
+                            - EXPIRED
+                            - INVALID
+                            example: INVALID
+                          reason:
+                            type: string
+                            nullable: true
+                            example: Unacceptable document.
+          example: []
     V2BasicInfo:
       type: object
       required:
@@ -3137,343 +2953,282 @@ components:
             format: uri
           example:
           - https://fin.com
-    V2CustomerRiskSplit:
-      type: object
-      description: Breakdown of customer risk classifications. Percentages must sum to 100.
-      required:
-      - low_risk
-      - medium_risk
-      - high_risk
-      properties:
-        low_risk:
-          type: integer
-          minimum: 0
-          maximum: 100
-          description: Percentage of low-risk customers.
-          example: 70
-        medium_risk:
-          type: integer
-          minimum: 0
-          maximum: 100
-          description: Percentage of medium-risk customers.
-          example: 25
-        high_risk:
-          type: integer
-          minimum: 0
-          maximum: 100
-          description: Percentage of high-risk customers.
-          example: 5
-    IndividualCustomerDetail:
-      type: object
-      title: Individual
-      properties:
-        customer_id:
-          type: string
-          format: uuid
-          example: 56c41b8e-e650-4f55-94f6-26a888a9b64d
-        type:
-          type: string
-          enum:
-          - INDIVIDUAL
-        first_name:
-          type: string
-          example: John
-        last_name:
-          type: string
-          example: Doe
-        email:
-          type: string
-          format: email
-          example: john.doe@fin.com
-        phone:
-          type: string
-          example: '+14724480512'
-        country_of_residence:
-          type: string
-          example: USA
-        verification_type:
-          type: string
-          example: STANDARD
-        customer_status:
-          type: string
-          example: ON_HOLD
-        tos_policies_url:
-          type: string
-          format: uri
-          example: https://orchestration.fin.com/orchestration-customer-tos?customer_id=56c41b8e-e650-4f55-94f6-26a888a9b64d&tos_policies_value=e9414388-fbdf-4407-b5c2-bc39eae3645b
-        created_at:
-          type: string
-          format: date-time
-          example: '2026-04-15T11:49:27Z'
-        updated_at:
-          type: string
-          format: date-time
-          example: '2026-04-15T11:52:48Z'
-        last_status_updated_at:
-          type: string
-          format: date-time
-          example: '2026-04-15T11:52:48Z'
-        capabilities:
-          type: object
-          description: On-ramp and off-ramp capabilities for the customer
-          properties:
-            on_ramp:
-              type: array
-              items:
-                type: object
-                properties:
-                  currency:
-                    type: string
-                    example: USD
-                  status:
-                    type: boolean
-                    example: false
-                  methods:
-                    type: array
-                    items:
-                      type: string
-                    example:
-                    - ACH
-                    - FEDWIRE
-                  reason:
-                    type: object
-                    properties:
-                      for_customer:
-                        type: string
-                        nullable: true
-                      for_developer:
-                        type: string
-                        nullable: true
-            off_ramp:
-              type: array
-              items:
-                type: object
-                properties:
-                  currency:
-                    type: string
-                    example: USD
-                  status:
-                    type: boolean
-                    example: false
-                  methods:
-                    type: array
-                    items:
-                      type: string
-                    example:
-                    - BANK
-                  reason:
-                    type: object
-                    properties:
-                      for_customer:
-                        type: string
-                        nullable: true
-                      for_developer:
-                        type: string
-                        nullable: true
-                        example: Customer is under review
-        rejection_reason:
-          type: object
-          nullable: true
-          description: Populated when customer_status is REJECTED. Null otherwise.
-          example: null
-        request_for_information:
-          type: array
-          description: List of open requests for additional information. Empty when none are outstanding.
-          items:
-            type: object
-          example: []
-    BusinessCustomerDetail:
-      type: object
-      title: Business
-      properties:
-        customer_id:
-          type: string
-          format: uuid
-          example: 94e6b847-4e19-49e3-b3ab-ffa95872eda9
-        type:
-          type: string
-          enum:
-          - BUSINESS
-        business_name:
-          type: string
-          example: Fin.com
-        email:
-          type: string
-          format: email
-          example: contact@fin.com
-        phone:
-          type: string
-          example: '+6591234567'
-        country_of_incorporation:
-          type: string
-          example: SGP
-        verification_type:
-          type: string
-          example: STANDARD
-        customer_status:
-          type: string
-          example: APPROVED
-        tos_policies_url:
-          type: string
-          format: uri
-          example: https://orchestration.fin.com/orchestration-customer-tos?customer_id=94e6b847-4e19-49e3-b3ab-ffa95872eda9&tos_policies_value=6955e70b-f9f3-4076-b1ce-5c897085dd24
-        associated_parties:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                example: 42daffd3-09a0-4d48-8e73-2680a953d0e1
-              type:
-                type: string
-                example: INDIVIDUAL
-              ownership_percent:
-                type: number
-                example: 10
-              email:
-                type: string
-                format: email
-                example: john.doe@fin.com
-              verification:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: APPROVED
-                  reason:
-                    type: object
-                    properties:
-                      for_customer:
-                        type: string
-                        nullable: true
-                      for_developer:
-                        type: string
-                        nullable: true
-                  updated_at:
-                    type: string
-                    format: date-time
-                    example: '2026-04-15T11:29:08Z'
-        created_at:
-          type: string
-          format: date-time
-          example: '2026-04-15T11:26:12Z'
-        updated_at:
-          type: string
-          format: date-time
-          example: '2026-04-15T11:31:18Z'
-        last_status_updated_at:
-          type: string
-          format: date-time
-          example: '2026-04-15T11:29:09Z'
-        capabilities:
-          type: object
-          description: On-ramp and off-ramp capabilities for the customer
-          properties:
-            on_ramp:
-              type: array
-              items:
-                type: object
-                properties:
-                  currency:
-                    type: string
-                    example: USD
-                  status:
-                    type: boolean
-                    example: false
-                  methods:
-                    type: array
-                    items:
-                      type: string
-                    example:
-                    - ACH
-                    - FEDWIRE
-                  reason:
-                    type: object
-                    properties:
-                      for_customer:
-                        type: string
-                        nullable: true
-                      for_developer:
-                        type: string
-                        nullable: true
-            off_ramp:
-              type: array
-              items:
-                type: object
-                properties:
-                  currency:
-                    type: string
-                    example: USD
-                  status:
-                    type: boolean
-                    example: true
-                  methods:
-                    type: array
-                    items:
-                      type: string
-                    example:
-                    - BANK
-                  reason:
-                    type: object
-                    properties:
-                      for_customer:
-                        type: string
-                        nullable: true
-                      for_developer:
-                        type: string
-                        nullable: true
-        rejection_reason:
-          type: object
-          nullable: true
-          description: Populated when customer_status is REJECTED. Null otherwise.
-        request_for_information:
-          type: array
-          description: List of pending information requests. Empty when none are outstanding.
-          items:
-            type: object
-    V2Addresses:
+    V2RegulatedActivity:
       type: object
       required:
-      - is_incorporated_address_same
-      - incorporated_address
+      - description
+      - primary_authority_country_code
+      - primary_authority_name
+      - license_number
       properties:
-        is_incorporated_address_same:
-          type: boolean
-          description: Whether the physical operating address is the same as the incorporated address. If false, physical_address is required.
-          example: false
-        incorporated_address:
-          $ref: '#/components/schemas/V2Address'
-        physical_address:
-          allOf:
-          - $ref: '#/components/schemas/V2Address'
-          description: Physical operating address. Required when is_incorporated_address_same is false.
-    V2AssociatedPartyAttachment:
-      type: object
-      required:
-      - associated_party_id
-      properties:
-        associated_party_id:
+        description:
           type: string
-          format: uuid
-          description: Unique identifier for the associated party, returned in GET /v2/customers/:customer-id.
-          example: f6b13e01-044a-4f74-a70b-d5f66b6449af
-        identifying_documents:
-          type: array
-          description: Government-issued identity documents for this party. Multiple documents may be provided (e.g., passport + driver license). NATIONAL_ID and DRIVERS_LICENSE require both FRONT and BACK sides.
-          items:
-            $ref: '#/components/schemas/V2IdentifyingDocumentAttachment'
-        address_documents:
-          type: array
-          description: Proof of address documents. Must be issued within the last 90 days.
-          items:
-            $ref: '#/components/schemas/V2AddressDocumentAttachment'
-        supporting_documents:
-          type: array
-          description: Any additional supporting documents for this party. Optional. Pass empty array if not applicable.
-          items:
-            $ref: '#/components/schemas/V2AssociatedPartySupportingDocumentAttachment'
+          description: Description of the regulated activity.
+          example: Licensed money transmitter operating under FinCEN registration and state-level MSB licenses
+        primary_authority_country_code:
+          $ref: '#/components/schemas/CountryCode'
+        primary_authority_name:
+          type: string
+          description: Name of the primary regulatory authority.
+          example: FinCEN
+        license_number:
+          type: string
+          description: Regulatory license or registration number.
+          example: MSB-12345678
+    CountryCode:
+      type: string
+      description: ISO 3166-1 alpha-3 country code
+      example: USA
+      enum:
+      - AFG
+      - ALB
+      - DZA
+      - ASM
+      - AND
+      - AGO
+      - AIA
+      - ATA
+      - ATG
+      - ARG
+      - ARM
+      - ABW
+      - AUS
+      - AUT
+      - AZE
+      - BHS
+      - BHR
+      - BGD
+      - BRB
+      - BLR
+      - BEL
+      - BLZ
+      - BEN
+      - BMU
+      - BTN
+      - BOL
+      - BES
+      - BIH
+      - BWA
+      - BVT
+      - BRA
+      - IOT
+      - BRN
+      - BGR
+      - BFA
+      - BDI
+      - CPV
+      - KHM
+      - CMR
+      - CAN
+      - CYM
+      - CAF
+      - TCD
+      - CHL
+      - CHN
+      - CXR
+      - CCK
+      - COL
+      - COM
+      - COD
+      - COG
+      - COK
+      - CRI
+      - HRV
+      - CUB
+      - CUW
+      - CYP
+      - CZE
+      - CIV
+      - DNK
+      - DJI
+      - DMA
+      - DOM
+      - ECU
+      - EGY
+      - SLV
+      - GNQ
+      - ERI
+      - EST
+      - SWZ
+      - ETH
+      - FLK
+      - FRO
+      - FJI
+      - FIN
+      - FRA
+      - GUF
+      - PYF
+      - ATF
+      - GAB
+      - GMB
+      - GEO
+      - DEU
+      - GHA
+      - GIB
+      - GRC
+      - GRL
+      - GRD
+      - GLP
+      - GUM
+      - GTM
+      - GGY
+      - GIN
+      - GNB
+      - GUY
+      - HTI
+      - HMD
+      - VAT
+      - HND
+      - HKG
+      - HUN
+      - ISL
+      - IND
+      - IDN
+      - IRN
+      - IRQ
+      - IRL
+      - IMN
+      - ISR
+      - ITA
+      - JAM
+      - JPN
+      - JEY
+      - JOR
+      - KAZ
+      - KEN
+      - KIR
+      - PRK
+      - KOR
+      - KWT
+      - KGZ
+      - LAO
+      - LVA
+      - LBN
+      - LSO
+      - LBR
+      - LBY
+      - LIE
+      - LTU
+      - LUX
+      - MAC
+      - MDG
+      - MWI
+      - MYS
+      - MDV
+      - MLI
+      - MLT
+      - MHL
+      - MTQ
+      - MRT
+      - MUS
+      - MYT
+      - MEX
+      - FSM
+      - MDA
+      - MCO
+      - MNG
+      - MNE
+      - MSR
+      - MAR
+      - MOZ
+      - MMR
+      - NAM
+      - NRU
+      - NPL
+      - NLD
+      - NCL
+      - NZL
+      - NIC
+      - NER
+      - NGA
+      - NIU
+      - NFK
+      - MNP
+      - NOR
+      - OMN
+      - PAK
+      - PLW
+      - PSE
+      - PAN
+      - PNG
+      - PRY
+      - PER
+      - PHL
+      - PCN
+      - POL
+      - PRT
+      - PRI
+      - QAT
+      - MKD
+      - ROU
+      - RUS
+      - RWA
+      - REU
+      - BLM
+      - SHN
+      - KNA
+      - LCA
+      - MAF
+      - SPM
+      - VCT
+      - WSM
+      - SMR
+      - STP
+      - SAU
+      - SEN
+      - SRB
+      - SYC
+      - SLE
+      - SGP
+      - SXM
+      - SVK
+      - SVN
+      - SLB
+      - SOM
+      - ZAF
+      - SGS
+      - SSD
+      - ESP
+      - LKA
+      - SDN
+      - SUR
+      - SJM
+      - SWE
+      - CHE
+      - SYR
+      - TWN
+      - TJK
+      - TZA
+      - THA
+      - TLS
+      - TGO
+      - TKL
+      - TON
+      - TTO
+      - TUN
+      - TUR
+      - TKM
+      - TCA
+      - TUV
+      - UGA
+      - UKR
+      - ARE
+      - GBR
+      - UMI
+      - USA
+      - URY
+      - UZB
+      - VUT
+      - VEN
+      - VNM
+      - VGB
+      - VIR
+      - WLF
+      - ESH
+      - YEM
+      - ZMB
+      - ZWE
+      - ALA
     CreateBusinessCustomerInput:
       type: object
       required:
@@ -3756,590 +3511,80 @@ components:
           description: Additional custom metadata as key-value pairs
           example:
             reference: ref-20250910-XYZ
-    V2IdentifyingDocumentAttachment:
+    V2AssociatedPartyAttachment:
       type: object
       required:
-      - type
-      - number
-      - country
-      - issue_date
-      - expiry_date
-      - files
+      - associated_party_id
       properties:
-        type:
+        associated_party_id:
           type: string
-          enum:
-          - PASSPORT
-          - NATIONAL_ID
-          - DRIVERS_LICENSE
-          - RESIDENCE_PERMIT
-          - PERMANENT_RESIDENCY_ID
-          description: 'Type of government-issued identity document. At least one identifying
-
-            document is required. Double-sided documents must include both front
-
-            and back images.
-
-
-            **USA residents**: all ID types are supported:
-
-            - `PASSPORT`: Passport
-
-            - `NATIONAL_ID`: National ID card
-
-            - `DRIVERS_LICENSE`: Driver''s license
-
-            - `PERMANENT_RESIDENCY_ID`: Permanent Residency / Green Card
-
-
-            **Non-USA residents**: only the following are accepted:
-
-            - `PASSPORT`: Passport
-
-            - `NATIONAL_ID`: National ID card
-
-            - `DRIVERS_LICENSE`: Driver''s license
-
-
-            `PERMANENT_RESIDENCY_ID` is **not supported** for non-USA residents
-
-            and will be rejected.
-
-            '
-          example: PASSPORT
-        number:
-          type: string
-          description: Document number.
-          example: A12345678
-        country:
-          $ref: '#/components/schemas/CountryCode'
-        issue_date:
-          type: string
-          format: date
-          description: Document issue date in YYYY-MM-DD format.
-          example: '2020-01-15'
-        expiry_date:
-          type: string
-          format: date
-          description: Document expiry date in YYYY-MM-DD format. Must not be expired.
-          example: '2030-01-15'
-        files:
+          format: uuid
+          description: Unique identifier for the associated party, returned in GET /v2/customers/:customer-id.
+          example: f6b13e01-044a-4f74-a70b-d5f66b6449af
+        identifying_documents:
           type: array
-          description: One or more file URIs from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint. For NATIONAL_ID and DRIVERS_LICENSE, provide both FRONT and BACK.
-          minItems: 1
+          description: Government-issued identity documents for this party. Multiple documents may be provided (e.g., passport + driver license). NATIONAL_ID and DRIVERS_LICENSE require both FRONT and BACK sides.
           items:
-            type: object
-            required:
-            - uri
-            properties:
-              side:
-                type: string
-                enum:
-                - FRONT
-                - BACK
-                description: Required for NATIONAL_ID and DRIVERS_LICENSE. Optional for PASSPORT and RESIDENCE_PERMIT.
-                example: FRONT
-              uri:
-                type: string
-                description: File URI returned by the upload endpoint.
-                example: /AbAcQ4hn_0652746727637.pdf
-    V2OwnershipInfo:
+            $ref: '#/components/schemas/V2IdentifyingDocumentAttachment'
+        address_documents:
+          type: array
+          description: Proof of address documents. Must be issued within the last 90 days.
+          items:
+            $ref: '#/components/schemas/V2AddressDocumentAttachment'
+        supporting_documents:
+          type: array
+          description: Any additional supporting documents for this party. Optional. Pass empty array if not applicable.
+          items:
+            $ref: '#/components/schemas/V2AssociatedPartySupportingDocumentAttachment'
+    V2CorporateShareholder:
       type: object
-      description: Required when roles includes ubo.
       required:
-      - designation
-      - percentage_of_ownership
-      - relationship_establishment_date
-      - has_control
-      - is_signer
-      - is_director
+      - entity_name
+      - entity_name_en
+      - registration_country_code
+      - ownership_percentage
       properties:
-        designation:
+        entity_name:
           type: string
-          maxLength: 100
-          description: Title or position in the company (e.g., CEO, CFO, Founder).
-          example: CEO
-        percentage_of_ownership:
+          description: Corporate shareholder's legal name.
+          example: Acme Ventures LLC
+        entity_name_en:
+          type: string
+          description: English translation of entity name. Required if entity_name contains non-ASCII characters.
+          example: Acme Ventures LLC
+        registration_country_code:
+          $ref: '#/components/schemas/CountryCode'
+        ownership_percentage:
           type: number
           format: float
           minimum: 0
           maximum: 100
-          description: Ownership stake as a percentage (0 to 100). Individual parties may have 0% ownership. Total across all parties must be < 100%.
-          example: 75
-        relationship_establishment_date:
+          description: Ownership stake as a percentage (0 to 100).
+          example: 60
+        registration_number:
+          type: string
+          description: Entity registration number. Optional.
+          example: 98-7654321
+        entity_type:
+          type: string
+          enum:
+          - LIMITED_LIABILITY_COMPANY
+          - PUBLICLY_LISTED_COMPANY
+          - SOLE_PROPRIETOR
+          - PARTNERSHIP
+          - CORPORATION
+          - TRUST
+          - PRIVATE_FOUNDATION
+          - CHARITY
+          - NONPROFIT_ORGANIZATION
+          - PUBLIC_AGENCY_OR_AUTHORITY
+          description: Legal entity type of the corporate shareholder. Optional.
+          example: LIMITED_LIABILITY_COMPANY
+        incorporation_date:
           type: string
           format: date
-          description: 'Date when the relationship with the business began. Format: YYYY-MM-DD. Cannot be a future date.'
-          example: '2018-06-15'
-        has_control:
-          type: boolean
-          description: Whether this party has significant control over the entity.
-          example: true
-        is_signer:
-          type: boolean
-          description: Whether this party is an authorized signatory.
-          example: true
-        is_director:
-          type: boolean
-          description: Whether this party serves as a director.
-          example: true
-    V2FinancialProfile:
-      type: object
-      required:
-      - purpose_id
-      - source_of_fund_ids
-      - source_of_wealth_ids
-      - estimated_annual_revenue_usd
-      - expected_monthly_deposits_usd
-      - expected_monthly_withdrawals_usd
-      - third_party_fund_usage
-      properties:
-        purpose_id:
-          type: integer
-          description: Account purpose. Foreign key to purposes reference table. Fetch valid values from [List Account Purposes](https://developer.fin.com/api-reference/catalogue/list-account-purposes) endpoint.
-          example: 3
-        purpose_remarks:
-          type: string
-          description: Additional context for the account purpose. Required if purpose represents "Other".
-          example: Cross-border B2B payments for international suppliers
-        source_of_fund_ids:
-          type: array
-          description: Source(s) of business funds. FK array to source_of_funds reference table. Min 1 item. Fetch valid values from [List Source of Funds](https://developer.fin.com/api-reference/catalogue/list-source-of-funds). Order items from the largest to smallest contributor. The ID representing the primary source of funds must come first, followed by secondary sources in descending order.
-          minItems: 1
-          items:
-            type: integer
-          example:
-          - 1
-          - 4
-        source_of_funds_description:
-          type: string
-          description: Additional context for source of funds.
-          example: Revenue from software licensing and SaaS subscriptions
-        source_of_wealth_ids:
-          type: array
-          description: Source(s) of owner's wealth. FK array to source_of_wealth reference table. Min 1 item. Fetch valid values from [List Source of Wealth](https://developer.fin.com/api-reference/catalogue/list-source-of-wealth). Order items from the largest to smallest contributor. The primary source must come first.
-          minItems: 1
-          items:
-            type: integer
-          example:
-          - 2
-        estimated_annual_revenue_usd:
-          type: integer
-          minimum: 0
-          description: Estimated annual revenue in USD (not cents). Must be >= 0.
-          example: 5000000
-        expected_monthly_deposits_usd:
-          type: integer
-          minimum: 0
-          description: Expected monthly deposit volume in USD (not cents). Must be >= 0.
-          example: 400000
-        expected_monthly_withdrawals_usd:
-          type: integer
-          minimum: 0
-          description: Expected monthly withdrawal volume in USD (not cents). Must be >= 0.
-          example: 350000
-        expected_transaction_value_usd:
-          type: integer
-          minimum: 0
-          description: Typical single transaction value in USD (not cents). Optional.
-          example: 50000
-        expected_monthly_transaction_count:
-          type: integer
-          minimum: 0
-          description: Expected number of transactions per month. Optional.
-          example: 20
-        third_party_fund_usage:
-          type: boolean
-          description: Whether this business will process, hold, or move funds on behalf of other parties. Set to true only for MSBs and payment processors. Triggers enhanced compliance review.
-          example: false
-    V2RegulatedActivity:
-      type: object
-      required:
-      - description
-      - primary_authority_country_code
-      - primary_authority_name
-      - license_number
-      properties:
-        description:
-          type: string
-          description: Description of the regulated activity.
-          example: Licensed money transmitter operating under FinCEN registration and state-level MSB licenses
-        primary_authority_country_code:
-          $ref: '#/components/schemas/CountryCode'
-        primary_authority_name:
-          type: string
-          description: Name of the primary regulatory authority.
-          example: FinCEN
-        license_number:
-          type: string
-          description: Regulatory license or registration number.
-          example: MSB-12345678
-    V2PublicListing:
-      type: object
-      properties:
-        mic:
-          type: string
-          description: ISO 10383 Market Identifier Code (e.g., XNAS for NASDAQ).
-          example: XNAS
-        isin:
-          type: string
-          minLength: 12
-          maxLength: 12
-          description: International Securities Identification Number (12 chars).
-          example: US0231351067
-        ticker_symbol:
-          type: string
-          description: Stock exchange ticker symbol.
-          example: ACME
-    V2AssociatedParty:
-      type: object
-      required:
-      - basic_info
-      - address
-      - roles
-      properties:
-        ref:
-          type: string
-          description: Client-defined reference identifier for this party. Used for internal tracking only.
-          example: owner-001
-        basic_info:
-          $ref: '#/components/schemas/V2APBasicInfo'
-        address:
-          $ref: '#/components/schemas/V2Address'
-        roles:
-          type: array
-          description: Roles held by this party. At least one role is required. A party may hold both roles simultaneously. At least one party must hold both shareholder and ubo.
-          minItems: 1
-          items:
-            type: string
-            enum:
-            - shareholder
-            - ubo
-          example:
-          - shareholder
-          - ubo
-        ownership_info:
-          $ref: '#/components/schemas/V2OwnershipInfo'
-    V2FormationDocumentItem:
-      type: object
-      required:
-      - files
-      properties:
-        type:
-          type: string
-          enum:
-          - REGISTRATION_DOCUMENT
-          - CONSTITUTIONAL_DOCUMENT
-          - FORMATION_DOCUMENT
-          - PROOF_OF_TAX_IDENTIFICATION
-          - EVIDENCE_OF_DIRECTORS_AND_CONTROLLERS
-          description: Formation document type.
-          example: REGISTRATION_DOCUMENT
-        description:
-          type: string
-          description: Optional human-readable description of this specific document.
-          example: Certificate of Incorporation
-        files:
-          type: array
-          description: One or more file URIs obtained from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
-          minItems: 1
-          items:
-            type: object
-            required:
-            - uri
-            properties:
-              uri:
-                type: string
-                description: File URI returned by the upload endpoint.
-                example: /AbAcQ4hn_0652746727639.pdf
-    BusinessCustomerDetailV2:
-      title: Business
-      type: object
-      properties:
-        customer_id:
-          type: string
-          format: uuid
-          example: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
-        type:
-          type: string
-          enum:
-          - BUSINESS
-        business_name:
-          type: string
-          example: Fin.com
-        email:
-          type: string
-          format: email
-          example: m@tech.com
-        phone:
-          type: string
-          example: '+8801529876543'
-        country_of_incorporation:
-          type: string
-          example: BGD
-        verification_type:
-          type: string
-          example: STANDARD
-        customer_status:
-          type: string
-          description: 'The following statuses have been changed from V1.
-
-            QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
-          enum:
-          - INCOMPLETE
-          - PROCESSING
-          - REVIEWING
-          - APPROVED
-          - ASSOCIATED_PARTIES_REMAINING
-          - IN_COMPLIANCE
-          - ACTION_REQUIRED
-          - REJECTED
-          example: IN_COMPLIANCE
-        tos_policies_url:
-          type: string
-          format: uri
-        associated_parties:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                example: f6b13e01-044a-4f74-a70b-d5f66b6449af
-              type:
-                type: string
-                example: INDIVIDUAL
-              ownership_percent:
-                type: number
-                example: 60
-              email:
-                type: string
-                format: email
-                example: fatima.rahman22@acmecorp.com.bd
-              verification:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum:
-                    - INITIATED
-                    - REVIEWING
-                    - APPROVED
-                    - REJECTED
-                    example: APPROVED
-                  reason:
-                    type: object
-                    properties:
-                      for_customer:
-                        type: string
-                        nullable: true
-                      for_developer:
-                        type: string
-                        nullable: true
-                  updated_at:
-                    type: string
-                    format: date-time
-                    example: '2026-04-13T11:40:49Z'
-        created_at:
-          type: string
-          format: date-time
-          example: '2026-04-01T12:03:03Z'
-        updated_at:
-          type: string
-          format: date-time
-          example: '2026-04-01T12:03:03Z'
-        rejection_reason:
-          type: object
-          nullable: true
-          description: Populated when customer_status is REJECTED or ACTION_REQUIRED. Contains applicant-level, document-level, and associated party-level rejection details. Null when no rejection exists.
-          properties:
-            applicant:
-              type: object
-              nullable: true
-              description: Applicant-level rejection reason.
-              properties:
-                moderation_comment:
-                  type: string
-                  example: If you're a sole entrepreneur, upload corporate documents confirming your company's legal status.
-                reject_labels:
-                  type: array
-                  items:
-                    type: string
-                  example:
-                  - DOCUMENT_MISSING
-            documents:
-              type: array
-              description: Document-level rejection reasons.
-              items:
-                type: object
-                properties:
-                  uri:
-                    type: string
-                    example: /7zlLPvlx_testdoc6.jpg
-                  category:
-                    type: string
-                    example: SUPPORTING_DOCUMENTS
-                  moderation_comment:
-                    type: string
-                    example: This document is not accepted. The document should be of good quality.
-                  reject_labels:
-                    type: array
-                    items:
-                      type: string
-                    example:
-                    - LOW_QUALITY
-            associated_parties:
-              type: array
-              description: Associated party-level rejection reasons.
-              items:
-                type: object
-          example: null
-        request_for_information:
-          type: array
-          description: List of open requests for additional information. Populated when customer_status is ACTION_REQUIRED. Same structure as customer.rfi webhook payload.
-          items:
-            type: object
-            properties:
-              section:
-                type: string
-                example: ownership_documents
-              categories:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    document_type:
-                      type: string
-                      example: SHAREHOLDER_REGISTRY
-                    fields:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          field_name:
-                            type: string
-                            example: files
-                          data_type:
-                            type: string
-                            enum:
-                            - URI
-                            - DATE
-                            - TEXT
-                            - ENUM
-                            example: URI
-                          status:
-                            type: string
-                            enum:
-                            - MISSING
-                            - EXPIRED
-                            - INVALID
-                            example: INVALID
-                          reason:
-                            type: string
-                            nullable: true
-                            example: Unacceptable document.
-          example: []
-    CreateIndividualCustomerInput:
-      type: object
-      required:
-      - verification_type
-      - basic_info
-      - address
-      - financial_profile
-      properties:
-        verification_type:
-          type: string
-          enum:
-          - STANDARD
-          - RELIANCE
-          example: STANDARD
-        basic_info:
-          type: object
-          required:
-          - first_name
-          - last_name
-          - dob
-          - email
-          - phone
-          - country_of_residence
-          - nationality
-          - tin
-          properties:
-            first_name:
-              type: string
-              example: John
-            last_name:
-              type: string
-              example: Doe
-            dob:
-              type: string
-              format: date
-              example: '1990-01-15'
-            email:
-              type: string
-              format: email
-              example: john.doe@example.com
-            phone:
-              type: string
-              example: '+14155551234'
-            country_of_residence:
-              $ref: '#/components/schemas/CountryCode'
-            nationality:
-              $ref: '#/components/schemas/CountryCode'
-            tin:
-              type: string
-              example: 123-45-6789
-        address:
-          type: object
-          required:
-          - street
-          - city
-          - state
-          - postal_code
-          - country
-          properties:
-            street:
-              type: string
-              example: 123 Main St
-            city:
-              type: string
-              example: New York
-            state:
-              type: string
-              description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
-              example: US-NY
-            postal_code:
-              type: string
-              example: '10001'
-            country:
-              $ref: '#/components/schemas/CountryCode'
-        financial_profile:
-          type: object
-          required:
-          - occupation_id
-          - source_of_fund_id
-          - purpose_id
-          - monthly_volume_usd
-          properties:
-            occupation_id:
-              type: integer
-              example: 1
-            source_of_fund_id:
-              type: integer
-              example: 1
-            purpose_id:
-              type: integer
-              example: 1
-            monthly_volume_usd:
-              type: integer
-              minimum: 0
-              example: 5000
-        meta_data:
-          type: object
-          additionalProperties: true
-          example:
-            customer_reference: REF-12345
+          description: Incorporation date in YYYY-MM-DD format. Optional.
+          example: '2015-03-01'
     CreateIndividualCustomerV2Input:
       type: object
       required:
@@ -4519,6 +3764,113 @@ components:
           additionalProperties: true
           example:
             reference: client-ref-abc-001
+    V2AML:
+      type: object
+      properties:
+        supervisory_authority_name:
+          type: string
+          description: Name of the AML supervisory authority.
+          example: FinCEN
+        license_number:
+          type: string
+          description: AML license number.
+          example: MSB-12345678
+        has_appointed_mlro:
+          type: boolean
+          description: Whether a Money Laundering Reporting Officer has been appointed.
+          example: true
+        customer_risk_split:
+          $ref: '#/components/schemas/V2CustomerRiskSplit'
+        prohibits_anonymous_or_fictitious_accounts:
+          type: boolean
+          description: Policy on anonymous or fictitious accounts.
+          example: true
+        prohibits_accounts_for_unlicensed_or_shell_customers:
+          type: boolean
+          description: Policy on unlicensed or shell customers.
+          example: true
+        customer_identity_verification:
+          $ref: '#/components/schemas/V2VerificationMethod'
+        pep_and_sanctions_screening:
+          $ref: '#/components/schemas/V2VerificationMethod'
+        sanction_lists:
+          type: array
+          description: Names of sanction lists screened against.
+          items:
+            type: string
+          example:
+          - OFAC
+          - EU
+          - UN
+          - HMT
+        customer_risk_classification_from_due_diligence:
+          type: boolean
+          example: true
+        enhanced_due_diligence_process:
+          type: boolean
+          example: true
+        transaction_monitoring:
+          $ref: '#/components/schemas/V2VerificationMethod'
+        procedures_for_transaction_monitoring:
+          type: boolean
+          example: true
+        subject_to_ml_or_tf_investigation:
+          type: string
+          description: Current ML/TF investigation status.
+          example: none
+        subject_to_regulatory_enforcement_past_2_years:
+          type: string
+          description: Regulatory enforcement history over the last 2 years.
+          example: none
+        confirms_no_service_to_sanctioned_countries:
+          type: boolean
+          example: true
+        client_funds_accessibility:
+          type: string
+          description: Policy on client fund accessibility.
+          example: closed_loop
+        aml_ctf_audit_completed:
+          type: boolean
+          example: true
+        planned_audit_date:
+          type: string
+          format: date
+          description: Planned next audit date in YYYY-MM-DD format.
+          example: '2026-12-01'
+    V2RiskProfile:
+      type: object
+      properties:
+        high_risk_activities:
+          type: array
+          description: High-risk activities the business engages in. If non-empty, high_risk_activities_explanation is required.
+          items:
+            type: string
+            enum:
+            - adult_entertainment
+            - crypto_exchange
+            - gambling
+            - cannabis
+            - weapons
+            - money_services
+            - cross_border_payments
+          example:
+          - cross_border_payments
+        high_risk_activities_explanation:
+          type: string
+          description: Explanation of declared high-risk activities. Required when high_risk_activities is non-empty.
+          example: We facilitate cross-border B2B payments, subject to enhanced due diligence procedures.
+        conducts_money_services:
+          type: boolean
+          description: Whether the business provides money services.
+          example: true
+        conducts_money_services_via_fin:
+          type: boolean
+          description: Whether money services are provided via financial intermediaries.
+          example: false
+        conducts_money_services_description:
+          type: string
+          description: Details about the money services offered.
+          example: Licensed money transmitter providing international wire transfer services.
     ProofOfAddressBusiness:
       type: object
       required:
@@ -4550,392 +3902,67 @@ components:
               uri:
                 type: string
                 example: /AbAcQ4hn_0652746727638.pdf
-    CountryCode:
-      type: string
-      description: ISO 3166-1 alpha-3 country code
-      example: USA
-      enum:
-      - AFG
-      - ALB
-      - DZA
-      - ASM
-      - AND
-      - AGO
-      - AIA
-      - ATA
-      - ATG
-      - ARG
-      - ARM
-      - ABW
-      - AUS
-      - AUT
-      - AZE
-      - BHS
-      - BHR
-      - BGD
-      - BRB
-      - BLR
-      - BEL
-      - BLZ
-      - BEN
-      - BMU
-      - BTN
-      - BOL
-      - BES
-      - BIH
-      - BWA
-      - BVT
-      - BRA
-      - IOT
-      - BRN
-      - BGR
-      - BFA
-      - BDI
-      - CPV
-      - KHM
-      - CMR
-      - CAN
-      - CYM
-      - CAF
-      - TCD
-      - CHL
-      - CHN
-      - CXR
-      - CCK
-      - COL
-      - COM
-      - COD
-      - COG
-      - COK
-      - CRI
-      - HRV
-      - CUB
-      - CUW
-      - CYP
-      - CZE
-      - CIV
-      - DNK
-      - DJI
-      - DMA
-      - DOM
-      - ECU
-      - EGY
-      - SLV
-      - GNQ
-      - ERI
-      - EST
-      - SWZ
-      - ETH
-      - FLK
-      - FRO
-      - FJI
-      - FIN
-      - FRA
-      - GUF
-      - PYF
-      - ATF
-      - GAB
-      - GMB
-      - GEO
-      - DEU
-      - GHA
-      - GIB
-      - GRC
-      - GRL
-      - GRD
-      - GLP
-      - GUM
-      - GTM
-      - GGY
-      - GIN
-      - GNB
-      - GUY
-      - HTI
-      - HMD
-      - VAT
-      - HND
-      - HKG
-      - HUN
-      - ISL
-      - IND
-      - IDN
-      - IRN
-      - IRQ
-      - IRL
-      - IMN
-      - ISR
-      - ITA
-      - JAM
-      - JPN
-      - JEY
-      - JOR
-      - KAZ
-      - KEN
-      - KIR
-      - PRK
-      - KOR
-      - KWT
-      - KGZ
-      - LAO
-      - LVA
-      - LBN
-      - LSO
-      - LBR
-      - LBY
-      - LIE
-      - LTU
-      - LUX
-      - MAC
-      - MDG
-      - MWI
-      - MYS
-      - MDV
-      - MLI
-      - MLT
-      - MHL
-      - MTQ
-      - MRT
-      - MUS
-      - MYT
-      - MEX
-      - FSM
-      - MDA
-      - MCO
-      - MNG
-      - MNE
-      - MSR
-      - MAR
-      - MOZ
-      - MMR
-      - NAM
-      - NRU
-      - NPL
-      - NLD
-      - NCL
-      - NZL
-      - NIC
-      - NER
-      - NGA
-      - NIU
-      - NFK
-      - MNP
-      - NOR
-      - OMN
-      - PAK
-      - PLW
-      - PSE
-      - PAN
-      - PNG
-      - PRY
-      - PER
-      - PHL
-      - PCN
-      - POL
-      - PRT
-      - PRI
-      - QAT
-      - MKD
-      - ROU
-      - RUS
-      - RWA
-      - REU
-      - BLM
-      - SHN
-      - KNA
-      - LCA
-      - MAF
-      - SPM
-      - VCT
-      - WSM
-      - SMR
-      - STP
-      - SAU
-      - SEN
-      - SRB
-      - SYC
-      - SLE
-      - SGP
-      - SXM
-      - SVK
-      - SVN
-      - SLB
-      - SOM
-      - ZAF
-      - SGS
-      - SSD
-      - ESP
-      - LKA
-      - SDN
-      - SUR
-      - SJM
-      - SWE
-      - CHE
-      - SYR
-      - TWN
-      - TJK
-      - TZA
-      - THA
-      - TLS
-      - TGO
-      - TKL
-      - TON
-      - TTO
-      - TUN
-      - TUR
-      - TKM
-      - TCA
-      - TUV
-      - UGA
-      - UKR
-      - ARE
-      - GBR
-      - UMI
-      - USA
-      - URY
-      - UZB
-      - VUT
-      - VEN
-      - VNM
-      - VGB
-      - VIR
-      - WLF
-      - ESH
-      - YEM
-      - ZMB
-      - ZWE
-      - ALA
-    V2Address:
+    V2FormationDocumentItem:
       type: object
       required:
-      - street_line_1
-      - street_line_1_en
-      - city
-      - state
-      - subdivision_code
-      - postal_code
-      - country
+      - files
       properties:
-        street_line_1:
+        type:
           type: string
-          description: Primary street address. P.O. Box addresses are not accepted.
-          example: 123 Main Street
-        street_line_1_en:
+          enum:
+          - REGISTRATION_DOCUMENT
+          - CONSTITUTIONAL_DOCUMENT
+          - FORMATION_DOCUMENT
+          - PROOF_OF_TAX_IDENTIFICATION
+          - EVIDENCE_OF_DIRECTORS_AND_CONTROLLERS
+          description: Formation document type.
+          example: REGISTRATION_DOCUMENT
+        description:
           type: string
-          description: English translation of street_line_1. Required if address contains non-ASCII characters.
-          example: 123 Main Street
-        street_line_2:
-          type: string
-          description: Secondary address (suite, floor, unit, etc.). Optional.
-          example: Suite 400
-        street_line_2_en:
-          type: string
-          description: English translation of street_line_2. Optional.
-          example: Suite 400
-        city:
-          type: string
-          maxLength: 100
-          description: City or municipality name.
-          example: San Francisco
-        state:
-          type: string
-          description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
-          example: US-CA
-        subdivision_code:
-          type: string
-          description: State/province code from [List Subdivisions](https://developer.fin.com/api-reference/catalogue/list-subdivisions). Same value as state field.
-          example: US-CA
-        postal_code:
-          type: string
-          description: ZIP or postal code. Format validated per country.
-          example: '94105'
-        country:
-          $ref: '#/components/schemas/CountryCode'
-    AttachDocumentsToBusinessCustomerInput:
+          description: Optional human-readable description of this specific document.
+          example: Certificate of Incorporation
+        files:
+          type: array
+          description: One or more file URIs obtained from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
+          minItems: 1
+          items:
+            type: object
+            required:
+            - uri
+            properties:
+              uri:
+                type: string
+                description: File URI returned by the upload endpoint.
+                example: /AbAcQ4hn_0652746727639.pdf
+    V2AssociatedPartySupportingDocumentAttachment:
       type: object
       required:
-      - customer_id
-      - ownership_structure
-      - company_details
-      - legal_presence
-      - tos_policies_value
+      - type
+      - files
       properties:
-        customer_id:
+        type:
           type: string
-          format: uuid
-          example: 2d0a9df3-e1e5-4955-9759-ce0522e0ddc9
-        ownership_structure:
+          enum:
+          - MILITARY_ID
+          - MATRICULATE_ID
+          - STATE_OR_PROVINCIAL_ID
+          - VISA
+          - OTHER
+          description: Type of additional supporting document for the associated party.
+          example: MILITARY_ID
+        files:
           type: array
+          description: One or more file URIs from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
+          minItems: 1
           items:
             type: object
             required:
-            - type
-            - files
+            - uri
             properties:
-              type:
+              uri:
                 type: string
-                enum:
-                - SHAREHOLDER_REGISTRY
-                example: SHAREHOLDER_REGISTRY
-              files:
-                type: array
-                items:
-                  type: object
-                  required:
-                  - uri
-                  properties:
-                    uri:
-                      type: string
-                      example: /AbAcQ4hn_0652746727639.pdf
-        company_details:
-          type: array
-          items:
-            type: object
-            required:
-            - type
-            - files
-            properties:
-              type:
-                type: string
-                enum:
-                - CERT_OF_INCORPORATION
-                - MEMORANDUM_OF_ASSOCIATION
-                example: CERT_OF_INCORPORATION
-              files:
-                type: array
-                items:
-                  type: object
-                  required:
-                  - uri
-                  properties:
-                    uri:
-                      type: string
-                      example: /AbAcQ4hn_0652746727640.pdf
-        legal_presence:
-          type: array
-          items:
-            type: object
-            required:
-            - type
-            - files
-            properties:
-              type:
-                type: string
-                enum:
-                - PROOF_OF_ADDRESS
-                example: PROOF_OF_ADDRESS
-              files:
-                type: array
-                items:
-                  type: object
-                  required:
-                  - uri
-                  properties:
-                    uri:
-                      type: string
-                      example: /AbAcQ4hn_0652746727641.pdf
-        tos_policies_value:
-          type: string
-          example: e9414388-fbdf-4407-b5c2-bc39eae3645b
+                description: File URI returned by the upload endpoint.
+                example: /AbAcQ4hn_0652746727638.pdf
     ProofOfIdentity:
       type: object
       required:
@@ -4992,6 +4019,64 @@ components:
               uri:
                 type: string
                 example: /AbAcQ4hn_0652746727637.pdf
+    V2Compliance:
+      type: object
+      properties:
+        operates_in_prohibited_countries:
+          type: boolean
+          description: Whether the business operates in OFAC/sanctioned countries.
+          example: false
+        additional_description_for_compliance_screening:
+          type: string
+          description: Free-text compliance notes for manual review.
+          example: We do not operate in any OFAC-sanctioned jurisdictions.
+        risk_profile:
+          $ref: '#/components/schemas/V2RiskProfile'
+        regulated_activity:
+          $ref: '#/components/schemas/V2RegulatedActivity'
+        aml:
+          $ref: '#/components/schemas/V2AML'
+    AttachDocumentsToIndividualCustomerV2Input:
+      type: object
+      required:
+      - identifying_documents
+      - address_documents
+      - tos_policies_value
+      properties:
+        identifying_documents:
+          type: array
+          minItems: 1
+          description: Government-issued identity documents. Include at most one non-SELFIE primary document (PASSPORT, NATIONAL_ID, DRIVERS_LICENSE, or RESIDENCE_PERMIT) plus an optional SELFIE entry. NATIONAL_ID, DRIVERS_LICENSE, and RESIDENCE_PERMIT require both FRONT and BACK files.
+          items:
+            $ref: '#/components/schemas/V2IndividualAttachIdentifyingDocument'
+        address_documents:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: Proof of address. Exactly one entry is required.
+          items:
+            $ref: '#/components/schemas/V2IndividualAddressDocument'
+        tos_policies_value:
+          type: string
+          description: Parsed from the tos_policies_value query parameter in the tos_policies_url returned by POST /v2/customers/individual. Signifies the customer has accepted the Terms of Service.
+          example: e9414388-fbdf-4407-b5c2-bc39eae3645b
+    V2PublicListing:
+      type: object
+      properties:
+        mic:
+          type: string
+          description: ISO 10383 Market Identifier Code (e.g., XNAS for NASDAQ).
+          example: XNAS
+        isin:
+          type: string
+          minLength: 12
+          maxLength: 12
+          description: International Securities Identification Number (12 chars).
+          example: US0231351067
+        ticker_symbol:
+          type: string
+          description: Stock exchange ticker symbol.
+          example: ACME
     IndividualCustomerDetailV2:
       title: Individual
       type: object
@@ -5155,107 +4240,372 @@ components:
           type: string
           description: System or vendor used (e.g., Jumio, Onfido, Internal).
           example: Jumio
-    V2AML:
-      type: object
-      properties:
-        supervisory_authority_name:
-          type: string
-          description: Name of the AML supervisory authority.
-          example: FinCEN
-        license_number:
-          type: string
-          description: AML license number.
-          example: MSB-12345678
-        has_appointed_mlro:
-          type: boolean
-          description: Whether a Money Laundering Reporting Officer has been appointed.
-          example: true
-        customer_risk_split:
-          $ref: '#/components/schemas/V2CustomerRiskSplit'
-        prohibits_anonymous_or_fictitious_accounts:
-          type: boolean
-          description: Policy on anonymous or fictitious accounts.
-          example: true
-        prohibits_accounts_for_unlicensed_or_shell_customers:
-          type: boolean
-          description: Policy on unlicensed or shell customers.
-          example: true
-        customer_identity_verification:
-          $ref: '#/components/schemas/V2VerificationMethod'
-        pep_and_sanctions_screening:
-          $ref: '#/components/schemas/V2VerificationMethod'
-        sanction_lists:
-          type: array
-          description: Names of sanction lists screened against.
-          items:
-            type: string
-          example:
-          - OFAC
-          - EU
-          - UN
-          - HMT
-        customer_risk_classification_from_due_diligence:
-          type: boolean
-          example: true
-        enhanced_due_diligence_process:
-          type: boolean
-          example: true
-        transaction_monitoring:
-          $ref: '#/components/schemas/V2VerificationMethod'
-        procedures_for_transaction_monitoring:
-          type: boolean
-          example: true
-        subject_to_ml_or_tf_investigation:
-          type: string
-          description: Current ML/TF investigation status.
-          example: none
-        subject_to_regulatory_enforcement_past_2_years:
-          type: string
-          description: Regulatory enforcement history over the last 2 years.
-          example: none
-        confirms_no_service_to_sanctioned_countries:
-          type: boolean
-          example: true
-        client_funds_accessibility:
-          type: string
-          description: Policy on client fund accessibility.
-          example: closed_loop
-        aml_ctf_audit_completed:
-          type: boolean
-          example: true
-        planned_audit_date:
-          type: string
-          format: date
-          description: Planned next audit date in YYYY-MM-DD format.
-          example: '2026-12-01'
-    AttachDocumentsToAssociatedPartyV2Input:
+    V2IdentifyingDocument:
       type: object
       required:
-      - associated_party_attachments
+      - country_code
+      - document_type
+      - document_id
       properties:
-        associated_party_attachments:
+        country_code:
+          $ref: '#/components/schemas/CountryCode'
+        document_type:
+          type: string
+          description: 'Business tax ID document type, validated per country. Examples: EIN, TIN, VAT_ID, TAX_ID, etc. See all available types at [Business tax id documents by region](https://developer.fin.com/business-tax-id-documents-by-region).'
+          example: EIN
+        document_id:
+          type: string
+          description: The document ID or number. Format validated per country and document type.
+          example: 12-3456789
+    V2AssociatedParty:
+      type: object
+      required:
+      - basic_info
+      - address
+      - roles
+      properties:
+        ref:
+          type: string
+          description: Client-defined reference identifier for this party. Used for internal tracking only.
+          example: owner-001
+        basic_info:
+          $ref: '#/components/schemas/V2APBasicInfo'
+        address:
+          $ref: '#/components/schemas/V2Address'
+        roles:
           type: array
-          description: Array of document attachments, one entry per associated party. Multiple parties can be submitted in a single request.
+          description: Roles held by this party. At least one role is required. A party may hold both roles simultaneously. At least one party must hold both shareholder and ubo.
           minItems: 1
           items:
-            $ref: '#/components/schemas/V2AssociatedPartyAttachment'
-    V2HoldingStructure:
+            type: string
+            enum:
+            - shareholder
+            - ubo
+          example:
+          - shareholder
+          - ubo
+        ownership_info:
+          $ref: '#/components/schemas/V2OwnershipInfo'
+    AttachDocumentsToBusinessCustomerInput:
       type: object
+      required:
+      - customer_id
+      - ownership_structure
+      - company_details
+      - legal_presence
+      - tos_policies_value
       properties:
-        has_material_intermediary_ownership:
+        customer_id:
+          type: string
+          format: uuid
+          example: 2d0a9df3-e1e5-4955-9759-ce0522e0ddc9
+        ownership_structure:
+          type: array
+          items:
+            type: object
+            required:
+            - type
+            - files
+            properties:
+              type:
+                type: string
+                enum:
+                - SHAREHOLDER_REGISTRY
+                example: SHAREHOLDER_REGISTRY
+              files:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - uri
+                  properties:
+                    uri:
+                      type: string
+                      example: /AbAcQ4hn_0652746727639.pdf
+        company_details:
+          type: array
+          items:
+            type: object
+            required:
+            - type
+            - files
+            properties:
+              type:
+                type: string
+                enum:
+                - CERT_OF_INCORPORATION
+                - MEMORANDUM_OF_ASSOCIATION
+                example: CERT_OF_INCORPORATION
+              files:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - uri
+                  properties:
+                    uri:
+                      type: string
+                      example: /AbAcQ4hn_0652746727640.pdf
+        legal_presence:
+          type: array
+          items:
+            type: object
+            required:
+            - type
+            - files
+            properties:
+              type:
+                type: string
+                enum:
+                - PROOF_OF_ADDRESS
+                example: PROOF_OF_ADDRESS
+              files:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - uri
+                  properties:
+                    uri:
+                      type: string
+                      example: /AbAcQ4hn_0652746727641.pdf
+        tos_policies_value:
+          type: string
+          example: e9414388-fbdf-4407-b5c2-bc39eae3645b
+    V2OwnershipInfo:
+      type: object
+      description: Required when roles includes ubo.
+      required:
+      - designation
+      - percentage_of_ownership
+      - relationship_establishment_date
+      - has_control
+      - is_signer
+      - is_director
+      properties:
+        designation:
+          type: string
+          maxLength: 100
+          description: Title or position in the company (e.g., CEO, CFO, Founder).
+          example: CEO
+        percentage_of_ownership:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+          description: Ownership stake as a percentage (0 to 100). Individual parties may have 0% ownership. Total across all parties must be < 100%.
+          example: 75
+        relationship_establishment_date:
+          type: string
+          format: date
+          description: 'Date when the relationship with the business began. Format: YYYY-MM-DD. Cannot be a future date.'
+          example: '2018-06-15'
+        has_control:
           type: boolean
-          description: Whether any intermediary holds a material ownership stake.
+          description: Whether this party has significant control over the entity.
           example: true
-        corporate_shareholders:
+        is_signer:
+          type: boolean
+          description: Whether this party is an authorized signatory.
+          example: true
+        is_director:
+          type: boolean
+          description: Whether this party serves as a director.
+          example: true
+    BusinessCustomerDetail:
+      type: object
+      title: Business
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: 94e6b847-4e19-49e3-b3ab-ffa95872eda9
+        type:
+          type: string
+          enum:
+          - BUSINESS
+        business_name:
+          type: string
+          example: Fin.com
+        email:
+          type: string
+          format: email
+          example: contact@fin.com
+        phone:
+          type: string
+          example: '+6591234567'
+        country_of_incorporation:
+          type: string
+          example: SGP
+        verification_type:
+          type: string
+          example: STANDARD
+        customer_status:
+          type: string
+          example: APPROVED
+        tos_policies_url:
+          type: string
+          format: uri
+          example: https://orchestration.fin.com/orchestration-customer-tos?customer_id=94e6b847-4e19-49e3-b3ab-ffa95872eda9&tos_policies_value=6955e70b-f9f3-4076-b1ce-5c897085dd24
+        associated_parties:
           type: array
-          description: List of corporate (non-individual) shareholders.
           items:
-            $ref: '#/components/schemas/V2CorporateShareholder'
-        foreign_branches:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 42daffd3-09a0-4d48-8e73-2680a953d0e1
+              type:
+                type: string
+                example: INDIVIDUAL
+              ownership_percent:
+                type: number
+                example: 10
+              email:
+                type: string
+                format: email
+                example: john.doe@fin.com
+              verification:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: APPROVED
+                  reason:
+                    type: object
+                    properties:
+                      for_customer:
+                        type: string
+                        nullable: true
+                      for_developer:
+                        type: string
+                        nullable: true
+                  updated_at:
+                    type: string
+                    format: date-time
+                    example: '2026-04-15T11:29:08Z'
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-15T11:26:12Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-15T11:31:18Z'
+        last_status_updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-15T11:29:09Z'
+        capabilities:
+          type: object
+          description: On-ramp and off-ramp capabilities for the customer
+          properties:
+            on_ramp:
+              type: array
+              items:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    example: USD
+                  status:
+                    type: boolean
+                    example: false
+                  methods:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - ACH
+                    - FEDWIRE
+                  reason:
+                    type: object
+                    properties:
+                      for_customer:
+                        type: string
+                        nullable: true
+                      for_developer:
+                        type: string
+                        nullable: true
+            off_ramp:
+              type: array
+              items:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    example: USD
+                  status:
+                    type: boolean
+                    example: true
+                  methods:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - BANK
+                  reason:
+                    type: object
+                    properties:
+                      for_customer:
+                        type: string
+                        nullable: true
+                      for_developer:
+                        type: string
+                        nullable: true
+        rejection_reason:
+          type: object
+          nullable: true
+          description: Populated when customer_status is REJECTED. Null otherwise.
+        request_for_information:
           type: array
-          description: List of foreign branch registrations.
+          description: List of pending information requests. Empty when none are outstanding.
           items:
-            $ref: '#/components/schemas/V2ForeignBranch'
+            type: object
+    AttachDocumentsToBusinessCustomerV2Input:
+      type: object
+      required:
+      - tos_policies_value
+      properties:
+        formation_documents:
+          type: array
+          description: Documents proving the legal existence of the business (e.g., Certificate of Incorporation, Articles of Incorporation, Trust Agreement, Tax registration certificate).
+          items:
+            $ref: '#/components/schemas/V2FormationDocumentItem'
+        ownership_documents:
+          type: array
+          description: Documents proving who controls and owns the business (e.g., Shareholder Register, Org Chart, Power of Attorney, Directors Registry).
+          items:
+            $ref: '#/components/schemas/V2OwnershipDocumentItem'
+        supporting_documents:
+          type: array
+          description: Additional compliance and operational documents (e.g., Proof of Address, Proof of Source of Funds, AML Comfort Letter, Marketing Materials).
+          items:
+            $ref: '#/components/schemas/V2SupportingDocumentItem'
+        tos_policies_value:
+          type: string
+          description: Parsed from the tos_policies_value query parameter in the tos_policies_url returned by POST /v2/customers/business. Signifies the customer has accepted the Terms of Service.
+          example: f11e77c6-8dc0-4d4b-a3f2-ed84c8ccfc69
+    AttachDocumentForIndividualCustomerInput:
+      type: object
+      required:
+      - customer_id
+      - proof_of_identity
+      - proof_of_address
+      - tos_policies_value
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: 55bd6b4e-c20a-4cc8-9535-91d5557a67d9
+        proof_of_identity:
+          $ref: '#/components/schemas/ProofOfIdentity'
+        proof_of_address:
+          $ref: '#/components/schemas/ProofOfAddressIndividual'
+        tos_policies_value:
+          type: string
+          example: e9414388-fbdf-4407-b5c2-bc39eae3645b
     V2ForeignBranch:
       type: object
       required:
@@ -5271,6 +4621,539 @@ components:
           type: string
           description: Branch registration number. Optional.
           example: BR000123
+    V2CustomerRiskSplit:
+      type: object
+      description: Breakdown of customer risk classifications. Percentages must sum to 100.
+      required:
+      - low_risk
+      - medium_risk
+      - high_risk
+      properties:
+        low_risk:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Percentage of low-risk customers.
+          example: 70
+        medium_risk:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Percentage of medium-risk customers.
+          example: 25
+        high_risk:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Percentage of high-risk customers.
+          example: 5
+    V2Addresses:
+      type: object
+      required:
+      - is_incorporated_address_same
+      - incorporated_address
+      properties:
+        is_incorporated_address_same:
+          type: boolean
+          description: Whether the physical operating address is the same as the incorporated address. If false, physical_address is required.
+          example: false
+        incorporated_address:
+          $ref: '#/components/schemas/V2Address'
+        physical_address:
+          allOf:
+          - $ref: '#/components/schemas/V2Address'
+          description: Physical operating address. Required when is_incorporated_address_same is false.
+    V2FinancialProfile:
+      type: object
+      required:
+      - purpose_id
+      - source_of_fund_ids
+      - source_of_wealth_ids
+      - estimated_annual_revenue_usd
+      - expected_monthly_deposits_usd
+      - expected_monthly_withdrawals_usd
+      - third_party_fund_usage
+      properties:
+        purpose_id:
+          type: integer
+          description: Account purpose. Foreign key to purposes reference table. Fetch valid values from [List Account Purposes](https://developer.fin.com/api-reference/catalogue/list-account-purposes) endpoint.
+          example: 3
+        purpose_remarks:
+          type: string
+          description: Additional context for the account purpose. Required if purpose represents "Other".
+          example: Cross-border B2B payments for international suppliers
+        source_of_fund_ids:
+          type: array
+          description: Source(s) of business funds. FK array to source_of_funds reference table. Min 1 item. Fetch valid values from [List Source of Funds](https://developer.fin.com/api-reference/catalogue/list-source-of-funds). Order items from the largest to smallest contributor. The ID representing the primary source of funds must come first, followed by secondary sources in descending order.
+          minItems: 1
+          items:
+            type: integer
+          example:
+          - 1
+          - 4
+        source_of_funds_description:
+          type: string
+          description: Additional context for source of funds.
+          example: Revenue from software licensing and SaaS subscriptions
+        source_of_wealth_ids:
+          type: array
+          description: Source(s) of owner's wealth. FK array to source_of_wealth reference table. Min 1 item. Fetch valid values from [List Source of Wealth](https://developer.fin.com/api-reference/catalogue/list-source-of-wealth). Order items from the largest to smallest contributor. The primary source must come first.
+          minItems: 1
+          items:
+            type: integer
+          example:
+          - 2
+        estimated_annual_revenue_usd:
+          type: integer
+          minimum: 0
+          description: Estimated annual revenue in USD (not cents). Must be >= 0.
+          example: 5000000
+        expected_monthly_deposits_usd:
+          type: integer
+          minimum: 0
+          description: Expected monthly deposit volume in USD (not cents). Must be >= 0.
+          example: 400000
+        expected_monthly_withdrawals_usd:
+          type: integer
+          minimum: 0
+          description: Expected monthly withdrawal volume in USD (not cents). Must be >= 0.
+          example: 350000
+        expected_transaction_value_usd:
+          type: integer
+          minimum: 0
+          description: Typical single transaction value in USD (not cents). Optional.
+          example: 50000
+        expected_monthly_transaction_count:
+          type: integer
+          minimum: 0
+          description: Expected number of transactions per month. Optional.
+          example: 20
+        third_party_fund_usage:
+          type: boolean
+          description: Whether this business will process, hold, or move funds on behalf of other parties. Set to true only for MSBs and payment processors. Triggers enhanced compliance review.
+          example: false
+    V2OwnershipDocumentItem:
+      type: object
+      required:
+      - files
+      properties:
+        type:
+          type: string
+          enum:
+          - OWNERSHIP_INFORMATION
+          - OWNERSHIP_CHART
+          - PROOF_OF_SIGNATORY_AUTHORITY
+          description: Ownership document type.
+          example: OWNERSHIP_INFORMATION
+        description:
+          type: string
+          description: Optional human-readable description of this specific document.
+          example: Ownership information document
+        files:
+          type: array
+          description: One or more file URIs obtained from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
+          minItems: 1
+          items:
+            type: object
+            required:
+            - uri
+            properties:
+              uri:
+                type: string
+                description: File URI returned by the upload endpoint.
+                example: /AbAcQ4hn_0652746727639.pdf
+    CreateIndividualCustomerInput:
+      type: object
+      required:
+      - verification_type
+      - basic_info
+      - address
+      - financial_profile
+      properties:
+        verification_type:
+          type: string
+          enum:
+          - STANDARD
+          - RELIANCE
+          example: STANDARD
+        basic_info:
+          type: object
+          required:
+          - first_name
+          - last_name
+          - dob
+          - email
+          - phone
+          - country_of_residence
+          - nationality
+          - tin
+          properties:
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            dob:
+              type: string
+              format: date
+              example: '1990-01-15'
+            email:
+              type: string
+              format: email
+              example: john.doe@example.com
+            phone:
+              type: string
+              example: '+14155551234'
+            country_of_residence:
+              $ref: '#/components/schemas/CountryCode'
+            nationality:
+              $ref: '#/components/schemas/CountryCode'
+            tin:
+              type: string
+              example: 123-45-6789
+        address:
+          type: object
+          required:
+          - street
+          - city
+          - state
+          - postal_code
+          - country
+          properties:
+            street:
+              type: string
+              example: 123 Main St
+            city:
+              type: string
+              example: New York
+            state:
+              type: string
+              description: State or province. Required. Must be an ISO 3166-2 subdivision code (e.g. US-CA, BD-13).
+              example: US-NY
+            postal_code:
+              type: string
+              example: '10001'
+            country:
+              $ref: '#/components/schemas/CountryCode'
+        financial_profile:
+          type: object
+          required:
+          - occupation_id
+          - source_of_fund_id
+          - purpose_id
+          - monthly_volume_usd
+          properties:
+            occupation_id:
+              type: integer
+              example: 1
+            source_of_fund_id:
+              type: integer
+              example: 1
+            purpose_id:
+              type: integer
+              example: 1
+            monthly_volume_usd:
+              type: integer
+              minimum: 0
+              example: 5000
+        meta_data:
+          type: object
+          additionalProperties: true
+          example:
+            customer_reference: REF-12345
+    V2AddressDocumentAttachment:
+      type: object
+      required:
+      - type
+      - files
+      properties:
+        type:
+          type: string
+          enum:
+          - UTILITY_BILL
+          - GOVERNMENT_LETTER
+          - BANK_STATEMENT
+          - PROOF_OF_TAX_IDENTIFICATION
+          - COURT_DOCUMENT
+          - INSURANCE_STATEMENT
+          description: Type of address proof document. Must be within the last 90 days.
+          example: BANK_STATEMENT
+        files:
+          type: array
+          description: One or more file URIs from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
+          minItems: 1
+          items:
+            type: object
+            required:
+            - uri
+            properties:
+              uri:
+                type: string
+                description: File URI returned by the upload endpoint.
+                example: /AbAcQ4hn_0652746727638.pdf
+    CustomerWallet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique wallet identifier.
+          example: 27dbc0f2-e5ae-444b-b4ab-0764252aedf6
+        status:
+          type: string
+          enum:
+          - PENDING
+          - ACTIVE
+          - INACTIVE
+          description: Wallet provisioning status. Wallets start PENDING and move to ACTIVE (or INACTIVE) asynchronously once the wallet address has been issued; creation is not synchronous.
+          example: ACTIVE
+        currency:
+          type: string
+          description: Token held in this wallet.
+          example: USDC
+        rail:
+          type: string
+          description: Blockchain network for this wallet.
+          example: ETHEREUM
+        address:
+          type: string
+          nullable: true
+          description: On-chain wallet address. Null until the wallet is provisioned.
+          example: '0xc42a5f7083c7e8f1d9820c7660867277289cd998'
+        balance:
+          type: number
+          description: Current wallet balance.
+          example: 10.000001
+    CreateBusinessCustomerV2Input:
+      type: object
+      required:
+      - verification_type
+      - industry_codes
+      - basic_info
+      - financial_profile
+      - addresses
+      - associated_parties
+      properties:
+        verification_type:
+          type: string
+          enum:
+          - STANDARD
+          - RELIANCE
+          description: Verification level. Defaults to STANDARD if omitted. RELIANCE must be explicitly enabled for your client.
+          example: STANDARD
+        industry_codes:
+          type: array
+          description: NAICS 2022 6-digit industry codes. Min 1 item. See the full list at [Business-industry-codes](https://developer.fin.com/business-industry-codes).
+          minItems: 1
+          items:
+            type: string
+          example:
+          - '523130'
+        basic_info:
+          $ref: '#/components/schemas/V2BasicInfo'
+        financial_profile:
+          $ref: '#/components/schemas/V2FinancialProfile'
+        addresses:
+          $ref: '#/components/schemas/V2Addresses'
+        associated_parties:
+          type: array
+          description: UBOs (≥25% ownership), directors, and authorized signatories. Min 1 item required.
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/V2AssociatedParty'
+        holding_structure:
+          $ref: '#/components/schemas/V2HoldingStructure'
+        public_listings:
+          type: array
+          description: Stock exchange listings. Required for publicly traded companies.
+          items:
+            $ref: '#/components/schemas/V2PublicListing'
+        compliance:
+          $ref: '#/components/schemas/V2Compliance'
+        meta_data:
+          type: object
+          description: Client-defined key-value metadata for internal tracking.
+          properties:
+            reference:
+              type: string
+              description: Client-defined external reference identifier.
+              example: REF-20250123-ACME
+          additionalProperties: true
+    V2IndividualIdentifyingDocument:
+      type: object
+      required:
+      - country_code
+      - document_type
+      - document_id
+      properties:
+        country_code:
+          $ref: '#/components/schemas/CountryCode'
+        document_type:
+          type: string
+          description: Individual tax ID document type, validated per country. See all available types at [Individual Tax ID documents](https://developer.fin.com/guides/compliance-and-regulatory/individual-tax-id-documents).
+          example: TIN
+        document_id:
+          type: string
+          description: The document ID or number. Format validated per country and document type.
+          example: '1234567890123'
+    V2IdentifyingDocumentAttachment:
+      type: object
+      required:
+      - type
+      - number
+      - country
+      - issue_date
+      - expiry_date
+      - files
+      properties:
+        type:
+          type: string
+          enum:
+          - PASSPORT
+          - NATIONAL_ID
+          - DRIVERS_LICENSE
+          - RESIDENCE_PERMIT
+          - PERMANENT_RESIDENCY_ID
+          description: 'Type of government-issued identity document. At least one identifying
+
+            document is required. Double-sided documents must include both front
+
+            and back images.
+
+
+            **USA residents**: all ID types are supported:
+
+            - `PASSPORT`: Passport
+
+            - `NATIONAL_ID`: National ID card
+
+            - `DRIVERS_LICENSE`: Driver''s license
+
+            - `PERMANENT_RESIDENCY_ID`: Permanent Residency / Green Card
+
+
+            **Non-USA residents**: only the following are accepted:
+
+            - `PASSPORT`: Passport
+
+            - `NATIONAL_ID`: National ID card
+
+            - `DRIVERS_LICENSE`: Driver''s license
+
+
+            `PERMANENT_RESIDENCY_ID` is **not supported** for non-USA residents
+
+            and will be rejected.
+
+            '
+          example: PASSPORT
+        number:
+          type: string
+          description: Document number.
+          example: A12345678
+        country:
+          $ref: '#/components/schemas/CountryCode'
+        issue_date:
+          type: string
+          format: date
+          description: Document issue date in YYYY-MM-DD format.
+          example: '2020-01-15'
+        expiry_date:
+          type: string
+          format: date
+          description: Document expiry date in YYYY-MM-DD format. Must not be expired.
+          example: '2030-01-15'
+        files:
+          type: array
+          description: One or more file URIs from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint. For NATIONAL_ID and DRIVERS_LICENSE, provide both FRONT and BACK.
+          minItems: 1
+          items:
+            type: object
+            required:
+            - uri
+            properties:
+              side:
+                type: string
+                enum:
+                - FRONT
+                - BACK
+                description: Required for NATIONAL_ID and DRIVERS_LICENSE. Optional for PASSPORT and RESIDENCE_PERMIT.
+                example: FRONT
+              uri:
+                type: string
+                description: File URI returned by the upload endpoint.
+                example: /AbAcQ4hn_0652746727637.pdf
+    V2IndividualAttachIdentifyingDocument:
+      type: object
+      required:
+      - type
+      - files
+      allOf:
+      - if:
+          properties:
+            type:
+              const: DRIVERS_LICENSE
+            country:
+              const: USA
+          required:
+          - type
+          - country
+        then:
+          required:
+          - state
+      properties:
+        type:
+          type: string
+          enum:
+          - PASSPORT
+          - NATIONAL_ID
+          - DRIVERS_LICENSE
+          - RESIDENCE_PERMIT
+          - SELFIE
+          description: Type of identity document. At most one non-SELFIE document may be included per request. A SELFIE entry carries only `type` and `files`; all other fields are ignored for SELFIE.
+          example: PASSPORT
+        number:
+          type: string
+          description: Document number. Required for all types except SELFIE.
+          example: A12345678
+        country:
+          $ref: '#/components/schemas/CountryCode'
+        state:
+          type: string
+          maxLength: 64
+          description: Document issuing state. Max 64 characters. Required when the type is DRIVERS_LICENSE and country is USA.
+          example: US-CA
+        issue_date:
+          type: string
+          format: date
+          description: Optional issue date in YYYY-MM-DD format. When provided together with expiry_date, expiry_date must be strictly later.
+          example: '2020-01-15'
+        expiry_date:
+          type: string
+          format: date
+          description: Expiry date in YYYY-MM-DD format. Required for all types except SELFIE. Must be in the future.
+          example: '2030-01-15'
+        files:
+          type: array
+          minItems: 1
+          description: File URIs from the [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint. PASSPORT and SELFIE take a single file; NATIONAL_ID, DRIVERS_LICENSE, and RESIDENCE_PERMIT require one FRONT and one BACK file. File URIs must be unique across the entire request (SELFIE files excluded).
+          items:
+            type: object
+            required:
+            - uri
+            properties:
+              side:
+                type: string
+                enum:
+                - FRONT
+                - BACK
+                description: Required for NATIONAL_ID, DRIVERS_LICENSE, and RESIDENCE_PERMIT. Optional for PASSPORT and SELFIE.
+                example: FRONT
+              uri:
+                type: string
+                description: File URI returned by the upload endpoint.
+                example: /AbAcQ4hn_0652746727637.pdf
     AttachDocumentToAssociatedPartyInput:
       type: object
       required:
@@ -5298,108 +5181,215 @@ components:
                 $ref: '#/components/schemas/ProofOfIdentity'
               proof_of_address:
                 $ref: '#/components/schemas/ProofOfAddressBusiness'
-    V2APBasicInfo:
+    V2IndividualAddressDocument:
       type: object
       required:
-      - first_name
-      - first_name_en
-      - last_name
-      - last_name_en
-      - dob
-      - email
-      - phone
-      - country_of_residence
-      - primary_nationality
-      - tax_info
+      - type
+      - country
+      - files
       properties:
-        first_name:
+        type:
           type: string
-          maxLength: 50
-          description: First name.
-          example: John
-        first_name_en:
-          type: string
-          description: English transliteration of first name. Required if name contains non-ASCII characters.
-          example: John
-        middle_name:
-          type: string
-          description: Middle name(s). Optional.
-          example: Michael
-        middle_name_en:
-          type: string
-          description: English transliteration of middle name. Optional.
-          example: Michael
-        last_name:
-          type: string
-          maxLength: 50
-          description: Last or family name.
-          example: Doe
-        last_name_en:
-          type: string
-          description: English transliteration of last name. Required if name contains non-ASCII characters.
-          example: Doe
-        dob:
+          enum:
+          - UTILITY_BILL
+          - GOVERNMENT_LETTER
+          - BANK_STATEMENT
+          description: Type of address proof document.
+          example: BANK_STATEMENT
+        country:
+          allOf:
+          - $ref: '#/components/schemas/CountryCode'
+          description: Country the address document was issued in. Must match the customer's country_of_residence.
+        issue_date:
           type: string
           format: date
-          description: Date of birth in YYYY-MM-DD format. Party must be at least 18 years old.
-          example: '1985-03-20'
+          description: Optional issue date in YYYY-MM-DD format.
+          example: '2024-06-15'
+        files:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: Exactly one file URI from the [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
+          items:
+            type: object
+            required:
+            - uri
+            properties:
+              side:
+                type: string
+                enum:
+                - FRONT
+                - BACK
+                description: Optional.
+                example: FRONT
+              uri:
+                type: string
+                description: File URI returned by the upload endpoint.
+                example: /XyZ123mn_0652746727639.pdf
+    IndividualCustomerDetail:
+      type: object
+      title: Individual
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: 56c41b8e-e650-4f55-94f6-26a888a9b64d
+        type:
+          type: string
+          enum:
+          - INDIVIDUAL
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
         email:
           type: string
           format: email
-          description: Personal email address. Must be unique across all associated parties in the same request.
-          example: john.doe@acmecorp.com
+          example: john.doe@fin.com
         phone:
           type: string
-          description: Personal phone number in E.164 format.
-          example: '+14155551234'
+          example: '+14724480512'
         country_of_residence:
-          $ref: '#/components/schemas/CountryCode'
-        primary_nationality:
-          $ref: '#/components/schemas/CountryCode'
-        secondary_nationality:
-          allOf:
-          - $ref: '#/components/schemas/CountryCode'
-          description: Secondary nationality for dual citizens. Optional.
-        tax_info:
+          type: string
+          example: USA
+        verification_type:
+          type: string
+          example: STANDARD
+        customer_status:
+          type: string
+          example: ON_HOLD
+        tos_policies_url:
+          type: string
+          format: uri
+          example: https://orchestration.fin.com/orchestration-customer-tos?customer_id=56c41b8e-e650-4f55-94f6-26a888a9b64d&tos_policies_value=e9414388-fbdf-4407-b5c2-bc39eae3645b
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-15T11:49:27Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-15T11:52:48Z'
+        last_status_updated_at:
+          type: string
+          format: date-time
+          example: '2026-04-15T11:52:48Z'
+        capabilities:
+          type: object
+          description: On-ramp and off-ramp capabilities for the customer
+          properties:
+            on_ramp:
+              type: array
+              items:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    example: USD
+                  status:
+                    type: boolean
+                    example: false
+                  methods:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - ACH
+                    - FEDWIRE
+                  reason:
+                    type: object
+                    properties:
+                      for_customer:
+                        type: string
+                        nullable: true
+                      for_developer:
+                        type: string
+                        nullable: true
+            off_ramp:
+              type: array
+              items:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    example: USD
+                  status:
+                    type: boolean
+                    example: false
+                  methods:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - BANK
+                  reason:
+                    type: object
+                    properties:
+                      for_customer:
+                        type: string
+                        nullable: true
+                      for_developer:
+                        type: string
+                        nullable: true
+                        example: Customer is under review
+        rejection_reason:
+          type: object
+          nullable: true
+          description: Populated when customer_status is REJECTED. Null otherwise.
+          example: null
+        request_for_information:
           type: array
-          description: Tax and identifying documents for this individual.  See all available individual tax ID document types at [Individual Tax ID documents](https://developer.fin.com/guides/compliance-and-regulatory/individual-tax-id-documents).
+          description: List of open requests for additional information. Empty when none are outstanding.
           items:
-            $ref: '#/components/schemas/V2IndividualIdentifyingDocument'
-    AttachDocumentsToBusinessCustomerV2Input:
+            type: object
+          example: []
+    V2SupportingDocumentItem:
       type: object
       required:
-      - tos_policies_value
+      - files
       properties:
-        formation_documents:
-          type: array
-          description: Documents proving the legal existence of the business (e.g., Certificate of Incorporation, Articles of Incorporation, Trust Agreement, Tax registration certificate).
-          items:
-            $ref: '#/components/schemas/V2FormationDocumentItem'
-        ownership_documents:
-          type: array
-          description: Documents proving who controls and owns the business (e.g., Shareholder Register, Org Chart, Power of Attorney, Directors Registry).
-          items:
-            $ref: '#/components/schemas/V2OwnershipDocumentItem'
-        supporting_documents:
-          type: array
-          description: Additional compliance and operational documents (e.g., Proof of Address, Proof of Source of Funds, AML Comfort Letter, Marketing Materials).
-          items:
-            $ref: '#/components/schemas/V2SupportingDocumentItem'
-        tos_policies_value:
+        type:
           type: string
-          description: Parsed from the tos_policies_value query parameter in the tos_policies_url returned by POST /v2/customers/business. Signifies the customer has accepted the Terms of Service.
-          example: f11e77c6-8dc0-4d4b-a3f2-ed84c8ccfc69
-  responses:
-    AuthenticationError:
-      description: Authentication failed due to invalid credentials
-      content:
-        application/json:
-          schema:
+          enum:
+          - SHAREHOLDER_REGISTER
+          - PROOF_OF_NATURE_OF_BUSINESS
+          - PROOF_OF_ENTITY_NAME_CHANGE
+          - CERT_OF_INCUMBENCY
+          - PROOF_OF_SOURCE_OF_FUNDS
+          - PROOF_OF_SOURCE_OF_WEALTH
+          - AML_COMFORT_LETTER
+          - MARKETING_MATERIALS
+          - TAX_EXEMPT_ENTITY_CONFIRMATION
+          - E_SIGNATURE_CERTIFICATE
+          - FLOW_OF_FUNDS
+          - PROOF_OF_NATURE_OF_BUSINESS_LICENSE
+          - PROOF_OF_NATURE_OF_BUSINESS_AML_POLICY
+          - EVIDENCE_OF_GOOD_STANDING
+          - PROOF_OF_ACCOUNT_PURPOSE
+          - PROOF_OF_ADDRESS
+          - OTHER
+          description: Supporting document type.
+          example: PROOF_OF_SOURCE_OF_FUNDS
+        description:
+          type: string
+          description: Optional human-readable description of this specific document.
+          example: Bank statements for the past 6 months
+        files:
+          type: array
+          description: One or more file URIs obtained from [Upload Document](https://developer.fin.com/api-reference/customers/upload-document) endpoint.
+          minItems: 1
+          items:
             type: object
+            required:
+            - uri
             properties:
-              message:
+              uri:
                 type: string
-                example: Authentication failed
+                description: File URI returned by the upload endpoint.
+                example: /AbAcQ4hn_0652746727639.pdf
+  responses:
     ValidationError:
       description: Failed due to a formatting error.
       content:
@@ -5427,6 +5417,16 @@ components:
               message:
                 type: string
                 example: Resource not found
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
   parameters:
     CurrentPageParam:
       name: current_page

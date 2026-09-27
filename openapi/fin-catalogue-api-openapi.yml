@@ -570,6 +570,33 @@ paths:
       operationId: getV1TransactionPurposes
       x-operation-id-source: derived
 components:
+  parameters:
+    CountryCodeParam:
+      name: country_code
+      in: path
+      description: ISO 3166-1 alpha-3 country code
+      required: true
+      schema:
+        $ref: '#/components/schemas/CountryCode'
+    CurrentPageParam:
+      name: current_page
+      in: query
+      description: The page number to retrieve
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of items to return per page
+      required: false
+      schema:
+        type: integer
+        default: 10
+        minimum: 1
+        maximum: 512
   schemas:
     Pagination:
       type: object
@@ -840,33 +867,6 @@ components:
       - ZMB
       - ZWE
       - ALA
-  parameters:
-    CountryCodeParam:
-      name: country_code
-      in: path
-      description: ISO 3166-1 alpha-3 country code
-      required: true
-      schema:
-        $ref: '#/components/schemas/CountryCode'
-    CurrentPageParam:
-      name: current_page
-      in: query
-      description: The page number to retrieve
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of items to return per page
-      required: false
-      schema:
-        type: integer
-        default: 10
-        minimum: 1
-        maximum: 512
   responses:
     AuthenticationError:
       description: Authentication failed due to invalid credentials

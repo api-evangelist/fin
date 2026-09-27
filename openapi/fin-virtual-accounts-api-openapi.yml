@@ -659,6 +659,16 @@ paths:
       x-operation-id-source: derived
 components:
   responses:
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource not found
     ValidationError:
       description: Failed due to a formatting error.
       content:
@@ -676,16 +686,6 @@ components:
                   type: object
                   additionalProperties:
                     type: string
-    NotFoundError:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Resource not found
     AuthenticationError:
       description: Authentication failed due to invalid credentials
       content:
@@ -696,6 +696,26 @@ components:
               message:
                 type: string
                 example: Authentication failed
+  parameters:
+    CurrentPageParam:
+      name: current_page
+      in: query
+      description: The page number to retrieve
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+    PerPageParam:
+      name: per_page
+      in: query
+      description: Number of items to return per page
+      required: false
+      schema:
+        type: integer
+        default: 10
+        minimum: 1
+        maximum: 512
   schemas:
     VirtualAccount:
       type: object
@@ -778,26 +798,6 @@ components:
             address:
               type: string
               example: '0x7f1568190e318da16a9ef5a46cba19d5b97d9b29'
-  parameters:
-    CurrentPageParam:
-      name: current_page
-      in: query
-      description: The page number to retrieve
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
-    PerPageParam:
-      name: per_page
-      in: query
-      description: Number of items to return per page
-      required: false
-      schema:
-        type: integer
-        default: 10
-        minimum: 1
-        maximum: 512
   securitySchemes:
     bearerAuth:
       type: http

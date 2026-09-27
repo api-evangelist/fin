@@ -1775,7 +1775,27 @@ paths:
                         type: string
                         example: An unexpected error occurred while processing your request
 components:
+  parameters:
+    CurrentPageParam:
+      name: current_page
+      in: query
+      description: The page number to retrieve
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
   responses:
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource not found
     ValidationError:
       description: Failed due to a formatting error.
       content:
@@ -1793,16 +1813,6 @@ components:
                   type: object
                   additionalProperties:
                     type: string
-    NotFoundError:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Resource not found
     AuthenticationError:
       description: Authentication failed due to invalid credentials
       content:
@@ -1813,16 +1823,6 @@ components:
               message:
                 type: string
                 example: Authentication failed
-  parameters:
-    CurrentPageParam:
-      name: current_page
-      in: query
-      description: The page number to retrieve
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
   securitySchemes:
     bearerAuth:
       type: http

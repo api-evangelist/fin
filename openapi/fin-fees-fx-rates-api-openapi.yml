@@ -178,17 +178,6 @@ paths:
       operationId: postV1FeeCalculation
       x-operation-id-source: derived
 components:
-  responses:
-    AuthenticationError:
-      description: Authentication failed due to invalid credentials
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Authentication failed
   schemas:
     CountryCode:
       type: string
@@ -444,6 +433,17 @@ components:
       - ZMB
       - ZWE
       - ALA
+  responses:
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
   securitySchemes:
     bearerAuth:
       type: http
