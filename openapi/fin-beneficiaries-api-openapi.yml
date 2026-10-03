@@ -1856,6 +1856,16 @@ components:
               message:
                 type: string
                 example: Resource not found
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
     ValidationError:
       description: Failed due to a formatting error.
       content:
@@ -1873,16 +1883,6 @@ components:
                   type: object
                   additionalProperties:
                     type: string
-    AuthenticationError:
-      description: Authentication failed due to invalid credentials
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Authentication failed
   securitySchemes:
     bearerAuth:
       type: http
