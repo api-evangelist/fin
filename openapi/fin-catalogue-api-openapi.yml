@@ -840,27 +840,7 @@ components:
       - ZMB
       - ZWE
       - ALA
-  responses:
-    AuthenticationError:
-      description: Authentication failed due to invalid credentials
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Authentication failed
   parameters:
-    CurrentPageParam:
-      name: current_page
-      in: query
-      description: The page number to retrieve
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
     PerPageParam:
       name: per_page
       in: query
@@ -878,6 +858,26 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/CountryCode'
+    CurrentPageParam:
+      name: current_page
+      in: query
+      description: The page number to retrieve
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+  responses:
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
   securitySchemes:
     bearerAuth:
       type: http

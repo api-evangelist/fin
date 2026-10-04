@@ -1775,17 +1775,24 @@ paths:
                         type: string
                         example: An unexpected error occurred while processing your request
 components:
-  parameters:
-    CurrentPageParam:
-      name: current_page
-      in: query
-      description: The page number to retrieve
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
   responses:
+    ValidationError:
+      description: Failed due to a formatting error.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  additionalProperties:
+                    type: string
     NotFoundError:
       description: Resource not found
       content:
@@ -1806,23 +1813,16 @@ components:
               message:
                 type: string
                 example: Authentication failed
-    ValidationError:
-      description: Failed due to a formatting error.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-            - message
-            properties:
-              message:
-                type: string
-              errors:
-                type: array
-                items:
-                  type: object
-                  additionalProperties:
-                    type: string
+  parameters:
+    CurrentPageParam:
+      name: current_page
+      in: query
+      description: The page number to retrieve
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
   securitySchemes:
     bearerAuth:
       type: http

@@ -1846,6 +1846,23 @@ paths:
       x-operation-id-source: derived
 components:
   responses:
+    ValidationError:
+      description: Failed due to a formatting error.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  additionalProperties:
+                    type: string
     NotFoundError:
       description: Resource not found
       content:
@@ -1866,23 +1883,6 @@ components:
               message:
                 type: string
                 example: Authentication failed
-    ValidationError:
-      description: Failed due to a formatting error.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-            - message
-            properties:
-              message:
-                type: string
-              errors:
-                type: array
-                items:
-                  type: object
-                  additionalProperties:
-                    type: string
   securitySchemes:
     bearerAuth:
       type: http
