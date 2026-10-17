@@ -1793,16 +1793,6 @@ components:
                   type: object
                   additionalProperties:
                     type: string
-    NotFoundError:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Resource not found
     AuthenticationError:
       description: Authentication failed due to invalid credentials
       content:
@@ -1813,6 +1803,16 @@ components:
               message:
                 type: string
                 example: Authentication failed
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Resource not found
   parameters:
     CurrentPageParam:
       name: current_page

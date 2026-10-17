@@ -570,6 +570,17 @@ paths:
       operationId: getV1TransactionPurposes
       x-operation-id-source: derived
 components:
+  responses:
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Authentication failed
   schemas:
     Pagination:
       type: object
@@ -841,6 +852,15 @@ components:
       - ZWE
       - ALA
   parameters:
+    CurrentPageParam:
+      name: current_page
+      in: query
+      description: The page number to retrieve
+      required: false
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
     PerPageParam:
       name: per_page
       in: query
@@ -858,26 +878,6 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/CountryCode'
-    CurrentPageParam:
-      name: current_page
-      in: query
-      description: The page number to retrieve
-      required: false
-      schema:
-        type: integer
-        default: 1
-        minimum: 1
-  responses:
-    AuthenticationError:
-      description: Authentication failed due to invalid credentials
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Authentication failed
   securitySchemes:
     bearerAuth:
       type: http

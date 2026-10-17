@@ -1280,157 +1280,6 @@ webhooks:
           description: Webhook received successfully
 components:
   schemas:
-    IndividualCustomerData:
-      type: object
-      properties:
-        customer_id:
-          type: string
-          format: uuid
-          example: c3309534-1517-4d15-b244-be8f943c3823
-        type:
-          type: string
-          enum:
-          - INDIVIDUAL
-        customer_status:
-          type: string
-          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
-          enum:
-          - INCOMPLETE
-          - QUEUED
-          - PROCESSING
-          - REVIEWING
-          - APPROVED
-          - ON_HOLD
-          - IN_COMPLIANCE
-          - REINITIATE
-          - ACTION_REQUIRED
-          - REJECTED
-          example: INCOMPLETE
-        email:
-          type: string
-          format: email
-          example: john.doe@email.com
-        first_name:
-          type: string
-          example: John
-        last_name:
-          type: string
-          example: Doe
-        phone:
-          type: string
-          example: '+12597751234'
-        country_of_residence:
-          type: string
-          example: USA
-        verification_type:
-          type: string
-          enum:
-          - RELIANCE
-          - STANDARD
-          example: STANDARD
-        tos_policies_url:
-          type: string
-          example: 25764ef6-0f4f-4846-b7c6-9df0598358e9
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-    BusinessCustomerData:
-      type: object
-      properties:
-        customer_id:
-          type: string
-          format: uuid
-          example: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
-        type:
-          type: string
-          enum:
-          - BUSINESS
-        customer_status:
-          type: string
-          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ASSOCIATED_PARTIES_REMAINING, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ASSOCIATED_PARTIES_REMAINING, IN_COMPLIANCE, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
-          enum:
-          - INCOMPLETE
-          - QUEUED
-          - PROCESSING
-          - REVIEWING
-          - APPROVED
-          - ASSOCIATED_PARTIES_REMAINING
-          - ON_HOLD
-          - IN_COMPLIANCE
-          - REINITIATE
-          - ACTION_REQUIRED
-          - REJECTED
-          example: INCOMPLETE
-        business_name:
-          type: string
-          example: Fin.com
-        email:
-          type: string
-          format: email
-          example: m@tech.com
-        phone:
-          type: string
-          example: '+8801529876543'
-        country_of_incorporation:
-          type: string
-          example: BGD
-        verification_type:
-          type: string
-          enum:
-          - RELIANCE
-          - STANDARD
-          example: RELIANCE
-        tos_policies_url:
-          type: string
-        associated_parties:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              email:
-                type: string
-                format: email
-              type:
-                type: string
-                enum:
-                - INDIVIDUAL
-              ownership_percent:
-                type: number
-                example: 52
-              verification:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum:
-                    - INITIATED
-                    - REVIEWING
-                    - APPROVED
-                    - REJECTED
-                  updated_at:
-                    type: string
-                    format: date-time
-                  reason:
-                    type: object
-                    properties:
-                      for_customer:
-                        type: string
-                        nullable: true
-                      for_developer:
-                        type: string
-                        nullable: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
     VirtualAccountWebhookData:
       type: object
       properties:
@@ -1533,6 +1382,100 @@ components:
           - INACTIVE
           - REJECTED
           example: ACTIVE
+    BusinessCustomerData:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
+        type:
+          type: string
+          enum:
+          - BUSINESS
+        customer_status:
+          type: string
+          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ASSOCIATED_PARTIES_REMAINING, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ASSOCIATED_PARTIES_REMAINING, IN_COMPLIANCE, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
+          enum:
+          - INCOMPLETE
+          - QUEUED
+          - PROCESSING
+          - REVIEWING
+          - APPROVED
+          - ASSOCIATED_PARTIES_REMAINING
+          - ON_HOLD
+          - IN_COMPLIANCE
+          - REINITIATE
+          - ACTION_REQUIRED
+          - REJECTED
+          example: INCOMPLETE
+        business_name:
+          type: string
+          example: Fin.com
+        email:
+          type: string
+          format: email
+          example: m@tech.com
+        phone:
+          type: string
+          example: '+8801529876543'
+        country_of_incorporation:
+          type: string
+          example: BGD
+        verification_type:
+          type: string
+          enum:
+          - RELIANCE
+          - STANDARD
+          example: RELIANCE
+        tos_policies_url:
+          type: string
+        associated_parties:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+                format: email
+              type:
+                type: string
+                enum:
+                - INDIVIDUAL
+              ownership_percent:
+                type: number
+                example: 52
+              verification:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - INITIATED
+                    - REVIEWING
+                    - APPROVED
+                    - REJECTED
+                  updated_at:
+                    type: string
+                    format: date-time
+                  reason:
+                    type: object
+                    properties:
+                      for_customer:
+                        type: string
+                        nullable: true
+                      for_developer:
+                        type: string
+                        nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
     WebhookEventEnvelope:
       type: object
       required:
@@ -1665,6 +1608,63 @@ components:
         developer_fee_percent:
           type: number
           example: 0
+    IndividualCustomerData:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          example: c3309534-1517-4d15-b244-be8f943c3823
+        type:
+          type: string
+          enum:
+          - INDIVIDUAL
+        customer_status:
+          type: string
+          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
+          enum:
+          - INCOMPLETE
+          - QUEUED
+          - PROCESSING
+          - REVIEWING
+          - APPROVED
+          - ON_HOLD
+          - IN_COMPLIANCE
+          - REINITIATE
+          - ACTION_REQUIRED
+          - REJECTED
+          example: INCOMPLETE
+        email:
+          type: string
+          format: email
+          example: john.doe@email.com
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        phone:
+          type: string
+          example: '+12597751234'
+        country_of_residence:
+          type: string
+          example: USA
+        verification_type:
+          type: string
+          enum:
+          - RELIANCE
+          - STANDARD
+          example: STANDARD
+        tos_policies_url:
+          type: string
+          example: 25764ef6-0f4f-4846-b7c6-9df0598358e9
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
   securitySchemes:
     bearerAuth:
       type: http
