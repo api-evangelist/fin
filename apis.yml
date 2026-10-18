@@ -63,6 +63,16 @@ tags:
 - Money Movement
 - Foreign Exchange
 - Virtual Accounts
+- Cryptocurrency
+tags_raw:
+- Company
+- Payments
+- Cross-Border Payments
+- Stablecoins
+- Fintech
+- Money Movement
+- Foreign Exchange
+- Virtual Accounts
 - Crypto
 apis:
 - aid: fin:fin-authentication-api
