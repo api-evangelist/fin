@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Fin.com Balances API
   version: 1.0.0
-  description: A simple API specificationFo
+  description: A simple API specification
 servers:
 - url: https://sandbox.api.fin.com
   description: Sandbox server
@@ -39,6 +39,7 @@ paths:
                           type: string
                           enum:
                           - USD
+                          description: Currency code
                           example: USD
                         amount:
                           type: integer
@@ -59,10 +60,11 @@ components:
             properties:
               message:
                 type: string
+                description: The error message
                 example: Authentication failed
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint
+      description: Bearer token authentication. Obtain token from /v1/oauth/token endpoint

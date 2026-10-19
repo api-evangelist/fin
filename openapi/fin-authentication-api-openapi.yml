@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Fin.com Authentication API
   version: 1.0.0
-  description: A simple API specificationFo
+  description: A simple API specification
 servers:
 - url: https://sandbox.api.fin.com
   description: Sandbox server
@@ -53,7 +53,7 @@ paths:
   /v1/oauth/refresh-token:
     post:
       summary: Refresh a Token
-      description: Generate a new token pair based on a refresh token.
+      description: Generate a new token pair based from a refresh token.
       x-mint:
         content: "Exchanges a `refresh_token` received from the [Issue Token](/api-reference/authentication/issue-a-token) endpoint for a new\npair of `access_token` and `refresh_token`\n\n<Note>\n  The TTLs returned from this API are actually the time\n  that the the token will expire; i.e. not validity in number of seconds\n  since creation.\n</Note>\n\n<Note>\n  The timestamps, i.e. TTLs returned from this endpoint are NOT\n  in ISO 8601 format. Rather it is in the format \n  `YYYY-MM-DD HH:MM:SS+00`\n</Note>\n"
       tags:
@@ -69,7 +69,7 @@ paths:
               properties:
                 refresh_token:
                   type: string
-                  description: The refresh_token received from the [Issue a token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint.
+                  description: The refresh_token received from the `/v1/oauth/token` endpoint.
       responses:
         '200':
           description: Token issued successfully
@@ -90,23 +90,39 @@ components:
       properties:
         access_token:
           type: string
+          description: The access token for API authentication
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         access_token_ttl:
           type: string
           format: date-time
+          description: Access token expiration timestamp
           example: '2025-12-28 10:34:45+00'
         refresh_token:
           type: string
+          description: The refresh token for obtaining new access tokens
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         refresh_token_ttl:
           type: string
           format: date-time
+          description: Refresh token expiration timestamp
           example: '2025-12-28 10:34:45+00'
         current_time:
           type: string
           format: date-time
+          description: Current server timestamp
           example: '2025-12-21 10:34:45+00'
   responses:
+    AuthenticationError:
+      description: Authentication failed due to invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The error message
+                example: Authentication failed
     ValidationError:
       description: Failed due to a formatting error.
       content:
@@ -118,25 +134,17 @@ components:
             properties:
               message:
                 type: string
+                description: An error message describing what went wrong.
               errors:
                 type: array
                 items:
                   type: object
                   additionalProperties:
                     type: string
-    AuthenticationError:
-      description: Authentication failed due to invalid credentials
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Authentication failed
+                    example: Appropriate client_secret required.
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint
+      description: Bearer token authentication. Obtain token from /v1/oauth/token endpoint

@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Fin.com Webhooks API
+  title: Fin Webhooks API
   version: 1.0.0
-  description: A simple API specificationFo
+  description: 'Operations tagged Webhooks across 2 of this provider''s published API definitions: fin-openapi.yml, fin-webhooks-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://sandbox.api.fin.com
   description: Sandbox server
@@ -12,6 +12,519 @@ tags:
 - name: Webhooks
 paths: {}
 webhooks:
+  customer.created:
+    post:
+      summary: Customer Created
+      description: This webhook event is triggered when a customer is successfully created. The event supports both `INDIVIDUAL` and `BUSINESS` customer types. For business customers, the payload includes associated parties with their ownership percentages and verification status.
+      x-mint:
+        metadata:
+          title: customer.created
+        content: "<Note>\n  **Security:** All webhook requests include HMAC signatures for verification. \n  Learn how to [verify webhook signatures](/guides/webhooks/verifying-webhooks) to ensure requests are authentic.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreatedWebhook'
+            examples:
+              individualCreated:
+                summary: Individual Customer Created
+                value:
+                  event:
+                    id: 60bef15c-4e30-4eb4-bc4d-aa697a7e0857
+                    event_reference_id: c3309534-1517-4d15-b244-be8f943c3823
+                    type: customer.created
+                    created_at: '2025-11-30T07:40:06.853938Z'
+                    sandbox_mode: true
+                  data:
+                    country_of_residence: USA
+                    created_at: '2025-11-30T07:40:06Z'
+                    customer_id: c3309534-1517-4d15-b244-be8f943c3823
+                    customer_status: INCOMPLETE
+                    email: john.doe@email.com
+                    first_name: John
+                    last_name: Doe
+                    phone: '+12597751234'
+                    tos_policies_url: 25764ef6-0f4f-4846-b7c6-9df0598358e9
+                    type: INDIVIDUAL
+                    updated_at: '2025-11-30T07:40:07Z'
+                    verification_type: RELIANCE
+              businessCreated:
+                summary: Business Customer Created
+                value:
+                  event:
+                    id: d2a592e4-5703-46aa-b1ac-fa1fa6359abf
+                    event_reference_id: b222b827-3ac7-4d20-bfd0-ebedc44435f7
+                    type: customer.created
+                    created_at: '2025-11-30T08:01:03.819938Z'
+                    sandbox_mode: true
+                  data:
+                    associated_parties:
+                    - email: john.doe@email.com
+                      id: 07365877-f98f-4efa-acef-b15932fc3415
+                      ownership_percent: 52
+                      type: INDIVIDUAL
+                      verification:
+                        reason:
+                          for_customer: null
+                          for_developer: null
+                        status: INITIATED
+                        updated_at: '2025-11-30T08:01:02.824452053Z'
+                    business_name: Acme Corp
+                    country_of_incorporation: USA
+                    created_at: '2025-11-30T08:01:03Z'
+                    customer_id: b222b827-3ac7-4d20-bfd0-ebedc44435f7
+                    customer_status: INCOMPLETE
+                    email: contact@acmecorp.com
+                    phone: '+12125550123'
+                    tos_policies_url: 7e5bdf95-8dea-44d1-8810-987befbe2594
+                    type: BUSINESS
+                    updated_at: '2025-11-30T08:01:03.797370576Z'
+                    verification_type: RELIANCE
+      responses:
+        '200':
+          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
+  customer.status:
+    post:
+      summary: Customer Status
+      description: This webhook is triggered when a customer's status changes during the verification process. The event captures transitions between different customer states such as `REVIEWING`, `APPROVED`, `ASSOCIATED_PARTIES_REMAINING`, `ON_HOLD`, and others. This allows you to track the progression of customer verification and take appropriate actions based on status changes.
+      x-mint:
+        metadata:
+          title: customer.status
+        content: "<Note>\n  **Security:** All webhook requests include HMAC signatures for verification. \n  Learn how to [verify webhook signatures](/guides/webhooks/verifying-webhooks) to ensure requests are authentic.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerStatusWebhook'
+            examples:
+              individualReviewing:
+                summary: Individual Customer Reviewing
+                value:
+                  event:
+                    id: d9851714-d65d-40c2-9bdb-917a2e053547
+                    event_reference_id: efb54adf-b7f4-4716-80e3-806e11f20b7b
+                    type: customer.status
+                    created_at: '2025-12-10T10:30:20.591753Z'
+                    sandbox_mode: true
+                  data:
+                    country_of_residence: CAN
+                    created_at: '0001-01-01T00:00:00Z'
+                    customer_id: efb54adf-b7f4-4716-80e3-806e11f20b7b
+                    customer_status: REVIEWING
+                    email: jane.doe@email.com
+                    first_name: Jane
+                    last_name: Doe
+                    phone: '+14161234545'
+                    tos_policies_url: ffa0d3f3-1db7-44b1-b676-254369086d98
+                    type: INDIVIDUAL
+                    updated_at: '0001-01-01T00:00:00Z'
+                    verification_type: STANDARD
+              individualApproved:
+                summary: Individual Customer Approved
+                value:
+                  event:
+                    id: ea7e6e62-2cf6-4bd9-827e-b3fdfd0449c6
+                    event_reference_id: efb54adf-b7f4-4716-80e3-806e11f20b7b
+                    type: customer.status
+                    created_at: '2025-12-10T10:30:20.83229Z'
+                    sandbox_mode: true
+                  data:
+                    country_of_residence: CAN
+                    created_at: '0001-01-01T00:00:00Z'
+                    customer_id: efb54adf-b7f4-4716-80e3-806e11f20b7b
+                    customer_status: APPROVED
+                    email: jane.doe@email.com
+                    first_name: Jane
+                    last_name: Doe
+                    phone: '+14161234545'
+                    tos_policies_url: ffa0d3f3-1db7-44b1-b676-254369086d98
+                    type: INDIVIDUAL
+                    updated_at: '0001-01-01T00:00:00Z'
+                    verification_type: STANDARD
+              businessOnHold:
+                summary: Business Customer On Hold
+                value:
+                  event:
+                    id: 0deacdde-cd58-42ea-8a1c-dde8668a92e4
+                    event_reference_id: 98665e7d-7736-4762-a57a-cc1e6706302f
+                    type: customer.status
+                    created_at: '2025-12-10T10:32:59.434557Z'
+                    sandbox_mode: true
+                  data:
+                    business_name: Acme Corp
+                    country_of_incorporation: BGD
+                    created_at: '0001-01-01T00:00:00Z'
+                    customer_id: 98665e7d-7736-4762-a57a-cc1e6706302f
+                    customer_status: ON_HOLD
+                    email: contact@acmecorp.com
+                    phone: '+8801912200000'
+                    tos_policies_url: 3cda07a1-2b47-4274-927a-cc840eaadd05
+                    type: BUSINESS
+                    updated_at: '0001-01-01T00:00:00Z'
+                    verification_type: STANDARD
+      responses:
+        '200':
+          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
+  transaction.status:
+    post:
+      summary: Transaction Status
+      description: 'This webhook event is triggered when a transaction''s status changes. It provides real-time updates as transactions progress through different stages, including when funds are received, when processing begins, and if a transaction fails.
+
+
+        Common status values include:
+
+        - `FUNDS_RECEIVED` - Initial funds have been received from the sender
+
+        - `PROCESSING` - Transaction is being processed
+
+        - `COMPLETED` - Transaction has completed successfully
+
+        - `FAILED` - Transaction has failed and will not complete'
+      x-mint:
+        metadata:
+          title: transaction.status
+        content: "<Note>\n  **Security:** All webhook requests include HMAC signatures for verification. \n  Learn how to [verify webhook signatures](/guides/webhooks/verifying-webhooks) to ensure requests are authentic.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionStatusWebhook'
+            examples:
+              fundsReceived:
+                summary: Funds Received
+                value:
+                  event:
+                    id: 2632ebb1-55ab-470a-9b24-accdb50aeb75
+                    event_reference_id: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
+                    type: transaction.status
+                    created_at: '2025-12-01T09:14:34.651913Z'
+                    sandbox_mode: true
+                  data:
+                    beneficiary_id: 47fcb2ca-9ed2-4188-a154-c83a04d9d34d
+                    created_at: '2025-12-01T09:14:34.623187982Z'
+                    developer_fee: 1.7836
+                    developer_fee_fixed: 1.75
+                    developer_fee_percentage: 0.56
+                    from_amount: 6
+                    from_currency: USDC
+                    fx_rate: 1.3177
+                    hash: '0x3a282c0d2364632bdf9224eadf06b463190795bce24e46d3235e44d22f953461'
+                    id: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
+                    payout_amount: 5.55595028
+                    payout_currency: CAD
+                    processing_amount: 4.2164
+                    status: FUNDS_RECEIVED
+                    transaction_ref_id: c494ac07-becd-4840-9
+                    transaction_type: DEBIT
+                    updated_at: '2025-12-01T09:14:34.623187982Z'
+              processing:
+                summary: Transaction Processing
+                value:
+                  event:
+                    id: 4dd8d1c2-6506-4d63-8475-aa9d72f25122
+                    event_reference_id: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
+                    type: transaction.status
+                    created_at: '2025-12-01T09:14:47.165456Z'
+                    sandbox_mode: true
+                  data:
+                    beneficiary_id: 47fcb2ca-9ed2-4188-a154-c83a04d9d34d
+                    created_at: '2025-12-01T09:14:34.623187Z'
+                    developer_fee: 1.7836
+                    developer_fee_fixed: 1.75
+                    developer_fee_percentage: 0.56
+                    from_amount: 6
+                    from_currency: USDC
+                    fx_rate: 1.3177
+                    hash: '0x3a282c0d2364632bdf9224eadf06b463190795bce24e46d3235e44d22f953461'
+                    id: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
+                    payout_amount: 5.55595
+                    payout_currency: CAD
+                    processing_amount: 4.2164
+                    status: PROCESSING
+                    transaction_ref_id: c494ac07-becd-4840-9
+                    transaction_type: DEBIT
+                    updated_at: '2025-12-01T09:14:47.157863088Z'
+              failed:
+                summary: Transaction Failed
+                value:
+                  event:
+                    id: 89787b87-bc27-43ac-a21d-da2606ac0a49
+                    event_reference_id: 8a355a70-e17f-4ce7-a3e9-7d1a424dd284
+                    type: transaction.status
+                    created_at: '2025-12-10T10:48:06.308805Z'
+                    sandbox_mode: true
+                  data:
+                    beneficiary_id: dd2ca7e8-d321-4a5f-b5f8-ddcb4d979434
+                    created_at: '2025-12-10T10:47:59.315118Z'
+                    developer_fee: 1.2725
+                    developer_fee_fixed: 1.25
+                    developer_fee_percentage: 0.45
+                    from_amount: 5
+                    from_currency: USDC
+                    fx_rate: 1.45
+                    hash: '0x594892ea29ee750db107fc3ce52ccd1c34e8b6d6b4246da3f0921b58bfc1b859'
+                    id: 8a355a70-e17f-4ce7-a3e9-7d1a424dd284
+                    payout_amount: 5.404875
+                    payout_currency: AUD
+                    processing_amount: 3.7275
+                    status: FAILED
+                    transaction_ref_id: 8f956be1-38d8-4d72-9ed6-2927b0fe7e17
+                    transaction_type: DEBIT
+                    updated_at: '2025-12-10T10:48:06.300135576Z'
+      responses:
+        '200':
+          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
+  virtual_account.created:
+    post:
+      summary: Virtual Account Created
+      description: This webhook event is triggered when a new virtual account is created for a customer. It provides comprehensive details about the virtual account, including deposit instructions (bank account details, routing numbers, supported payment rails), the destination blockchain address for converted funds, and the developer fee configuration.
+      x-mint:
+        metadata:
+          title: virtual_account.created
+        content: "<Note>\n  **Security:** All webhook requests include HMAC signatures for verification. \n  Learn how to [verify webhook signatures](/guides/webhooks/verifying-webhooks) to ensure requests are authentic.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualAccountCreatedWebhook'
+            examples:
+              created:
+                summary: Virtual Account Created
+                value:
+                  event:
+                    id: 3fb02b56-911e-42c0-843c-c08785bdde56
+                    event_reference_id: 900f750d-6868-457e-a777-1a35566a6b5f
+                    type: virtual_account.created
+                    created_at: '2025-12-10T08:11:25.269644Z'
+                    sandbox_mode: true
+                  data:
+                    created_at: '2025-12-10T08:11:25.216572Z'
+                    customer_id: a41a6d76-4545-47ab-93d1-696a3221d39c
+                    deposit_instructions:
+                      bank_account_number: '900937198167'
+                      bank_address: 1800 North Pole St., Orlando, FL 32801
+                      bank_beneficiary_address: 250 Innovation Way, Houston, TX 77002, US
+                      bank_beneficiary_name: Acme Corp
+                      bank_name: Bank of Nowhere
+                      bank_routing_number: '101019644'
+                      currency: USD
+                      payment_rails:
+                      - ACH
+                      - FEDWIRE
+                    destination:
+                      address: '0x1d1f9801d6d98e49438cda3a3b8e0c9f5e6f8c44'
+                      currency: USDC
+                      destination_chain: POLYGON
+                    developer_fee_percent: 0.5
+                    id: 900f750d-6868-457e-a777-1a35566a6b5f
+                    status: ACTIVE
+                    updated_at: '2025-12-10T08:11:25.216572Z'
+      responses:
+        '200':
+          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
+  virtual_account.status:
+    post:
+      summary: Virtual Account Status
+      description: 'This webhook event is triggered when a virtual account''s status changes. It provides real-time updates about the virtual account''s operational state.
+
+
+        Common status values include:
+
+        - `ACTIVE` - Virtual account is active and ready to receive deposits
+
+        - `INACTIVE` - Virtual account is not currently active
+
+        - `SUSPENDED` - Virtual account has been suspended'
+      x-mint:
+        metadata:
+          title: virtual_account.status
+        content: "<Note>\n  **Security:** All webhook requests include HMAC signatures for verification. \n  Learn how to [verify webhook signatures](/guides/webhooks/verifying-webhooks) to ensure requests are authentic.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualAccountStatusWebhook'
+            examples:
+              active:
+                summary: Virtual Account Active
+                value:
+                  event:
+                    id: 756ed2cd-b428-4c14-90b2-4f012dfe318a
+                    event_reference_id: 900f750d-6868-457e-a777-1a35566a6b5f
+                    type: virtual_account.status
+                    created_at: '2025-12-10T08:14:19.048063Z'
+                    sandbox_mode: true
+                  data:
+                    created_at: '2025-12-10T08:11:25.216572Z'
+                    customer_id: a41a6d76-4545-47ab-93d1-696a3221d39c
+                    deposit_instructions:
+                      bank_account_number: '900937198167'
+                      bank_address: 1800 North Pole St., Orlando, FL 32801
+                      bank_beneficiary_address: 250 Innovation Way, Houston, TX 77002, US
+                      bank_beneficiary_name: Acme Corp
+                      bank_name: Bank of Nowhere
+                      bank_routing_number: '101019644'
+                      currency: USD
+                      payment_rails:
+                      - ACH
+                      - FEDWIRE
+                    destination:
+                      address: '0x1d1f9801d6d98e49438cda3a3b8e0c9f5e6f8c44'
+                      currency: USDC
+                      destination_chain: POLYGON
+                    developer_fee_percent: 1.89
+                    id: 900f750d-6868-457e-a777-1a35566a6b5f
+                    status: ACTIVE
+                    updated_at: '2025-12-10T08:14:19.017554854Z'
+      responses:
+        '200':
+          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
+  beneficiary.created:
+    post:
+      summary: Beneficiary Created
+      description: This webhook event is triggered when a new beneficiary is created in the system. It provides information about the newly created beneficiary, including the beneficiary ID, associated customer ID, and the beneficiary type (`INDIVIDUAL` or `BUSINESS`).
+      x-mint:
+        metadata:
+          title: beneficiary.created
+        content: "<Note>\n  **Security:** All webhook requests include HMAC signatures for verification. \n  Learn how to [verify webhook signatures](/guides/webhooks/verifying-webhooks) to ensure requests are authentic.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BeneficiaryCreatedWebhook'
+            examples:
+              individualCreated:
+                summary: Individual Beneficiary Created
+                value:
+                  event:
+                    id: 85804b3a-bf18-4d87-94f3-f7c45e66868e
+                    event_reference_id: 4d715f20-f704-45e0-af56-19ade318e852
+                    type: beneficiary.created
+                    created_at: '2025-12-10T10:36:18.279837Z'
+                    sandbox_mode: true
+                  data:
+                    active: true
+                    beneficiary_id: 4d715f20-f704-45e0-af56-19ade318e852
+                    customer_id: efb54adf-b7f4-4716-80e3-806e11f20b7b
+                    type: INDIVIDUAL
+              businessCreated:
+                summary: Business Beneficiary Created
+                value:
+                  event:
+                    id: 22044316-e639-4638-b5d4-e23944875f44
+                    event_reference_id: e7656cc6-1a74-474f-9c9c-b502c10940e0
+                    type: beneficiary.created
+                    created_at: '2025-12-10T08:30:31.264069Z'
+                    sandbox_mode: true
+                  data:
+                    active: true
+                    beneficiary_id: e7656cc6-1a74-474f-9c9c-b502c10940e0
+                    customer_id: bea5a6c1-0611-44c6-8c29-a6608e76916c
+                    type: BUSINESS
+      responses:
+        '200':
+          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
+  beneficiary.status:
+    post:
+      summary: Beneficiary Status
+      description: This webhook event is triggered when a beneficiary's status changes. It provides updates on the active status of beneficiaries, allowing you to track when beneficiaries become active or inactive.
+      x-mint:
+        metadata:
+          title: beneficiary.status
+        content: "<Note>\n  **Security:** All webhook requests include HMAC signatures for verification. \n  Learn how to [verify webhook signatures](/guides/webhooks/verifying-webhooks) to ensure requests are authentic.\n</Note>\n"
+      tags:
+      - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BeneficiaryStatusWebhook'
+            examples:
+              individualActive:
+                summary: Individual Beneficiary Active
+                value:
+                  event:
+                    id: 4f6e1c26-f4eb-460d-8aa4-067cebffc567
+                    event_reference_id: 4d715f20-f704-45e0-af56-19ade318e852
+                    type: beneficiary.status
+                    created_at: '2025-12-10T10:36:19.055159Z'
+                    sandbox_mode: true
+                  data:
+                    active: true
+                    beneficiary_id: 4d715f20-f704-45e0-af56-19ade318e852
+                    customer_id: efb54adf-b7f4-4716-80e3-806e11f20b7b
+                    type: INDIVIDUAL
+              businessActive:
+                summary: Business Beneficiary Active
+                value:
+                  event:
+                    id: cc5587a6-a382-4ff5-b21f-99658e4df65c
+                    event_reference_id: e7656cc6-1a74-474f-9c9c-b502c10940e0
+                    type: beneficiary.status
+                    created_at: '2025-12-10T08:30:31.959181Z'
+                    sandbox_mode: true
+                  data:
+                    active: true
+                    beneficiary_id: e7656cc6-1a74-474f-9c9c-b502c10940e0
+                    customer_id: bea5a6c1-0611-44c6-8c29-a6608e76916c
+                    type: BUSINESS
+      responses:
+        '200':
+          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
   transit.payment.status:
     post:
       summary: Transit Payment Status
@@ -242,223 +755,11 @@ webhooks:
       responses:
         '200':
           description: Webhook received successfully
-  customer.created:
-    post:
-      summary: Customer Created
-      description: Triggered when a customer is successfully created.
-      x-mint:
-        metadata:
-          title: customer.created
-        content: "Triggered when a customer is successfully created. Supports both `INDIVIDUAL` and `BUSINESS` customer types.\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n  Learn how to [verify webhook signatures](/guides/webhooks/verifying-webhooks).\n</Note>\n"
-      tags:
-      - Webhooks
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                event:
-                  $ref: '#/components/schemas/WebhookEventEnvelope'
-                data:
-                  oneOf:
-                  - $ref: '#/components/schemas/IndividualCustomerData'
-                  - $ref: '#/components/schemas/BusinessCustomerData'
-            examples:
-              individualCreated:
-                summary: Individual Customer Created
-                value:
-                  event:
-                    id: 60bef15c-4e30-4eb4-bc4d-aa697a7e0857
-                    event_reference_id: c3309534-1517-4d15-b244-be8f943c3823
-                    type: customer.created
-                    created_at: '2025-11-30T07:40:06.853938Z'
-                    sandbox_mode: true
-                  data:
-                    country_of_residence: USA
-                    created_at: '2025-11-30T07:40:06Z'
-                    customer_id: c3309534-1517-4d15-b244-be8f943c3823
-                    customer_status: INCOMPLETE
-                    email: john.doe@email.com
-                    first_name: John
-                    last_name: Doe
-                    phone: '+12597751234'
-                    tos_policies_url: 25764ef6-0f4f-4846-b7c6-9df0598358e9
-                    type: INDIVIDUAL
-                    verification_type: RELIANCE
-              businessCreated:
-                summary: Business Customer Created
-                value:
-                  event:
-                    id: d2a592e4-5703-46aa-b1ac-fa1fa6359abf
-                    event_reference_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
-                    type: customer.created
-                    created_at: '2026-04-13T11:38:57.819938Z'
-                    sandbox_mode: false
-                  data:
-                    associated_parties:
-                    - email: fatima.rahman22@acmecorp.com.bd
-                      id: f6b13e01-044a-4f74-a70b-d5f66b6449af
-                      ownership_percent: 60
-                      type: INDIVIDUAL
-                      verification:
-                        reason:
-                          for_customer: null
-                          for_developer: null
-                        status: INITIATED
-                        updated_at: '2026-04-13T11:38:57.824452053Z'
-                    - email: karim.islam22@acmecorp.com.bd
-                      id: f71dc19f-b9a0-49fb-bd2d-5add3c01626e
-                      ownership_percent: 40
-                      type: INDIVIDUAL
-                      verification:
-                        reason:
-                          for_customer: null
-                          for_developer: null
-                        status: INITIATED
-                        updated_at: '2026-04-13T11:38:57.824452053Z'
-                    business_name: Fin.com
-                    country_of_incorporation: BGD
-                    created_at: '2026-04-13T11:38:57Z'
-                    customer_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
-                    customer_status: INCOMPLETE
-                    email: m@tech.com
-                    phone: '+8801529876543'
-                    type: BUSINESS
-                    verification_type: STANDARD
-      responses:
-        '200':
-          description: Webhook received successfully
-  customer.status:
-    post:
-      summary: Customer Status
-      description: Triggered when a customer's status changes during verification.
-      x-mint:
-        metadata:
-          title: customer.status
-        content: "### Customer Status Values\n\nThe status values in the payload depend on which API version was used to create the customer. V1 and V2 use different status names for the same underlying states. V1 has not been deprecated and both sets of statuses are active.\n\n| Status | V1 Name | V2 Name | Description |\n|--------|---------|---------|-------------|\n| Awaiting processing | `QUEUED` | `PROCESSING` | Verification request sent to the work processor |\n| Under review | `REVIEWING` | `REVIEWING` | Customer verification is currently under review |\n| Verified | `APPROVED` | `APPROVED` | Successfully verified and approved |\n| Parties pending | `ASSOCIATED_PARTIES_REMAINING` | `ASSOCIATED_PARTIES_REMAINING` | Additional associated parties need verification |\n| Paused | `ON_HOLD` | `IN_COMPLIANCE` | Verification paused for compliance review |\n| Action needed | `REINITIATE` | `ACTION_REQUIRED` | New document upload required |\n| Rejected | `REJECTED` | `REJECTED` | Customer verification rejected |\n\n<Note>\n  `ACTION_REQUIRED` (V2) is also set by the `customer.rfi` webhook, which includes a structured payload describing exactly which documents or fields are missing or invalid.\n</Note>\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
-      tags:
-      - Webhooks
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                event:
-                  $ref: '#/components/schemas/WebhookEventEnvelope'
-                data:
-                  oneOf:
-                  - $ref: '#/components/schemas/IndividualCustomerData'
-                  - $ref: '#/components/schemas/BusinessCustomerData'
-            examples:
-              v1IndividualQueued:
-                summary: 'V1: Individual Customer Queued'
-                value:
-                  event:
-                    id: 29ceb6c4-4849-4312-9b2b-5e8360647da0
-                    event_reference_id: f9e1b162-8a05-4611-9e13-f38e0eb24a29
-                    type: customer.status
-                    created_at: '2026-01-18T09:08:18.66348Z'
-                    sandbox_mode: true
-                  data:
-                    customer_id: f9e1b162-8a05-4611-9e13-f38e0eb24a29
-                    customer_status: QUEUED
-                    email: john.doe@acmecorp.com
-                    first_name: John
-                    last_name: Doe
-                    type: INDIVIDUAL
-                    verification_type: STANDARD
-              v1BusinessOnHold:
-                summary: 'V1: Business Customer On Hold'
-                value:
-                  event:
-                    id: 0deacdde-cd58-42ea-8a1c-dde8668a92e4
-                    event_reference_id: 98665e7d-7736-4762-a57a-cc1e6706302f
-                    type: customer.status
-                    created_at: '2026-01-18T10:32:59.434557Z'
-                    sandbox_mode: true
-                  data:
-                    business_name: Acme Corp Ltd
-                    country_of_incorporation: USA
-                    customer_id: 98665e7d-7736-4762-a57a-cc1e6706302f
-                    customer_status: ON_HOLD
-                    email: contact@acmecorp.com
-                    type: BUSINESS
-                    verification_type: STANDARD
-              v1BusinessReinitiate:
-                summary: 'V1: Business Customer Reinitiate'
-                value:
-                  event:
-                    id: c8f2a5b1-3e4d-4a9c-b7e2-d1f3c8a9b0e5
-                    event_reference_id: a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
-                    type: customer.status
-                    created_at: '2026-01-20T14:15:30.123456Z'
-                    sandbox_mode: true
-                  data:
-                    business_name: Acme Corp Ltd
-                    country_of_incorporation: USA
-                    customer_id: a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
-                    customer_status: REINITIATE
-                    email: contact@acmecorp.com
-                    type: BUSINESS
-                    verification_type: STANDARD
-              v2IndividualProcessing:
-                summary: 'V2: Individual Customer Processing'
-                value:
-                  event:
-                    id: 3a4b5c6d-7e8f-9012-abcd-ef1234567890
-                    event_reference_id: f9e1b162-8a05-4611-9e13-f38e0eb24a29
-                    type: customer.status
-                    created_at: '2026-04-04T09:08:18.66348Z'
-                    sandbox_mode: false
-                  data:
-                    customer_id: f9e1b162-8a05-4611-9e13-f38e0eb24a29
-                    customer_status: PROCESSING
-                    email: john.doe@acmecorp.com
-                    first_name: John
-                    last_name: Doe
-                    type: INDIVIDUAL
-                    verification_type: STANDARD
-              v2BusinessInCompliance:
-                summary: 'V2: Business Customer In Compliance'
-                value:
-                  event:
-                    id: 0deacdde-cd58-42ea-8a1c-dde8668a92e4
-                    event_reference_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
-                    type: customer.status
-                    created_at: '2026-04-13T11:40:51.434557Z'
-                    sandbox_mode: false
-                  data:
-                    business_name: Fin.com
-                    country_of_incorporation: BGD
-                    customer_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
-                    customer_status: IN_COMPLIANCE
-                    email: m@tech.com
-                    type: BUSINESS
-                    verification_type: STANDARD
-              v2BusinessActionRequired:
-                summary: 'V2: Business Customer Action Required'
-                value:
-                  event:
-                    id: f1e2d3c4-b5a6-7890-cdef-123456789012
-                    event_reference_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
-                    type: customer.status
-                    created_at: '2026-04-13T11:40:51.000000Z'
-                    sandbox_mode: false
-                  data:
-                    business_name: Fin.com
-                    country_of_incorporation: BGD
-                    customer_id: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
-                    customer_status: ACTION_REQUIRED
-                    email: m@tech.com
-                    type: BUSINESS
-                    verification_type: STANDARD
-      responses:
-        '200':
-          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
   customer.rfi:
     post:
       summary: Customer RFI
@@ -777,147 +1078,11 @@ webhooks:
       responses:
         '200':
           description: Webhook received successfully
-  transaction.status:
-    post:
-      summary: Transaction Status
-      description: Triggered when a transaction's status changes.
-      x-mint:
-        metadata:
-          title: transaction.status
-        content: "Transaction types: `ONRAMP`, `OFFRAMP`, `CRYPTO_DEPOSIT`, `CRYPTO_WITHDRAWAL`\n\nCommon status values: `FUNDS_RECEIVED`, `PROCESSING`, `COMPLETED`, `FAILED`, `REFUNDED`\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
-      tags:
-      - Webhooks
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                event:
-                  $ref: '#/components/schemas/WebhookEventEnvelope'
-                data:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      example: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
-                    status:
-                      type: string
-                      enum:
-                      - FUNDS_RECEIVED
-                      - PROCESSING
-                      - COMPLETED
-                      - FAILED
-                      - CANCELLED
-                      example: FUNDS_RECEIVED
-                    beneficiary_id:
-                      type: string
-                      format: uuid
-                    from_amount:
-                      type: number
-                      example: 6
-                    from_currency:
-                      type: string
-                      example: USDC
-                    payout_amount:
-                      type: number
-                      example: 5.55595028
-                    payout_currency:
-                      type: string
-                      example: CAD
-                    processing_amount:
-                      type: number
-                      example: 4.2164
-                    fx_rate:
-                      type: number
-                      example: 1.3177
-                    developer_fee:
-                      type: number
-                      example: 1.7836
-                    developer_fee_fixed:
-                      type: number
-                      example: 1.75
-                    developer_fee_percentage:
-                      type: number
-                      example: 0.56
-                    hash:
-                      type: string
-                      example: '0x3a282c0d2364632bdf9224eadf06b463190795bce24e46d3235e44d22f953461'
-                    transaction_ref_id:
-                      type: string
-                    transaction_type:
-                      type: string
-                      description: 'Possible values: `ONRAMP`, `OFFRAMP`, `CRYPTO_DEPOSIT`, `CRYPTO_WITHDRAWAL`'
-                    created_at:
-                      type: string
-                      format: date-time
-                    updated_at:
-                      type: string
-                      format: date-time
-            examples:
-              fundsReceived:
-                summary: Funds Received
-                value:
-                  event:
-                    id: 2632ebb1-55ab-470a-9b24-accdb50aeb75
-                    event_reference_id: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
-                    type: transaction.status
-                    created_at: '2025-12-01T09:14:34.651913Z'
-                    sandbox_mode: true
-                  data:
-                    beneficiary_id: 47fcb2ca-9ed2-4188-a154-c83a04d9d34d
-                    from_amount: 6
-                    from_currency: USDC
-                    fx_rate: 1.3177
-                    id: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
-                    payout_amount: 5.55595028
-                    payout_currency: CAD
-                    status: FUNDS_RECEIVED
-                    transaction_type: ONRAMP
-      responses:
-        '200':
-          description: Webhook received successfully
-  virtual_account.created:
-    post:
-      summary: Virtual Account Created V1
-      description: Triggered when a new virtual account is created for a customer.
-      x-mint:
-        metadata:
-          title: virtual_account.created V1
-        content: "<Note>\n  Register this webhook if you are using the **Create Virtual Account V1** endpoint.\n</Note>\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
-      tags:
-      - Webhooks
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                event:
-                  $ref: '#/components/schemas/WebhookEventEnvelope'
-                data:
-                  $ref: '#/components/schemas/VirtualAccountWebhookData'
-            examples:
-              created:
-                summary: Virtual Account Created
-                value:
-                  event:
-                    id: 3fb02b56-911e-42c0-843c-c08785bdde56
-                    event_reference_id: 900f750d-6868-457e-a777-1a35566a6b5f
-                    type: virtual_account.created
-                    created_at: '2025-12-10T08:11:25.269644Z'
-                    sandbox_mode: true
-                  data:
-                    id: 900f750d-6868-457e-a777-1a35566a6b5f
-                    customer_id: a41a6d76-4545-47ab-93d1-696a3221d39c
-                    status: ACTIVE
-                    developer_fee_percent: 0.5
-      responses:
-        '200':
-          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
   virtual_account.created.v2:
     post:
       summary: Virtual Account Created V2
@@ -966,30 +1131,11 @@ webhooks:
       responses:
         '200':
           description: Webhook received successfully
-  virtual_account.status:
-    post:
-      summary: Virtual Account Status V1
-      description: Triggered when a virtual account's status changes.
-      x-mint:
-        metadata:
-          title: virtual_account.status V1
-        content: "Common status values: `ACTIVE`, `INACTIVE`, `SUSPENDED`\n\n<Note>\n  Register this webhook if you are using the **Create Virtual Account V1** endpoint.\n</Note>\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
-      tags:
-      - Webhooks
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                event:
-                  $ref: '#/components/schemas/WebhookEventEnvelope'
-                data:
-                  $ref: '#/components/schemas/VirtualAccountWebhookData'
-      responses:
-        '200':
-          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
   virtual_account.status.v2:
     post:
       summary: Virtual Account Status V2
@@ -1050,130 +1196,11 @@ webhooks:
       responses:
         '200':
           description: Webhook received successfully
-  beneficiary.created:
-    post:
-      summary: Beneficiary Created
-      description: Triggered when a new beneficiary is created in the system.
-      x-mint:
-        metadata:
-          title: beneficiary.created
-        content: "<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
-      tags:
-      - Webhooks
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                event:
-                  $ref: '#/components/schemas/WebhookEventEnvelope'
-                data:
-                  $ref: '#/components/schemas/BeneficiaryWebhookData'
-            examples:
-              individualCreated:
-                summary: Individual Beneficiary Created
-                value:
-                  event:
-                    id: 85804b3a-bf18-4d87-94f3-f7c45e66868e
-                    event_reference_id: 4d715f20-f704-45e0-af56-19ade318e852
-                    type: beneficiary.created
-                    created_at: '2025-12-10T10:36:18.279837Z'
-                    sandbox_mode: true
-                  data:
-                    active: true
-                    beneficiary_id: 4d715f20-f704-45e0-af56-19ade318e852
-                    customer_id: efb54adf-b7f4-4716-80e3-806e11f20b7b
-                    type: INDIVIDUAL
-      responses:
-        '200':
-          description: Webhook received successfully
-  beneficiary.status:
-    post:
-      summary: Beneficiary Status
-      description: Triggered when a beneficiary's status changes.
-      x-mint:
-        metadata:
-          title: beneficiary.status
-        content: "### Beneficiary Status Values\n- **PROCESSING**: Beneficiary creation is in progress\n- **ACTIVE**: Beneficiary is verified and ready to receive payments\n- **INACTIVE**: Beneficiary has been deactivated\n- **REJECTED**: Beneficiary was rejected during verification\n\n<Note>\n  All webhook requests include HMAC signatures for verification.\n</Note>\n"
-      tags:
-      - Webhooks
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                event:
-                  $ref: '#/components/schemas/WebhookEventEnvelope'
-                data:
-                  $ref: '#/components/schemas/BeneficiaryWebhookData'
-            examples:
-              processing:
-                summary: Beneficiary Processing
-                value:
-                  event:
-                    id: 40061557-f125-4b39-97d6-c16a0f1230c1
-                    event_reference_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-                    type: beneficiary.status
-                    created_at: '2026-04-04T17:38:26.843132Z'
-                    sandbox_mode: true
-                  data:
-                    type: INDIVIDUAL
-                    active: false
-                    status: PROCESSING
-                    customer_id: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
-                    beneficiary_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-              active:
-                summary: Beneficiary Active
-                value:
-                  event:
-                    id: 50072668-a236-5c40-08e7-d27b1g2341d2
-                    event_reference_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-                    type: beneficiary.status
-                    created_at: '2026-04-04T17:39:10.123456Z'
-                    sandbox_mode: true
-                  data:
-                    type: INDIVIDUAL
-                    active: true
-                    status: ACTIVE
-                    customer_id: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
-                    beneficiary_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-              inactive:
-                summary: Beneficiary Inactive
-                value:
-                  event:
-                    id: 60083779-b347-6d51-19f8-e38c2h3452e3
-                    event_reference_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-                    type: beneficiary.status
-                    created_at: '2026-04-05T08:00:00.000000Z'
-                    sandbox_mode: false
-                  data:
-                    type: INDIVIDUAL
-                    active: false
-                    status: INACTIVE
-                    customer_id: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
-                    beneficiary_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-              rejected:
-                summary: Beneficiary Rejected
-                value:
-                  event:
-                    id: 70094880-c458-7e62-20g9-f49d3i4563f4
-                    event_reference_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-                    type: beneficiary.status
-                    created_at: '2026-04-05T09:00:00.000000Z'
-                    sandbox_mode: false
-                  data:
-                    type: INDIVIDUAL
-                    active: false
-                    status: REJECTED
-                    customer_id: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
-                    beneficiary_id: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-      responses:
-        '200':
-          description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
   beneficiary.liquidation.deposit:
     post:
       summary: Beneficiary Liquidation Deposit
@@ -1225,6 +1252,11 @@ webhooks:
       responses:
         '200':
           description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
   batch.transaction.item.status:
     post:
       summary: Batch Transaction Item Status
@@ -1278,21 +1310,414 @@ webhooks:
       responses:
         '200':
           description: Webhook received successfully
+    servers:
+    - url: https://sandbox.api.fin.com
+      description: Sandbox server
+    - url: https://api.fin.com
+      description: Production server
 components:
   schemas:
-    VirtualAccountWebhookData:
+    IndividualCustomerData:
       type: object
+      description: Individual customer data in webhook payload
+      required:
+      - customer_id
+      - type
+      - customer_status
+      - email
+      - first_name
+      - last_name
+      - phone
+      - country_of_residence
+      - verification_type
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the customer
+          example: c3309534-1517-4d15-b244-be8f943c3823
+        type:
+          type: string
+          enum:
+          - INDIVIDUAL
+          description: Customer type
+        customer_status:
+          type: string
+          description: Current status of the customer
+          enum:
+          - INCOMPLETE
+          - REVIEWING
+          - APPROVED
+          - ON_HOLD
+          - REJECTED
+          example: INCOMPLETE
+        email:
+          type: string
+          format: email
+          description: Customer email address
+          example: john.doe@email.com
+        first_name:
+          type: string
+          description: Customer's first name
+          example: John
+        last_name:
+          type: string
+          description: Customer's last name
+          example: Doe
+        phone:
+          type: string
+          description: Customer's phone number
+          example: '+12597751234'
+        country_of_residence:
+          type: string
+          description: Customer's country of residence (ISO 3166-1 alpha-3 code)
+          example: USA
+        verification_type:
+          type: string
+          enum:
+          - RELIANCE
+          - STANDARD
+          description: Type of verification process
+          example: RELIANCE
+        tos_policies_url:
+          type: string
+          description: URL for terms of service policies
+          example: 25764ef6-0f4f-4846-b7c6-9df0598358e9
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the customer was created
+          example: '2025-11-30T07:40:06Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the customer was last updated
+          example: '2025-11-30T07:40:07Z'
+    BeneficiaryWebhookData:
+      type: object
+      description: Beneficiary data in webhook payload
+      required:
+      - beneficiary_id
+      - customer_id
+      - type
+      - active
+      properties:
+        beneficiary_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the beneficiary
+          example: 4d715f20-f704-45e0-af56-19ade318e852
+        customer_id:
+          type: string
+          format: uuid
+          description: Identifier for the customer who owns the beneficiary
+          example: efb54adf-b7f4-4716-80e3-806e11f20b7b
+        type:
+          type: string
+          description: Type of beneficiary
+          enum:
+          - INDIVIDUAL
+          - BUSINESS
+          example: INDIVIDUAL
+        active:
+          type: boolean
+          description: Whether the beneficiary is active
+          example: true
+    BusinessCustomerData:
+      type: object
+      description: Business customer data in webhook payload
+      required:
+      - customer_id
+      - type
+      - customer_status
+      - business_name
+      - email
+      - phone
+      - country_of_incorporation
+      - verification_type
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the customer
+          example: b222b827-3ac7-4d20-bfd0-ebedc44435f7
+        type:
+          type: string
+          enum:
+          - BUSINESS
+          description: Customer type
+        customer_status:
+          type: string
+          description: Current status of the customer
+          enum:
+          - INCOMPLETE
+          - REVIEWING
+          - APPROVED
+          - ASSOCIATED_PARTIES_REMAINING
+          - ON_HOLD
+          - REJECTED
+          example: INCOMPLETE
+        business_name:
+          type: string
+          description: Name of the business
+          example: Acme Corp
+        email:
+          type: string
+          format: email
+          description: Business email address
+          example: contact@acmecorp.com
+        phone:
+          type: string
+          description: Business phone number
+          example: '+12125550123'
+        country_of_incorporation:
+          type: string
+          description: Country where the business is incorporated (ISO 3166-1 alpha-3 code)
+          example: USA
+        verification_type:
+          type: string
+          enum:
+          - RELIANCE
+          - STANDARD
+          description: Type of verification process
+          example: RELIANCE
+        tos_policies_url:
+          type: string
+          description: URL for terms of service policies
+          example: 7e5bdf95-8dea-44d1-8810-987befbe2594
+        associated_parties:
+          type: array
+          description: List of associated parties (owners, directors, etc.)
+          items:
+            $ref: '#/components/schemas/AssociatedPartyWebhook'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the customer was created
+          example: '2025-11-30T08:01:03Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the customer was last updated
+          example: '2025-11-30T08:01:03.797370576Z'
+    AssociatedPartyWebhook:
+      type: object
+      description: Associated party information in webhook payload
       properties:
         id:
           type: string
           format: uuid
+          description: Unique identifier for the associated party
+          example: 07365877-f98f-4efa-acef-b15932fc3415
+        email:
+          type: string
+          format: email
+          description: Email address of the associated party
+          example: john.doe@email.com
+        type:
+          type: string
+          enum:
+          - INDIVIDUAL
+          description: Type of associated party
+        ownership_percent:
+          type: number
+          description: Ownership percentage in the business
+          example: 52
+        verification:
+          type: object
+          description: Verification status of the associated party
+          properties:
+            status:
+              type: string
+              enum:
+              - INITIATED
+              - REVIEWING
+              - APPROVED
+              - REJECTED
+              description: Verification status
+              example: INITIATED
+            updated_at:
+              type: string
+              format: date-time
+              description: Timestamp when verification was last updated
+              example: '2025-11-30T08:01:02.824452053Z'
+            reason:
+              type: object
+              description: Reasons for verification status
+              properties:
+                for_customer:
+                  type: string
+                  nullable: true
+                  description: Customer-facing reason
+                for_developer:
+                  type: string
+                  nullable: true
+                  description: Developer-facing reason
+    WebhookEvent:
+      type: object
+      description: Common structure for all webhook events
+      required:
+      - event
+      - data
+      properties:
+        event:
+          type: object
+          required:
+          - id
+          - event_reference_id
+          - type
+          - created_at
+          - sandbox_mode
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Unique identifier for the webhook event
+              example: 60bef15c-4e30-4eb4-bc4d-aa697a7e0857
+            event_reference_id:
+              type: string
+              format: uuid
+              description: Reference ID of the entity that triggered the event
+              example: c3309534-1517-4d15-b244-be8f943c3823
+            type:
+              type: string
+              description: Type of webhook event
+              enum:
+              - customer.created
+              - customer.status
+              - transaction.status
+              - virtual_account.created
+              - virtual_account.status
+              - beneficiary.created
+              - beneficiary.status
+              example: customer.created
+            created_at:
+              type: string
+              format: date-time
+              description: Timestamp when the event was created
+              example: '2025-11-30T07:40:06.853938Z'
+            sandbox_mode:
+              type: boolean
+              description: Indicates if the event was triggered in sandbox mode
+              example: true
+        data:
+          type: object
+          description: Event-specific payload data
+    TransactionWebhookData:
+      type: object
+      description: Transaction data in webhook payload
+      required:
+      - id
+      - status
+      - beneficiary_id
+      - from_amount
+      - from_currency
+      - transaction_type
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the transaction
+          example: ca9a04d8-4e68-4557-b9c6-3881e9d6b26d
+        status:
+          type: string
+          description: Current status of the transaction
+          enum:
+          - FUNDS_RECEIVED
+          - PROCESSING
+          - COMPLETED
+          - FAILED
+          - CANCELLED
+          example: FUNDS_RECEIVED
+        beneficiary_id:
+          type: string
+          format: uuid
+          description: Identifier for the beneficiary
+          example: 47fcb2ca-9ed2-4188-a154-c83a04d9d34d
+        from_amount:
+          type: number
+          description: Amount being sent
+          example: 6
+        from_currency:
+          type: string
+          description: Currency of the amount being sent
+          example: USDC
+        payout_amount:
+          type: number
+          description: Amount to be paid out to beneficiary
+          example: 5.55595028
+        payout_currency:
+          type: string
+          description: Currency of the payout
+          example: CAD
+        processing_amount:
+          type: number
+          description: Amount after fees deducted
+          example: 4.2164
+        fx_rate:
+          type: number
+          description: Foreign exchange rate applied
+          example: 1.3177
+        developer_fee:
+          type: number
+          description: Total developer fee charged
+          example: 1.7836
+        developer_fee_fixed:
+          type: number
+          description: Fixed portion of developer fee
+          example: 1.75
+        developer_fee_percentage:
+          type: number
+          description: Percentage portion of developer fee
+          example: 0.56
+        hash:
+          type: string
+          description: Blockchain transaction hash
+          example: '0x3a282c0d2364632bdf9224eadf06b463190795bce24e46d3235e44d22f953461'
+        transaction_ref_id:
+          type: string
+          description: Reference ID for the transaction
+          example: c494ac07-becd-4840-9
+        transaction_type:
+          type: string
+          enum:
+          - DEBIT
+          - CREDIT
+          description: Type of transaction
+          example: DEBIT
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the transaction was created
+          example: '2025-12-01T09:14:34.623187982Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the transaction was last updated
+          example: '2025-12-01T09:14:34.623187982Z'
+    VirtualAccountWebhookData:
+      type: object
+      description: Virtual account data in webhook payload
+      required:
+      - id
+      - customer_id
+      - status
+      - deposit_instructions
+      - destination
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the virtual account
           example: 900f750d-6868-457e-a777-1a35566a6b5f
         customer_id:
           type: string
           format: uuid
+          description: Identifier for the customer who owns the virtual account
           example: a41a6d76-4545-47ab-93d1-696a3221d39c
         status:
           type: string
+          description: Current status of the virtual account
           enum:
           - ACTIVE
           - INACTIVE
@@ -1300,30 +1725,48 @@ components:
           example: ACTIVE
         deposit_instructions:
           type: object
+          description: Banking details for depositing funds
+          required:
+          - bank_account_number
+          - bank_routing_number
+          - bank_name
+          - bank_address
+          - bank_beneficiary_name
+          - bank_beneficiary_address
+          - currency
+          - payment_rails
           properties:
             bank_account_number:
               type: string
+              description: Bank account number for deposits
               example: '900937198167'
             bank_routing_number:
               type: string
+              description: Bank routing number
               example: '101019644'
             bank_name:
               type: string
+              description: Name of the bank
               example: Bank of Nowhere
             bank_address:
               type: string
+              description: Physical address of the bank
               example: 1800 North Pole St., Orlando, FL 32801
             bank_beneficiary_name:
               type: string
-              example: Fin.com
+              description: Beneficiary name on the account
+              example: Acme Corp
             bank_beneficiary_address:
               type: string
+              description: Address of the beneficiary
               example: 250 Innovation Way, Houston, TX 77002, US
             currency:
               type: string
+              description: Currency for deposits
               example: USD
             payment_rails:
               type: array
+              description: Supported payment methods
               items:
                 type: string
                 enum:
@@ -1335,187 +1778,98 @@ components:
               - FEDWIRE
         destination:
           type: object
+          description: Destination blockchain address for converted funds
+          required:
+          - address
+          - currency
+          - destination_chain
           properties:
             address:
               type: string
+              description: Blockchain wallet address
               example: '0x1d1f9801d6d98e49438cda3a3b8e0c9f5e6f8c44'
             currency:
               type: string
+              description: Cryptocurrency to receive
               example: USDC
             destination_chain:
               type: string
+              description: Blockchain network
               example: POLYGON
         developer_fee_percent:
           type: number
+          description: Developer fee percentage
           example: 0.5
         created_at:
           type: string
           format: date-time
+          description: Timestamp when the virtual account was created
+          example: '2025-12-10T08:11:25.216572Z'
         updated_at:
           type: string
           format: date-time
-    BeneficiaryWebhookData:
-      type: object
-      properties:
-        beneficiary_id:
-          type: string
-          format: uuid
-          example: e8fccaeb-fb9d-4fae-846e-ea7c97c70b31
-        customer_id:
-          type: string
-          format: uuid
-          example: ecbd3a73-3bcb-40ae-be06-0e71f9b27c2f
-        type:
-          type: string
-          enum:
-          - INDIVIDUAL
-          - BUSINESS
-          example: INDIVIDUAL
-        active:
-          type: boolean
-          example: true
-        status:
-          type: string
-          enum:
-          - PROCESSING
-          - ACTIVE
-          - INACTIVE
-          - REJECTED
-          example: ACTIVE
-    BusinessCustomerData:
-      type: object
-      properties:
-        customer_id:
-          type: string
-          format: uuid
-          example: ed54db74-7dbe-47d2-8ea0-c2bf2a9dda06
-        type:
-          type: string
-          enum:
-          - BUSINESS
-        customer_status:
-          type: string
-          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ASSOCIATED_PARTIES_REMAINING, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ASSOCIATED_PARTIES_REMAINING, IN_COMPLIANCE, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
-          enum:
-          - INCOMPLETE
-          - QUEUED
-          - PROCESSING
-          - REVIEWING
-          - APPROVED
-          - ASSOCIATED_PARTIES_REMAINING
-          - ON_HOLD
-          - IN_COMPLIANCE
-          - REINITIATE
-          - ACTION_REQUIRED
-          - REJECTED
-          example: INCOMPLETE
-        business_name:
-          type: string
-          example: Fin.com
-        email:
-          type: string
-          format: email
-          example: m@tech.com
-        phone:
-          type: string
-          example: '+8801529876543'
-        country_of_incorporation:
-          type: string
-          example: BGD
-        verification_type:
-          type: string
-          enum:
-          - RELIANCE
-          - STANDARD
-          example: RELIANCE
-        tos_policies_url:
-          type: string
-        associated_parties:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              email:
-                type: string
-                format: email
-              type:
-                type: string
-                enum:
-                - INDIVIDUAL
-              ownership_percent:
-                type: number
-                example: 52
-              verification:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    enum:
-                    - INITIATED
-                    - REVIEWING
-                    - APPROVED
-                    - REJECTED
-                  updated_at:
-                    type: string
-                    format: date-time
-                  reason:
-                    type: object
-                    properties:
-                      for_customer:
-                        type: string
-                        nullable: true
-                      for_developer:
-                        type: string
-                        nullable: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-    WebhookEventEnvelope:
-      type: object
-      required:
-      - id
-      - event_reference_id
-      - type
-      - created_at
-      - sandbox_mode
-      properties:
-        id:
-          type: string
-          format: uuid
-          example: 60bef15c-4e30-4eb4-bc4d-aa697a7e0857
-        event_reference_id:
-          type: string
-          format: uuid
-          example: c3309534-1517-4d15-b244-be8f943c3823
-        type:
-          type: string
-          enum:
-          - customer.created
-          - customer.status
-          - customer.rfi
-          - transaction.status
-          - virtual_account.created
-          - virtual_account.created.v2
-          - virtual_account.status
-          - virtual_account.status.v2
-          - beneficiary.created
-          - beneficiary.status
-          - beneficiary.liquidation.deposit
-          - batch.transaction.item.status
-          example: customer.created
-        created_at:
-          type: string
-          format: date-time
-          example: '2025-11-30T07:40:06.853938Z'
-        sandbox_mode:
-          type: boolean
-          example: true
+          description: Timestamp when the virtual account was last updated
+          example: '2025-12-10T08:11:25.216572Z'
+    CustomerCreatedWebhook:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEvent'
+      - type: object
+        description: Webhook triggered when a customer is successfully created
+        properties:
+          data:
+            oneOf:
+            - $ref: '#/components/schemas/IndividualCustomerData'
+            - $ref: '#/components/schemas/BusinessCustomerData'
+    TransactionStatusWebhook:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEvent'
+      - type: object
+        description: Webhook triggered when a transaction's status changes
+        properties:
+          data:
+            $ref: '#/components/schemas/TransactionWebhookData'
+    VirtualAccountStatusWebhook:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEvent'
+      - type: object
+        description: Webhook triggered when a virtual account's status changes
+        properties:
+          data:
+            $ref: '#/components/schemas/VirtualAccountWebhookData'
+    BeneficiaryStatusWebhook:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEvent'
+      - type: object
+        description: Webhook triggered when a beneficiary's status changes
+        properties:
+          data:
+            $ref: '#/components/schemas/BeneficiaryWebhookData'
+    BeneficiaryCreatedWebhook:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEvent'
+      - type: object
+        description: Webhook triggered when a new beneficiary is created
+        properties:
+          data:
+            $ref: '#/components/schemas/BeneficiaryWebhookData'
+    CustomerStatusWebhook:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEvent'
+      - type: object
+        description: Webhook triggered when a customer's status changes during verification
+        properties:
+          data:
+            oneOf:
+            - $ref: '#/components/schemas/IndividualCustomerData'
+            - $ref: '#/components/schemas/BusinessCustomerData'
+    VirtualAccountCreatedWebhook:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEvent'
+      - type: object
+        description: Webhook triggered when a new virtual account is created
+        properties:
+          data:
+            $ref: '#/components/schemas/VirtualAccountWebhookData'
     VirtualAccountV2StatusWebhookData:
       type: object
       properties:
@@ -1608,66 +1962,52 @@ components:
         developer_fee_percent:
           type: number
           example: 0
-    IndividualCustomerData:
+    WebhookEventEnvelope:
       type: object
+      required:
+      - id
+      - event_reference_id
+      - type
+      - created_at
+      - sandbox_mode
       properties:
-        customer_id:
+        id:
+          type: string
+          format: uuid
+          example: 60bef15c-4e30-4eb4-bc4d-aa697a7e0857
+        event_reference_id:
           type: string
           format: uuid
           example: c3309534-1517-4d15-b244-be8f943c3823
         type:
           type: string
           enum:
-          - INDIVIDUAL
-        customer_status:
-          type: string
-          description: 'V1 statuses: INCOMPLETE, QUEUED, REVIEWING, APPROVED, ON_HOLD, REINITIATE, REJECTED. V2 statuses: INCOMPLETE, PROCESSING, REVIEWING, APPROVED, ACTION_REQUIRED, REJECTED. QUEUED (V1) → PROCESSING (V2). ON_HOLD (V1) → IN_COMPLIANCE (V2). REINITIATE (V1) → ACTION_REQUIRED (V2).'
-          enum:
-          - INCOMPLETE
-          - QUEUED
-          - PROCESSING
-          - REVIEWING
-          - APPROVED
-          - ON_HOLD
-          - IN_COMPLIANCE
-          - REINITIATE
-          - ACTION_REQUIRED
-          - REJECTED
-          example: INCOMPLETE
-        email:
-          type: string
-          format: email
-          example: john.doe@email.com
-        first_name:
-          type: string
-          example: John
-        last_name:
-          type: string
-          example: Doe
-        phone:
-          type: string
-          example: '+12597751234'
-        country_of_residence:
-          type: string
-          example: USA
-        verification_type:
-          type: string
-          enum:
-          - RELIANCE
-          - STANDARD
-          example: STANDARD
-        tos_policies_url:
-          type: string
-          example: 25764ef6-0f4f-4846-b7c6-9df0598358e9
+          - customer.created
+          - customer.status
+          - customer.rfi
+          - transaction.status
+          - virtual_account.created
+          - virtual_account.created.v2
+          - virtual_account.status
+          - virtual_account.status.v2
+          - beneficiary.created
+          - beneficiary.status
+          - beneficiary.liquidation.deposit
+          - batch.transaction.item.status
+          example: customer.created
         created_at:
           type: string
           format: date-time
-        updated_at:
-          type: string
-          format: date-time
+          example: '2025-11-30T07:40:06.853938Z'
+        sandbox_mode:
+          type: boolean
+          example: true
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: Bearer token authentication. Obtain token from [Issue a Token](https://developer.fin.com/api-reference/authentication/issue-a-token) endpoint
+      description: Bearer token authentication. Obtain token from /v1/oauth/token endpoint
+x-refined-from:
+- fin-openapi.yml
+- fin-webhooks-api-openapi.yml

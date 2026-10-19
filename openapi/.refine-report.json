@@ -1,40 +1,30 @@
 {
   "provider": "fin",
   "sources": [
-    "_original/fin-openapi-original.yml"
+    "_original/fin-openapi.yml",
+    "fin-webhooks-api-openapi.yml"
   ],
   "outputs": [
     "fin-authentication-api-openapi.yml",
     "fin-balances-api-openapi.yml",
     "fin-beneficiaries-api-openapi.yml",
     "fin-catalogue-api-openapi.yml",
-    "fin-crypto-orchestration-api-openapi.yml",
     "fin-customers-api-openapi.yml",
-    "fin-fees-fx-rates-api-openapi.yml",
     "fin-transactions-api-openapi.yml",
     "fin-virtual-accounts-api-openapi.yml",
     "fin-webhooks-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
-  "warnings": [],
+  "warnings": [
+    "fin-webhooks-api-openapi.yml: previously refined output kept for 6 operation(s) no archived document covers (e.g. webhook:batch.transaction.item.status post, webhook:beneficiary.liquidation.deposit post, webhook:customer.rfi post); its other 7 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
-    "fin-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "fin-openapi-original.yml: declared missing tag: Crypto Orchestration",
-    "fin-openapi-original.yml: declared missing tag: Webhooks",
-    "apis.yml register: already-registered"
+    "fin-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "fin-openapi.yml: declared missing tag: Webhooks",
+    "tag 'Webhooks' spans 2 source specs (fin-openapi.yml, fin-webhooks-api-openapi.yml): per-path servers applied",
+    "apis.yml register: written (+0 apis, 8 total)"
   ],
-  "skipped": [
-    "fin-authentication-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-balances-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-beneficiaries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-catalogue-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-crypto-orchestration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-fees-fx-rates-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-virtual-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "fin-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
-  ]
+  "skipped": []
 }

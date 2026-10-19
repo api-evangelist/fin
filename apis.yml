@@ -158,26 +158,6 @@ apis:
     url: conventions/fin-conventions.yml
   - type: DataModel
     url: data-model/fin-data-model.yml
-- aid: fin:fin-crypto-orchestration-api
-  name: Fin Crypto Orchestration API
-  description: The Crypto Orchestration API from Fin — 3 operation(s) for crypto orchestration.
-  humanURL: https://developer.fin.com/
-  baseURL: https://api.fin.com
-  tags:
-  - Crypto Orchestration
-  properties:
-  - type: OpenAPI
-    url: openapi/fin-crypto-orchestration-api-openapi.yml
-  - type: Authentication
-    url: authentication/fin-authentication.yml
-  - type: Webhooks
-    url: asyncapi/fin-webhooks.yml
-  - type: ErrorCatalog
-    url: errors/fin-problem-types.yml
-  - type: Conventions
-    url: conventions/fin-conventions.yml
-  - type: DataModel
-    url: data-model/fin-data-model.yml
 - aid: fin:fin-customers-api
   name: Fin Customers API
   description: Customer management and document upload operations
@@ -188,26 +168,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/fin-customers-api-openapi.yml
-  - type: Authentication
-    url: authentication/fin-authentication.yml
-  - type: Webhooks
-    url: asyncapi/fin-webhooks.yml
-  - type: ErrorCatalog
-    url: errors/fin-problem-types.yml
-  - type: Conventions
-    url: conventions/fin-conventions.yml
-  - type: DataModel
-    url: data-model/fin-data-model.yml
-- aid: fin:fin-fees-fx-rates-api
-  name: Fin Fees & FX Rates API
-  description: Retrieve fees and foreign exchange rates
-  humanURL: https://developer.fin.com/
-  baseURL: https://api.fin.com
-  tags:
-  - Fees & FX Rates
-  properties:
-  - type: OpenAPI
-    url: openapi/fin-fees-fx-rates-api-openapi.yml
   - type: Authentication
     url: authentication/fin-authentication.yml
   - type: Webhooks
