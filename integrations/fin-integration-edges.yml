@@ -2,6 +2,11 @@ generated: '2026-10-14'
 method: searched
 checked:
 - okta/integrations/okta-integration-edges.yml
+- https://www.bankofcanada.ca/core-functions/retail-payments-supervision/psp-registry/
+- https://www.bankofcanada.ca/rps-api/cif2/accounts/list
+- https://www.payments.ca/payment-resources/directories?field_directory_type=10
+- https://www.payments.ca/payment-resources/directories?field_directory_type=13
+- https://www.payments.ca/payment-resources/directories?field_directory_type=14
 source:
 - okta/integrations/okta-integration-edges.yml
 edges:
@@ -29,3 +34,47 @@ edges:
   - DEACTIVATE
   - SAML
   - UPDATE
+- partner_name: Bank of Canada RPAA registry of payment service providers
+  partner: null
+  partner_match: register
+  type: register
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://www.bankofcanada.ca/core-functions/retail-payments-supervision/psp-registry/
+  category: Canadian retail payment activities (RPAA) PSP registration
+  contract_reference:
+    register: Bank of Canada RPAA registry of payment service providers
+    spec_file: null
+    standard: null
+    role: registered-psp
+    registrations:
+    - registered_name: FIN.COM PAYMENTS INC. ( Formerly - COLAR FINANCE LTD)
+      register_status: registered
+      register_country: CA
+      register_id: ce017d25-3167-f111-ab0c-7c1e5253ef7a
+      matched_domain: fin.com
+      matched_by: domain
+      evidence_url: https://www.bankofcanada.ca/core-functions/retail-payments-supervision/psp-registry/psp-registry-details/?account_id=ce017d25-3167-f111-ab0c-7c1e5253ef7a
+      licences:
+      - RPAA registered PSP
+      brand: FIN.COM PAYMENTS INC.
+      registration_date: '2026-07-06'
+      head_office_country: Canada
+      trade_names:
+      - Fin Globally
+      payment_functions:
+      - The provision or maintenance of an account that, in relation to an electronic funds transfer, is held on
+        behalf of one or more end users
+      - Holding of funds on behalf of an end user until they are withdrawn by the end user or transferred to another
+        individual or entity
+      - The initiation of an electronic funds transfer at the request of an end user
+      - Authorization or Transmission, Reception or Facilitation of an instruction in relation to an electronic
+        funds transfer
+      has_violations: false
+    signal_note: 'participation only: a regulator registration / payment-system membership; no API conformance is
+      published by this register'
+    detected_by: sweep-canada-rpaa-psp-registry.py
+    detected: '2026-10-22'
+  detected_by: sweep-canada-rpaa-psp-registry.py
+  first_seen: '2026-10-22'
