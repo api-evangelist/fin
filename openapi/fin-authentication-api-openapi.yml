@@ -148,3 +148,9 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Bearer token authentication. Obtain token from /v1/oauth/token endpoint
+x-provenance:
+  method: harvested
+  publisher: Fin
+  source: https://developer.fin.com/openapi.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
