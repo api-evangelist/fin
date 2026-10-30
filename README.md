@@ -64,6 +64,136 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Fin is a company surfaced as a portfolio company of accel, iconiq-capital, kleiner-perkins and added to the API Evangelist network as a stub for enrichment. Sector: ai. This profile is a lead awaiting the enrichment pipeline.
+Fin (fin.com) is a global cross-border payments infrastructure company that moves money internationally over stablecoin rails and direct liquidity networks instead of traditional correspondent banking, settling in minutes rather than days. Its Orchestration API lets businesses onboard individual and business customers (KYC/KYB), create beneficiaries, quote FX and fees, send transfer and batch payouts, provision multi-currency virtual accounts that convert fiat deposits to crypto (e.g. USD to USDC), and run crypto orchestration across exchanges. Founded by ex-Citadel engineers, Fin raised a $17M Series A to bring its stablecoin-powered high-value payments product to market. This profile was enriched from the public developer surface at developer.fin.com.
 
-Backed by: accel, iconiq-capital, kleiner-perkins — http://www.fin.com
+**Areas:** Company · Payments · Cross-Border Payments · Stablecoins · Fintech · Money Movement · Foreign Exchange · Virtual Accounts · Cryptocurrency
+
+## Fin on APIs.io
+
+Everything profiled for Fin is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/fin/](https://apis.io/providers/fin/)** — or go straight to one of the APIs or properties below.
+
+### APIs (10)
+
+- [Fin Authentication API](https://apis.io/apis/fin/fin-authentication-api/) — A modified OAuth 2.0 Client Credential Flow
+- [Fin Balances API](https://apis.io/apis/fin/fin-balances-api/) — Retrieve wallet balance information
+- [Fin Beneficiaries API](https://apis.io/apis/fin/fin-beneficiaries-api/) — Manage beneficiary accounts for payments and transfers
+- [Fin Catalogue API](https://apis.io/apis/fin/fin-catalogue-api/) — A set of endpoints to retrieve contextual data to assemble requests to fin.com's API
+- [Fin Crypto Orchestration API](https://apis.io/apis/fin/fin-crypto-orchestration-api/) — The Crypto Orchestration API from Fin — 3 operation(s) for crypto orchestration.
+- [Fin Customers API](https://apis.io/apis/fin/fin-customers-api/) — Customer management and document upload operations
+- [Fin Fees & FX Rates API](https://apis.io/apis/fin/fin-fees-fx-rates-api/) — Retrieve fees and foreign exchange rates
+- [Fin Transactions API](https://apis.io/apis/fin/fin-transactions-api/) — Transaction history and management for beneficiaries
+- [Fin Virtual Accounts API](https://apis.io/apis/fin/fin-virtual-accounts-api/) — Create and manage virtual accounts for USD to USDC conversions
+- [Fin Webhooks API](https://apis.io/apis/fin/fin-webhooks-api/) — The Webhooks API from Fin — 0 operation(s) for webhooks.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Fin Webhooks](https://apis.io/asyncapis/fin/fin-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [fin](https://apis.io/servers/fin/fin/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Fin Agentic Access](https://apis.io/agentic-access/fin/fin-agentic-access/)
+
+#### Collections (9)
+
+Postman and Open Collection request collections.
+
+- [Fin.com Authentication API](https://apis.io/collections/fin/open-fin-authentication-api/)
+- [Fin.com Authentication Balances API](https://apis.io/collections/fin/open-fin-balances-api/)
+- [Fin.com Authentication Beneficiaries API](https://apis.io/collections/fin/open-fin-beneficiaries-api/)
+- [Fin.com Authentication Catalogue API](https://apis.io/collections/fin/open-fin-catalogue-api/)
+- [Fin.com Authentication Crypto Orchestration API](https://apis.io/collections/fin/open-fin-crypto-orchestration-api/)
+- [Fin.com Authentication Customers API](https://apis.io/collections/fin/open-fin-customers-api/)
+- [Fin.com Authentication Fees & FX Rates API](https://apis.io/collections/fin/open-fin-fees-fx-rates-api/)
+- [Fin.com Authentication Transactions API](https://apis.io/collections/fin/open-fin-transactions-api/)
+- [Fin.com Authentication Virtual Accounts API](https://apis.io/collections/fin/open-fin-virtual-accounts-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Fin Openapi Overlay](https://apis.io/overlays/fin/fin-openapi-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Fin Authentication](https://apis.io/security/fin/fin-authentication/)
+- [Fin Domain Security](https://apis.io/security/fin/fin-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.fin.com)
+- [Documentation](https://developer.fin.com/)
+- [Getting started](https://developer.fin.com/index)
+- [API reference](https://developer.fin.com/api-reference)
+- [Blog](https://www.fin.com/stories)
+- [Status](https://fin.instatus.com)
+
+## API Evangelist rating
+
+**Kin Score 38.0** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 56.7 |
+| Contract governance | 4.5 |
+| Operational transparency | 31.6 |
+| Developer ergonomics | 66.1 |
+| Access clarity | 0.0 |
+
+**Agent readiness 28.2** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 15.2** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/fin/](https://apis.io/providers/fin/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Fin: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/fin/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
